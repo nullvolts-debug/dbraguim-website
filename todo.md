@@ -93,3 +93,9 @@
 - [x] Adicionar galeria de imagens no modal
 - [x] Adicionar especificações técnicas
 - [x] Adicionar botões de interesse (WhatsApp/Email)
+
+## Ajustes Modal
+- [x] Mostrar seção "I'M INTERESTED" para todas as facas (não apenas disponíveis)
+- [x] Botão Email abre formulário inline no modal
+- [x] Formulário com subject e corpo pré-preenchidos
+- [x] Campos apenas Nome e Email

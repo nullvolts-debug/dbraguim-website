@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 interface KnifeData {
@@ -28,6 +28,10 @@ interface KnifeModalProps {
 
 export default function KnifeModal({ knife, isOpen, onClose }: KnifeModalProps) {
   const { language, t } = useLanguage();
+  const [showEmailForm, setShowEmailForm] = useState(false);
+  const [formData, setFormData] = useState({ name: '', email: '' });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
   useEffect(() => {
     if (isOpen) {
@@ -164,21 +168,137 @@ export default function KnifeModal({ knife, isOpen, onClose }: KnifeModalProps) 
                 </div>
               </div>
 
-              {knife.status === 'disponivel' && (
-                <div className="modal__actions">
-                  <a
-                    href={`https://wa.me/5511991953021?text=${language === 'pt' ? 'Olá! Tenho interesse na faca' : 'Hi! I\'m interested in the knife'} ${knife.name}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn btn--whatsapp"
+              {/* Seção I'm Interested - Sempre visível */}
+              <div className="modal__interest">
+                <h4 className="modal__interestTitle">
+                  {language === 'pt' ? "TENHO INTERESSE" : "I'M INTERESTED"}
+                </h4>
+                <p className="modal__interestText">
+                  {language === 'pt'
+                    ? 'Se tem interesse em uma peça como essa, clique abaixo.'
+                    : "If you're interested in a piece like this, click below."}
+                </p>
+
+                {!showEmailForm ? (
+                  <div className="modal__actions">
+                    <a
+                      href={`https://wa.me/5511991953021?text=${language === 'pt' ? 'Olá! Tenho interesse na faca' : 'Hi! I\'m interested in the knife'} ${knife.name}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn btn--whatsapp"
+                    >
+                      {t('portfolio_interest_whatsapp')}
+                    </a>
+                    <button
+                      className="btn btn--secondary"
+                      onClick={() => setShowEmailForm(true)}
+                    >
+                      {t('portfolio_interest_email')}
+                    </button>
+                  </div>
+                ) : (
+                  <form
+                    className="modal__emailForm"
+                    onSubmit={async (e) => {
+                      e.preventDefault();
+                      setIsSubmitting(true);
+                      setSubmitStatus('idle');
+
+                      try {
+                        const subject = language === 'pt'
+                          ? 'Me interessei por uma D.Braguim'
+                          : 'Interested in a D.Braguim knife';
+                        const message = language === 'pt'
+                          ? `Me interessei pela faca ${knife.name}, gostaria de mais informações.`
+                          : `I'm interested in the ${knife.name} knife, I would like more information.`;
+
+                        // Aqui você pode integrar com sua API de email
+                        // Por enquanto, vamos simular o envio
+                        await new Promise((resolve) => setTimeout(resolve, 1000));
+
+                        setSubmitStatus('success');
+                        setTimeout(() => {
+                          setShowEmailForm(false);
+                          setFormData({ name: '', email: '' });
+                          setSubmitStatus('idle');
+                        }, 2000);
+                      } catch (error) {
+                        setSubmitStatus('error');
+                      } finally {
+                        setIsSubmitting(false);
+                      }
+                    }}
                   >
-                    {t('portfolio_interest_whatsapp')}
-                  </a>
-                  <a href="/contato" className="btn btn--secondary">
-                    {t('portfolio_interest_email')}
-                  </a>
-                </div>
-              )}
+                    <div className="form__group">
+                      <label htmlFor="modal-name">
+                        {language === 'pt' ? 'Nome' : 'Name'}
+                      </label>
+                      <input
+                        id="modal-name"
+                        type="text"
+                        required
+                        value={formData.name}
+                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                        placeholder={language === 'pt' ? 'Seu nome completo' : 'Your full name'}
+                      />
+                    </div>
+                    <div className="form__group">
+                      <label htmlFor="modal-email">
+                        {language === 'pt' ? 'E-mail' : 'Email'}
+                      </label>
+                      <input
+                        id="modal-email"
+                        type="email"
+                        required
+                        value={formData.email}
+                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                        placeholder="seu@email.com"
+                      />
+                    </div>
+
+                    <input type="hidden" name="subject" value={language === 'pt' ? 'Me interessei por uma D.Braguim' : 'Interested in a D.Braguim knife'} />
+                    <input type="hidden" name="message" value={language === 'pt' ? `Me interessei pela faca ${knife.name}, gostaria de mais informações.` : `I'm interested in the ${knife.name} knife, I would like more information.`} />
+
+                    <div className="modal__formActions">
+                      <button
+                        type="button"
+                        className="btn btn--secondary"
+                        onClick={() => {
+                          setShowEmailForm(false);
+                          setFormData({ name: '', email: '' });
+                          setSubmitStatus('idle');
+                        }}
+                      >
+                        {language === 'pt' ? 'Cancelar' : 'Cancel'}
+                      </button>
+                      <button type="submit" className="btn btn--primary" disabled={isSubmitting}>
+                        {isSubmitting
+                          ? language === 'pt'
+                            ? 'Enviando...'
+                            : 'Sending...'
+                          : language === 'pt'
+                          ? 'Enviar'
+                          : 'Send'}
+                      </button>
+                    </div>
+
+                    {submitStatus === 'success' && (
+                      <div className="form__success">
+                        {language === 'pt'
+                          ? 'Mensagem enviada com sucesso!'
+                          : 'Message sent successfully!'}
+                      </div>
+                    )}
+                    {submitStatus === 'error' && (
+                      <div className="form__error">
+                        {language === 'pt'
+                          ? 'Erro ao enviar. Tente novamente.'
+                          : 'Error sending. Please try again.'}
+                      </div>
+                    )}
+                  </form>
+                )}
+              </div>
             </div>
           </div>
         </div>
