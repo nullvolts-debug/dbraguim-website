@@ -5,7 +5,7 @@
   --dark: #080808;
   --paper: #111;
   --line: rgba(255, 255, 255, 0.12);
-  --muted: #d0d0d0;
+  --muted: #888;
   --shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
   --shadow2: 0 18px 48px rgba(0, 0, 0, 0.6);
 }
@@ -25,7 +25,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 p {
-  color: #d0d0d0;
+  color: #888;
 }
 
 .container {
@@ -91,7 +91,7 @@ p {
 .lang button {
   background: transparent;
   border: 1px solid var(--line);
-  color: #d0d0d0;
+  color: #888;
   padding: 6px 12px;
   border-radius: 6px;
   cursor: pointer;
@@ -167,7 +167,7 @@ p {
 
 .subtitle {
   font-size: 1.1rem;
-  color: #d0d0d0;
+  color: #888;
   margin-bottom: 40px;
   font-weight: 300;
   font-family: 'Montserrat', sans-serif;
@@ -260,7 +260,7 @@ p {
 
 .lead {
   font-size: 1.15rem;
-  color: #d0d0d0;
+  color: #888;
   max-width: 720px;
   margin-bottom: 24px;
 }
@@ -352,7 +352,7 @@ p {
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 16px;
-  color: #d0d0d0;
+  color: #888;
   font-size: 0.9rem;
 }
 
@@ -362,7 +362,7 @@ p {
 }
 
 .footer__social a {
-  color: #d0d0d0;
+  color: #888;
   transition: color 0.2s;
 }
 
@@ -459,7 +459,7 @@ p {
 }
 
 .modal__description {
-  color: #d0d0d0;
+  color: #888;
   margin-bottom: 24px;
   line-height: 1.7;
 }
@@ -478,7 +478,7 @@ p {
 }
 
 .spec-label {
-  color: #d0d0d0;
+  color: #888;
   font-size: 0.9rem;
 }
 
@@ -693,7 +693,7 @@ p {
 .modal__videoThumbInfo p {
   margin: 0;
   font-size: 0.8rem;
-  color: #d0d0d0;
+  color: #888;
 }
 
 .modal__videoThumbIcon {
@@ -707,7 +707,7 @@ p {
 }
 
 .modal__content p {
-  color: #d0d0d0;
+  color: #888;
   line-height: 1.7;
   margin-bottom: 24px;
   font-size: 0.95rem;
@@ -728,7 +728,7 @@ p {
 
 .metaLabel {
   font-size: 0.8rem;
-  color: #d0d0d0;
+  color: #888;
   text-transform: uppercase;
   letter-spacing: 1px;
 }
@@ -758,7 +758,7 @@ p {
 }
 
 .modal__interestText {
-  color: #d0d0d0;
+  color: #888;
   font-size: 0.9rem;
   margin: 0 0 16px;
 }
@@ -801,7 +801,7 @@ p {
 .form__group label {
   display: block;
   font-size: 0.85rem;
-  color: #d0d0d0;
+  color: #888;
   margin-bottom: 6px;
   font-weight: 500;
 }

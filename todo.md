@@ -154,3 +154,6 @@
 ## Ajuste Tom de Cor
 - [x] Ajustar tom de cor dos textos para intermediário (#d0d0d0) - não muito claro nem muito escuro
 - [x] Remover estilos inline que sobrescreviam a cor nos cards de valores
+
+## Ajuste Cor Final
+- [x] Alterar cor de todos os textos de conteúdo para #888
