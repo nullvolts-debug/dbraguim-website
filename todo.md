@@ -86,3 +86,10 @@
 
 ## Ajuste Hero
 - [x] Usar hero_placeholder.webp como background do hero (não como elemento separado)
+
+## Modal de Detalhes das Facas
+- [x] Implementar modal/overlay ao clicar nas facas
+- [x] Usar textos e fotos corretos do site original
+- [x] Adicionar galeria de imagens no modal
+- [x] Adicionar especificações técnicas
+- [x] Adicionar botões de interesse (WhatsApp/Email)
