@@ -68,3 +68,6 @@
 - [ ] Documentar como adicionar novas facas no Sanity
 - [ ] Testar build de produção
 - [ ] Criar checkpoint final
+
+## Bugs
+- [x] Corrigir erro de <a> aninhado no Header (Link do wouter já renderiza <a>)

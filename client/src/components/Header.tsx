@@ -8,35 +8,25 @@ export function Header() {
   return (
     <header className="header">
       <div className="container header__inner">
-        <Link href="/">
-          <a className="brand" title="D.Braguim - Cutelaria Artesanal">
-            <span className="brand__logo">
-              <img src="/images/logo/logo.svg" alt="D.Braguim - Logo" width={48} height={48} />
-            </span>
-            <span className="brand__name">D.Braguim</span>
-          </a>
+        <Link href="/" className="brand" title="D.Braguim - Cutelaria Artesanal">
+          <span className="brand__logo">
+            <img src="/images/logo/logo.svg" alt="D.Braguim - Logo" width={48} height={48} />
+          </span>
+          <span className="brand__name">D.Braguim</span>
         </Link>
 
         <nav className="nav" aria-label="Navegação Principal">
-          <Link href="/">
-            <a className={location === '/' ? 'active' : ''} title={t('nav_home')}>
-              {t('nav_home')}
-            </a>
+          <Link href="/" className={location === '/' ? 'active' : ''} title={t('nav_home')}>
+            {t('nav_home')}
           </Link>
-          <Link href="/portfolio">
-            <a className={location === '/portfolio' ? 'active' : ''} title={t('nav_portfolio')}>
-              {t('nav_portfolio')}
-            </a>
+          <Link href="/portfolio" className={location === '/portfolio' ? 'active' : ''} title={t('nav_portfolio')}>
+            {t('nav_portfolio')}
           </Link>
-          <Link href="/sobre">
-            <a className={location === '/sobre' ? 'active' : ''} title={t('nav_sobre')}>
-              {t('nav_sobre')}
-            </a>
+          <Link href="/sobre" className={location === '/sobre' ? 'active' : ''} title={t('nav_sobre')}>
+            {t('nav_sobre')}
           </Link>
-          <Link href="/contato">
-            <a className={location === '/contato' ? 'active' : ''} title={t('nav_contato')}>
-              {t('nav_contato')}
-            </a>
+          <Link href="/contato" className={location === '/contato' ? 'active' : ''} title={t('nav_contato')}>
+            {t('nav_contato')}
           </Link>
         </nav>
 

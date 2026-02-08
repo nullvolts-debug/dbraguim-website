@@ -48,10 +48,8 @@ export default function Home() {
               <h1>{t('hero_title')}</h1>
               <p className="subtitle">{t('hero_subtitle')}</p>
               <div className="hero__cta">
-                <Link href="/portfolio">
-                  <a className="btn btn--primary" title={t('hero_cta_primary')}>
-                    {t('hero_cta_primary')}
-                  </a>
+                <Link href="/portfolio" className="btn btn--primary" title={t('hero_cta_primary')}>
+                  {t('hero_cta_primary')}
                 </Link>
                 <a
                   className="btn btn--whatsapp"
@@ -76,10 +74,8 @@ export default function Home() {
         <div className="container">
           <h2>{t('home_section_about')}</h2>
           <p className="lead">{t('home_about_text')}</p>
-          <Link href="/sobre">
-            <a className="btn btn--secondary" title={t('home_about_link')}>
-              {t('home_about_link')}
-            </a>
+          <Link href="/sobre" className="btn btn--secondary" title={t('home_about_link')}>
+            {t('home_about_link')}
           </Link>
         </div>
       </section>
