@@ -102,3 +102,26 @@
 
 ## Ajuste Thumbnail Vídeo
 - [x] Remover thumbnail do vídeo abaixo da foto no modal
+
+## Novos Ajustes
+- [x] Centralizar bloco de conteúdo do hero com espaçamento da parte inferior
+- [x] Recolocar filtros de categoria e status no Portfolio
+- [x] Clarear fontes nas seções Sobre e Contato para melhor legibilidade
+- [x] Adicionar campo de email na newsletter com botão de cadastro
+- [x] Salvar emails da newsletter no banco de dados
+
+## Correções Modal e Formulário
+- [x] Clarear fonte do modal (muito escura)
+- [x] Ajustar design dos botões para ficar igual à referência
+- [x] Corrigir scroll do modal para formulário não ficar cortado
+- [x] Clarear fontes do menu
+
+## Ajuste Alinhamento Hero
+- [x] Alinhar conteúdo do hero à direita (não centralizado)
+
+## Redesign Modal
+- [x] Ajustar layout do modal para grid 60/40 (foto/conteúdo)
+- [x] Botão "ASSISTA O VÍDEO" na parte inferior da foto
+- [x] Seção "I'M INTERESTED" com borda e botões lado a lado
+- [x] Especificações em grid 2 colunas
+- [x] Ajustar cores e espaçamentos conforme referência

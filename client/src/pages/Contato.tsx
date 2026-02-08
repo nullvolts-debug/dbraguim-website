@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
+import NewsletterForm from '@/components/NewsletterForm';
 
 const CONTACT = {
   whatsappNumber: '5511991953021',
@@ -149,7 +150,7 @@ export default function Contato() {
                 </a>
               </div>
 
-              {/* Email */}
+              {/* Email Newsletter */}
               <div
                 style={{
                   background: 'var(--paper)',
@@ -161,21 +162,10 @@ export default function Contato() {
                 <h3 style={{ fontSize: '1.2rem', marginBottom: '16px' }}>E-mail</h3>
                 <p style={{ color: 'var(--muted)', marginBottom: '16px' }}>
                   {language === 'en'
-                    ? 'Send us an email to join our mailing list and receive updates.'
-                    : 'Envie um e-mail para entrar na nossa lista e receber novidades.'}
+                    ? 'Enter your email to subscribe to our newsletter.'
+                    : 'Digite seu e-mail para se inscrever na nossa newsletter.'}
                 </p>
-                <a
-                  className="btn btn--secondary"
-                  href={`mailto:${CONTACT.email}?subject=${encodeURIComponent(
-                    language === 'en' ? 'Newsletter Subscription' : 'Inscrição na Newsletter'
-                  )}&body=${encodeURIComponent(
-                    language === 'en'
-                      ? 'Hi! I would like to subscribe to the D.Braguim newsletter.'
-                      : 'Olá! Gostaria de me inscrever na newsletter da D.Braguim.'
-                  )}`}
-                >
-                  Enviar E-mail
-                </a>
+                <NewsletterForm />
               </div>
             </div>
           </section>

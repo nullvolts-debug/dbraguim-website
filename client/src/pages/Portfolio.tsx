@@ -7,6 +7,8 @@ export default function Portfolio() {
   const { t, language } = useLanguage();
   const [selectedKnife, setSelectedKnife] = useState<KnifeData | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [categoryFilter, setCategoryFilter] = useState<string>('all');
+  const [statusFilter, setStatusFilter] = useState<string>('all');
 
   const handleKnifeClick = (knife: KnifeData) => {
     setSelectedKnife(knife);
@@ -29,8 +31,49 @@ export default function Portfolio() {
               : 'Explore handcrafted pieces created with tradition and innovation.'}
           </p>
 
+          {/* Filtros */}
+          <div className="filters">
+            <div className="filter__group">
+              <label className="filter__label">
+                {language === 'pt' ? 'Categoria' : 'Category'}
+              </label>
+              <select
+                value={categoryFilter}
+                onChange={(e) => setCategoryFilter(e.target.value)}
+                className="filter__select"
+              >
+                <option value="all">{language === 'pt' ? 'Todas' : 'All'}</option>
+                <option value="Caça">{language === 'pt' ? 'Caça' : 'Hunting'}</option>
+                <option value="Luta">{language === 'pt' ? 'Luta' : 'Fighter'}</option>
+                <option value="Chef">Chef</option>
+              </select>
+            </div>
+
+            <div className="filter__group">
+              <label className="filter__label">
+                {language === 'pt' ? 'Status' : 'Status'}
+              </label>
+              <select
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+                className="filter__select"
+              >
+                <option value="all">{language === 'pt' ? 'Todos' : 'All'}</option>
+                <option value="disponivel">{language === 'pt' ? 'Disponível' : 'Available'}</option>
+                <option value="vendida">{language === 'pt' ? 'Vendida' : 'Sold'}</option>
+                <option value="encomenda">{language === 'pt' ? 'Sob Encomenda' : 'Made to Order'}</option>
+              </select>
+            </div>
+          </div>
+
           <div className="grid">
-            {knivesData.map((knife) => (
+            {knivesData
+              .filter((knife) => {
+                if (categoryFilter !== 'all' && knife.category !== categoryFilter) return false;
+                if (statusFilter !== 'all' && knife.status !== statusFilter) return false;
+                return true;
+              })
+              .map((knife) => (
               <div
                 key={knife.name}
                 className="card"
