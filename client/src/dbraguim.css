@@ -19,6 +19,11 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
+}
+
 .container {
   max-width: 1280px;
   margin: 0 auto;
@@ -99,65 +104,74 @@ body {
 /* Hero Section */
 .hero {
   position: relative;
-  min-height: 85vh;
-  display: flex;
+  min-height: 90vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, #0a0a0a 0%, #1a1410 100%);
+  background: #0a0a0a;
   overflow: hidden;
 }
 
-.hero::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: url('/images/hero/hero_placeholder.webp') center/cover;
-  opacity: 0.35;
-  z-index: 0;
+.hero__imageContainer {
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px;
+}
+
+.hero__image {
+  max-width: 100%;
+  max-height: 80vh;
+  object-fit: contain;
+  filter: drop-shadow(0 20px 60px rgba(0, 0, 0, 0.5));
 }
 
 .hero__contentOverlay {
   position: relative;
   z-index: 1;
-  width: 100%;
-  padding: 60px 0;
+  padding: 60px 80px 60px 40px;
   display: flex;
-  justify-content: center;
+  align-items: center;
 }
 
 .hero__panel {
-  max-width: 720px;
-  text-align: center;
+  max-width: 600px;
 }
 
 .hero__cta {
-  justify-content: center;
+  display: flex;
+  gap: 16px;
 }
 
 .kicker {
   color: var(--gold);
   text-transform: uppercase;
-  letter-spacing: 2px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  margin-bottom: 16px;
+  letter-spacing: 3px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin-bottom: 20px;
+  font-family: 'Montserrat', sans-serif;
 }
 
 .hero__panel h1 {
-  font-size: 4.5rem;
-  font-weight: 800;
-  margin: 0 0 16px;
-  line-height: 1.1;
-  background: linear-gradient(135deg, #fff 0%, var(--gold) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  font-size: 5rem;
+  font-weight: 600;
+  margin: 0 0 20px;
+  line-height: 1;
+  color: #fff;
+  font-family: 'Cormorant Garamond', serif;
+  letter-spacing: -1px;
 }
 
 .subtitle {
-  font-size: 1.3rem;
-  color: var(--muted);
-  margin-bottom: 32px;
+  font-size: 1.1rem;
+  color: #999;
+  margin-bottom: 40px;
+  font-weight: 300;
+  font-family: 'Montserrat', sans-serif;
+  letter-spacing: 0.5px;
 }
 
 .hero__cta {
@@ -170,48 +184,55 @@ body {
 .btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
-  padding: 14px 28px;
-  border-radius: 8px;
-  font-weight: 600;
+  padding: 16px 40px;
+  border-radius: 0;
+  font-weight: 500;
   text-decoration: none;
-  transition: all 0.2s;
+  transition: all 0.3s ease;
   cursor: pointer;
-  border: none;
-  font-size: 0.95rem;
+  border: 2px solid;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-family: 'Montserrat', sans-serif;
 }
 
 .btn--primary {
-  background: var(--gold);
+  background: #fff;
   color: #000;
+  border-color: #fff;
 }
 
 .btn--primary:hover {
-  background: #d4af68;
-  transform: translateY(-2px);
-  box-shadow: var(--shadow);
+  background: transparent;
+  color: #fff;
+  border-color: #fff;
 }
 
 .btn--whatsapp {
   background: #25d366;
   color: #fff;
+  border-color: #25d366;
 }
 
 .btn--whatsapp:hover {
-  background: #20ba59;
-  transform: translateY(-2px);
-  box-shadow: var(--shadow);
+  background: transparent;
+  color: #25d366;
+  border-color: #25d366;
 }
 
 .btn--secondary {
   background: transparent;
-  border: 1px solid var(--line);
+  border: 2px solid #fff;
   color: #fff;
 }
 
 .btn--secondary:hover {
-  border-color: var(--gold);
-  color: var(--gold);
+  background: #fff;
+  color: #000;
+  border-color: #fff;
 }
 
 /* Section */
@@ -455,6 +476,26 @@ body {
 }
 
 /* Responsive */
+@media (max-width: 1024px) {
+  .hero {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .hero__imageContainer {
+    padding: 40px;
+    height: 50vh;
+  }
+
+  .hero__contentOverlay {
+    padding: 40px;
+  }
+
+  .hero__panel h1 {
+    font-size: 3.5rem;
+  }
+}
+
 @media (max-width: 768px) {
   .hero__panel h1 {
     font-size: 3rem;
@@ -470,6 +511,14 @@ body {
 
   .grid {
     grid-template-columns: 1fr;
+  }
+
+  .hero__cta {
+    flex-direction: column;
+  }
+
+  .btn {
+    width: 100%;
   }
 }
 

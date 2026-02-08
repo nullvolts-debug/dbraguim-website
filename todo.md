@@ -77,3 +77,9 @@
 - [x] Adicionar foto do Dennis na seção Sobre com texto ao lado direito
 - [x] Formulário de email só aparece ao clicar no botão Email
 - [x] Newsletter com opções WhatsApp e Email
+
+## Ajustes Visuais Finais
+- [x] Alinhar hero com imagem à esquerda e conteúdo à direita (como referência)
+- [x] Mudar fontes para serifadas de luxo (Cormorant Garamond)
+- [x] Ajustar estilo dos botões para ficar mais clean
+- [ ] Preparar checklist para publicação Sanity + Vercel

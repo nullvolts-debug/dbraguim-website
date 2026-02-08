@@ -41,26 +41,31 @@ export default function Home() {
     <>
       {/* Hero Section */}
       <section className="hero">
+        <div className="hero__imageContainer">
+          <img
+            src="/images/hero/hero_knife.webp"
+            alt="D.Braguim Handcrafted Knife"
+            className="hero__image"
+          />
+        </div>
         <div className="hero__contentOverlay">
-          <div className="container">
-            <div className="hero__panel">
-              <div className="kicker">{t('hero_kicker')}</div>
-              <h1>{t('hero_title')}</h1>
-              <p className="subtitle">{t('hero_subtitle')}</p>
-              <div className="hero__cta">
-                <Link href="/portfolio" className="btn btn--primary" title={t('hero_cta_primary')}>
-                  {t('hero_cta_primary')}
-                </Link>
-                <a
-                  className="btn btn--whatsapp"
-                  href="https://wa.me/5511991953021"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  title="WhatsApp"
-                >
-                  WhatsApp
-                </a>
-              </div>
+          <div className="hero__panel">
+            <div className="kicker">{t('hero_kicker')}</div>
+            <h1>{t('hero_title')}</h1>
+            <p className="subtitle">{t('hero_subtitle')}</p>
+            <div className="hero__cta">
+              <Link href="/portfolio" className="btn btn--primary" title={t('hero_cta_primary')}>
+                {t('hero_cta_primary')}
+              </Link>
+              <a
+                className="btn btn--secondary"
+                href="https://wa.me/5511991953021"
+                target="_blank"
+                rel="noopener noreferrer"
+                title="WhatsApp"
+              >
+                WhatsApp
+              </a>
             </div>
           </div>
         </div>
