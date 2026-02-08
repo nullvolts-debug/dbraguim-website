@@ -147,3 +147,6 @@
 
 ## Ajuste Contraste Final
 - [x] Aumentar contraste das fontes de conteúdo para melhor legibilidade
+
+## Correção Cor Texto Sobre
+- [x] Corrigir cor do texto da história na página Sobre (está muito escuro)
