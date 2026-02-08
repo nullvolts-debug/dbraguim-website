@@ -125,3 +125,6 @@
 - [x] Seção "I'M INTERESTED" com borda e botões lado a lado
 - [x] Especificações em grid 2 colunas
 - [x] Ajustar cores e espaçamentos conforme referência
+
+## Ajuste Final Hero
+- [x] Centralizar horizontalmente o conteúdo do hero (mantendo alinhamento inferior)

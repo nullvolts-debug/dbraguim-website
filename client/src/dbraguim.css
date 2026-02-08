@@ -107,7 +107,7 @@ h1, h2, h3, h4, h5, h6 {
   min-height: 90vh;
   display: flex;
   align-items: flex-end;
-  justify-content: flex-end;
+  justify-content: center;
   background: #0a0a0a;
   overflow: hidden;
 }
@@ -124,20 +124,21 @@ h1, h2, h3, h4, h5, h6 {
 .hero__contentOverlay {
   position: relative;
   z-index: 1;
-  padding: 60px 120px 60px 60px;
-  max-width: 50%;
-  text-align: left;
+  padding: 60px;
+  max-width: 700px;
+  text-align: center;
   margin-bottom: 60px;
 }
 
 .hero__panel {
   max-width: 600px;
+  margin: 0 auto;
 }
 
 .hero__cta {
   display: flex;
   gap: 16px;
-  justify-content: flex-start;
+  justify-content: center;
 }
 
 .kicker {
