@@ -157,3 +157,8 @@
 
 ## Ajuste Cor Final
 - [x] Alterar cor de todos os textos de conteúdo para #888
+
+## Configuração Sanity
+- [x] Configurar Sanity Project ID: 9kunhe1k
+- [x] Adicionar variáveis de ambiente do Sanity
+- [x] Testar conexão com Sanity CMS
