@@ -132,3 +132,9 @@
 ## Ajuste Legibilidade Dark Luxury
 - [x] Clarear fontes de conteúdo nas seções Sobre e Contato para melhor legibilidade
 - [x] Manter estilo dark luxury com contraste adequado
+
+## Ajustes Finais de Layout
+- [x] Remover títulos das páginas (Contato, Portfolio, Sobre)
+- [x] Compactar formulário de email no modal (só nome, email e botões)
+- [x] Remover contorno duplo da foto na seção Sobre
+- [x] Alinhar cards de valores (Artesania, Exclusividade, Inovação) lado a lado

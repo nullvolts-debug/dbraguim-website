@@ -6,8 +6,6 @@ export default function Sobre() {
   return (
     <section className="section">
       <div className="container">
-        <h1>{t('nav_sobre')}</h1>
-
         {/* História com Foto */}
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.5fr', gap: '48px', alignItems: 'start', marginTop: '48px', marginBottom: '64px' }}>
           <div>
@@ -17,8 +15,6 @@ export default function Sobre() {
               style={{
                 width: '100%',
                 borderRadius: '12px',
-                border: '1px solid var(--line)',
-                boxShadow: 'var(--shadow)',
               }}
             />
           </div>
@@ -40,7 +36,7 @@ export default function Sobre() {
         </div>
 
         {/* Valores */}
-        <div style={{ display: 'grid', gap: '32px', marginTop: '64px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '32px', marginTop: '64px' }}>
             <div
               style={{
                 background: 'var(--paper)',

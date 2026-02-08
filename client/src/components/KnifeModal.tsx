@@ -211,32 +211,40 @@ export default function KnifeModal({ knife, isOpen, onClose }: KnifeModalProps) 
                       }
                     }}
                   >
-                    <div className="form__group">
-                      <label htmlFor="modal-name">
-                        {language === 'pt' ? 'Nome' : 'Name'}
-                      </label>
-                      <input
-                        id="modal-name"
-                        type="text"
-                        required
-                        value={formData.name}
-                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        placeholder={language === 'pt' ? 'Seu nome completo' : 'Your full name'}
-                      />
-                    </div>
-                    <div className="form__group">
-                      <label htmlFor="modal-email">
-                        {language === 'pt' ? 'E-mail' : 'Email'}
-                      </label>
-                      <input
-                        id="modal-email"
-                        type="email"
-                        required
-                        value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        placeholder="seu@email.com"
-                      />
-                    </div>
+                    <input
+                      type="text"
+                      required
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      placeholder={language === 'pt' ? 'Seu nome completo' : 'Your full name'}
+                      style={{
+                        width: '100%',
+                        background: 'var(--dark)',
+                        border: '1px solid var(--line)',
+                        color: '#fff',
+                        padding: '10px 14px',
+                        borderRadius: '6px',
+                        fontSize: '0.95rem',
+                        marginBottom: '12px',
+                      }}
+                    />
+                    <input
+                      type="email"
+                      required
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      placeholder="seu@email.com"
+                      style={{
+                        width: '100%',
+                        background: 'var(--dark)',
+                        border: '1px solid var(--line)',
+                        color: '#fff',
+                        padding: '10px 14px',
+                        borderRadius: '6px',
+                        fontSize: '0.95rem',
+                        marginBottom: '12px',
+                      }}
+                    />
 
                     <input type="hidden" name="subject" value={language === 'pt' ? 'Me interessei por uma D.Braguim' : 'Interested in a D.Braguim knife'} />
                     <input type="hidden" name="message" value={language === 'pt' ? `Me interessei pela faca ${knife.name}, gostaria de mais informações.` : `I'm interested in the ${knife.name} knife, I would like more information.`} />

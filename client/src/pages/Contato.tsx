@@ -47,8 +47,6 @@ export default function Contato() {
     <>
       <section className="section">
         <div className="container">
-          <h1>{t('nav_contato')}</h1>
-
           <div className="contact__intro" style={{ marginBottom: '48px' }}>
             <h2>{t('contact_intro_title')}</h2>
             <p className="lead">{t('contact_intro_text')}</p>

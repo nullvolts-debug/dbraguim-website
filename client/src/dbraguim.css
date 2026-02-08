@@ -786,8 +786,8 @@ h1, h2, h3, h4, h5, h6 {
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid var(--line);
   border-radius: 8px;
-  padding: 20px;
-  margin-top: 16px;
+  padding: 16px;
+  margin-top: 12px;
 }
 
 .form__group {
@@ -821,7 +821,7 @@ h1, h2, h3, h4, h5, h6 {
 .modal__formActions {
   display: flex;
   gap: 12px;
-  margin-top: 20px;
+  margin-top: 0;
 }
 
 .form__success {

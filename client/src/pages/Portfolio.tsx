@@ -24,13 +24,6 @@ export default function Portfolio() {
     <>
       <section className="section">
         <div className="container">
-          <h1 className="page__title">{t('nav_portfolio')}</h1>
-          <p className="page__subtitle">
-            {language === 'pt'
-              ? 'Explore as peças artesanais criadas com tradição e inovação.'
-              : 'Explore handcrafted pieces created with tradition and innovation.'}
-          </p>
-
           {/* Filtros */}
           <div className="filters">
             <div className="filter__group">
