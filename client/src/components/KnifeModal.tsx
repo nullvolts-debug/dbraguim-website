@@ -1,5 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { trpc } from '@/lib/trpc';
+import { toast } from 'sonner';
 
 interface KnifeData {
   name: string;
@@ -32,6 +34,7 @@ export default function KnifeModal({ knife, isOpen, onClose }: KnifeModalProps) 
   const [formData, setFormData] = useState({ name: '', email: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const contactMutation = trpc.contact.submit.useMutation();
 
   useEffect(() => {
     if (isOpen) {
@@ -187,18 +190,18 @@ export default function KnifeModal({ knife, isOpen, onClose }: KnifeModalProps) 
                       setSubmitStatus('idle');
 
                       try {
-                        const subject = language === 'pt'
-                          ? 'Me interessei por uma D.Braguim'
-                          : 'Interested in a D.Braguim knife';
-                        const message = language === 'pt'
-                          ? `Me interessei pela faca ${knife.name}, gostaria de mais informações.`
-                          : `I'm interested in the ${knife.name} knife, I would like more information.`;
-
-                        // Aqui você pode integrar com sua API de email
-                        // Por enquanto, vamos simular o envio
-                        await new Promise((resolve) => setTimeout(resolve, 1000));
+                        // Enviar via tRPC/Resend
+                        await contactMutation.mutateAsync({
+                          name: formData.name,
+                          email: formData.email,
+                          message: language === 'pt'
+                            ? `Me interessei pela faca ${knife.name}, gostaria de mais informações.`
+                            : `I'm interested in the ${knife.name} knife, I would like more information.`,
+                        });
 
                         setSubmitStatus('success');
+                        toast.success(language === 'pt' ? 'Mensagem enviada com sucesso!' : 'Message sent successfully!');
+                        
                         setTimeout(() => {
                           setShowEmailForm(false);
                           setFormData({ name: '', email: '' });
@@ -206,6 +209,7 @@ export default function KnifeModal({ knife, isOpen, onClose }: KnifeModalProps) 
                         }, 2000);
                       } catch (error) {
                         setSubmitStatus('error');
+                        toast.error(language === 'pt' ? 'Erro ao enviar mensagem. Tente novamente.' : 'Error sending message. Please try again.');
                       } finally {
                         setIsSubmitting(false);
                       }

@@ -162,3 +162,14 @@
 - [x] Configurar Sanity Project ID: 9kunhe1k
 - [x] Adicionar variáveis de ambiente do Sanity
 - [x] Testar conexão com Sanity CMS
+
+## Preparação para Deploy na Vercel
+- [x] Configurar Resend para envio de emails
+- [x] Implementar envio de emails dos formulários via Resend
+- [ ] Remover sistema de autenticação (site público)
+- [ ] Criar arquivo vercel.json
+- [ ] Atualizar package.json para build de produção
+- [ ] Criar arquivo .env.example com variáveis necessárias
+- [ ] Criar documentação de deploy
+- [ ] Documentar registros DNS para Resend
+- [ ] Exportar código para GitHub (repositório: dbraguim-website)
