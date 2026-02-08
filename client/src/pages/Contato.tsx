@@ -47,10 +47,16 @@ export default function Contato() {
     <>
       <section className="section">
         <div className="container">
-          <div className="contact__intro" style={{ marginBottom: '48px' }}>
+          <div className="contact__intro" style={{ 
+            marginBottom: '48px',
+            background: 'var(--paper)',
+            border: '1px solid var(--line)',
+            borderRadius: '12px',
+            padding: '32px',
+          }}>
             <h2>{t('contact_intro_title')}</h2>
             <p className="lead">{t('contact_intro_text')}</p>
-            <div className="hero__cta" style={{ marginTop: '24px' }}>
+            <div style={{ marginTop: '24px', display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
               <a
                 className="btn btn--whatsapp"
                 href={`https://wa.me/${CONTACT.whatsappNumber}`}

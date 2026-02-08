@@ -138,3 +138,9 @@
 - [x] Compactar formulário de email no modal (só nome, email e botões)
 - [x] Remover contorno duplo da foto na seção Sobre
 - [x] Alinhar cards de valores (Artesania, Exclusividade, Inovação) lado a lado
+
+## Ajustes de Refinamento
+- [x] Botão de vídeo no modal aparece apenas se faca tiver vídeo cadastrado (já implementado)
+- [x] Clarear fontes nas seções Sobre, Contato e About da Home
+- [x] Alinhar botões à esquerda na seção "Quer encomendar uma peça"
+- [x] Adicionar faixa de destaque no bloco "Quero encomendar uma faca"
