@@ -119,24 +119,6 @@ export default function KnifeModal({ knife, isOpen, onClose }: KnifeModalProps) 
                   </button>
                 )}
               </div>
-
-              {knife.video_mp4 && (
-                <button className="modal__videoThumb" type="button" onClick={handleVideoClick}>
-                  <div className="modal__videoThumbInner">
-                    <div
-                      className="modal__videoThumbPoster"
-                      style={{
-                        backgroundImage: `url(${knife.video_poster || `/images/portfolio/${knife.images[0]}`})`,
-                      }}
-                    ></div>
-                    <div className="modal__videoThumbInfo">
-                      <h4>{t('modal_watch_video')}</h4>
-                      <p>{language === 'pt' ? 'Abre em tela maior' : 'Opens in larger screen'}</p>
-                    </div>
-                    <div className="modal__videoThumbIcon">▶</div>
-                  </div>
-                </button>
-              )}
             </div>
 
             <div className="modal__content">

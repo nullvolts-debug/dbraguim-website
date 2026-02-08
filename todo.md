@@ -99,3 +99,6 @@
 - [x] Botão Email abre formulário inline no modal
 - [x] Formulário com subject e corpo pré-preenchidos
 - [x] Campos apenas Nome e Email
+
+## Ajuste Thumbnail Vídeo
+- [x] Remover thumbnail do vídeo abaixo da foto no modal
