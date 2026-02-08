@@ -41,13 +41,6 @@ export default function Home() {
     <>
       {/* Hero Section */}
       <section className="hero">
-        <div className="hero__imageContainer">
-          <img
-            src="/images/hero/hero_knife.webp"
-            alt="D.Braguim Handcrafted Knife"
-            className="hero__image"
-          />
-        </div>
         <div className="hero__contentOverlay">
           <div className="hero__panel">
             <div className="kicker">{t('hero_kicker')}</div>

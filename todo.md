@@ -83,3 +83,6 @@
 - [x] Mudar fontes para serifadas de luxo (Cormorant Garamond)
 - [x] Ajustar estilo dos botões para ficar mais clean
 - [ ] Preparar checklist para publicação Sanity + Vercel
+
+## Ajuste Hero
+- [x] Usar hero_placeholder.webp como background do hero (não como elemento separado)
