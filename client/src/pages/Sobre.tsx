@@ -48,7 +48,7 @@ export default function Sobre() {
               <h3 style={{ fontSize: '1.4rem', marginBottom: '12px', color: 'var(--gold)' }}>
                 {t('about_value_craft_title')}
               </h3>
-              <p style={{ color: 'var(--muted)', lineHeight: '1.7' }}>{t('about_value_craft_text')}</p>
+              <p style={{ lineHeight: '1.7' }}>{t('about_value_craft_text')}</p>
             </div>
 
             <div
@@ -62,7 +62,7 @@ export default function Sobre() {
               <h3 style={{ fontSize: '1.4rem', marginBottom: '12px', color: 'var(--gold)' }}>
                 {t('about_value_exclusive_title')}
               </h3>
-              <p style={{ color: 'var(--muted)', lineHeight: '1.7' }}>{t('about_value_exclusive_text')}</p>
+              <p style={{ lineHeight: '1.7' }}>{t('about_value_exclusive_text')}</p>
             </div>
 
             <div
@@ -76,7 +76,7 @@ export default function Sobre() {
               <h3 style={{ fontSize: '1.4rem', marginBottom: '12px', color: 'var(--gold)' }}>
                 {t('about_value_innovation_title')}
               </h3>
-              <p style={{ color: 'var(--muted)', lineHeight: '1.7' }}>{t('about_value_innovation_text')}</p>
+              <p style={{ lineHeight: '1.7' }}>{t('about_value_innovation_text')}</p>
             </div>
         </div>
       </div>

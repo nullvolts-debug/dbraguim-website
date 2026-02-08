@@ -150,3 +150,7 @@
 
 ## Correção Cor Texto Sobre
 - [x] Corrigir cor do texto da história na página Sobre (está muito escuro)
+
+## Ajuste Tom de Cor
+- [x] Ajustar tom de cor dos textos para intermediário (#d0d0d0) - não muito claro nem muito escuro
+- [x] Remover estilos inline que sobrescreviam a cor nos cards de valores
