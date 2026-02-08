@@ -128,3 +128,7 @@
 
 ## Ajuste Final Hero
 - [x] Centralizar horizontalmente o conteúdo do hero (mantendo alinhamento inferior)
+
+## Ajuste Legibilidade Dark Luxury
+- [x] Clarear fontes de conteúdo nas seções Sobre e Contato para melhor legibilidade
+- [x] Manter estilo dark luxury com contraste adequado

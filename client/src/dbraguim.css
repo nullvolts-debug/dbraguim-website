@@ -5,7 +5,7 @@
   --dark: #080808;
   --paper: #111;
   --line: rgba(255, 255, 255, 0.12);
-  --muted: #d0d0d0;
+  --muted: #e8e8e8;
   --shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
   --shadow2: 0 18px 48px rgba(0, 0, 0, 0.6);
 }
@@ -163,7 +163,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .subtitle {
   font-size: 1.1rem;
-  color: #999;
+  color: #d0d0d0;
   margin-bottom: 40px;
   font-weight: 300;
   font-family: 'Montserrat', sans-serif;
