@@ -15,6 +15,7 @@ const CONTACT = {
 
 export default function Contato() {
   const { t, language } = useLanguage();
+  const [showEmailForm, setShowEmailForm] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -60,19 +61,20 @@ export default function Contato() {
               >
                 {t('contact_btn_whatsapp')}
               </a>
-              <a
+              <button
                 className="btn btn--secondary"
-                href={`mailto:${CONTACT.email}`}
+                onClick={() => setShowEmailForm(!showEmailForm)}
                 title={t('contact_btn_email')}
               >
-                {t('contact_btn_email')}
-              </a>
+                {showEmailForm ? 'Ocultar Formulário' : t('contact_btn_email')}
+              </button>
             </div>
           </div>
 
           {/* Formulário de Contato */}
-          <div style={{ maxWidth: '600px', marginBottom: '48px' }}>
-            <h2 style={{ marginBottom: '24px' }}>Formulário de Contato</h2>
+          {showEmailForm && (
+            <div style={{ maxWidth: '600px', marginBottom: '48px', marginTop: '48px' }}>
+              <h2 style={{ marginBottom: '24px' }}>Formulário de Contato</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <Label htmlFor="name">{t('contact_form_name_label')}</Label>
@@ -116,25 +118,65 @@ export default function Contato() {
               <Button type="submit" disabled={submitContact.isPending} className="w-full">
                 {submitContact.isPending ? 'Enviando...' : t('contact_form_submit')}
               </Button>
-            </form>
-          </div>
+              </form>
+            </div>
+          )}
 
           {/* Newsletter Section */}
           <section style={{ marginTop: '64px' }}>
             <h2>{t('contact_news_title')}</h2>
             <p className="lead">{t('contact_news_text')}</p>
 
-            <div style={{ marginTop: '24px' }}>
-              <h3 style={{ fontSize: '1.2rem', marginBottom: '16px' }}>{t('contact_tab_whatsapp')}</h3>
-              <p style={{ color: 'var(--muted)', marginBottom: '16px' }}>{t('contact_whats_instructions')}</p>
-              <a
-                className="btn btn--whatsapp"
-                href={`https://wa.me/${CONTACT.whatsappNumber}?text=${encodeURIComponent(broadcastMsg)}`}
-                target="_blank"
-                rel="noopener noreferrer"
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '32px', marginTop: '32px' }}>
+              {/* WhatsApp */}
+              <div
+                style={{
+                  background: 'var(--paper)',
+                  border: '1px solid var(--line)',
+                  borderRadius: '12px',
+                  padding: '24px',
+                }}
               >
-                {t('contact_whats_btn')}
-              </a>
+                <h3 style={{ fontSize: '1.2rem', marginBottom: '16px' }}>{t('contact_tab_whatsapp')}</h3>
+                <p style={{ color: 'var(--muted)', marginBottom: '16px' }}>{t('contact_whats_instructions')}</p>
+                <a
+                  className="btn btn--whatsapp"
+                  href={`https://wa.me/${CONTACT.whatsappNumber}?text=${encodeURIComponent(broadcastMsg)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {t('contact_whats_btn')}
+                </a>
+              </div>
+
+              {/* Email */}
+              <div
+                style={{
+                  background: 'var(--paper)',
+                  border: '1px solid var(--line)',
+                  borderRadius: '12px',
+                  padding: '24px',
+                }}
+              >
+                <h3 style={{ fontSize: '1.2rem', marginBottom: '16px' }}>E-mail</h3>
+                <p style={{ color: 'var(--muted)', marginBottom: '16px' }}>
+                  {language === 'en'
+                    ? 'Send us an email to join our mailing list and receive updates.'
+                    : 'Envie um e-mail para entrar na nossa lista e receber novidades.'}
+                </p>
+                <a
+                  className="btn btn--secondary"
+                  href={`mailto:${CONTACT.email}?subject=${encodeURIComponent(
+                    language === 'en' ? 'Newsletter Subscription' : 'Inscrição na Newsletter'
+                  )}&body=${encodeURIComponent(
+                    language === 'en'
+                      ? 'Hi! I would like to subscribe to the D.Braguim newsletter.'
+                      : 'Olá! Gostaria de me inscrever na newsletter da D.Braguim.'
+                  )}`}
+                >
+                  Enviar E-mail
+                </a>
+              </div>
             </div>
           </section>
         </div>

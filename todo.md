@@ -71,3 +71,9 @@
 
 ## Bugs
 - [x] Corrigir erro de <a> aninhado no Header (Link do wouter já renderiza <a>)
+
+## Melhorias Solicitadas
+- [x] Centralizar conteúdo do hero e remover escurecimento da imagem de fundo
+- [x] Adicionar foto do Dennis na seção Sobre com texto ao lado direito
+- [x] Formulário de email só aparece ao clicar no botão Email
+- [x] Newsletter com opções WhatsApp e Email

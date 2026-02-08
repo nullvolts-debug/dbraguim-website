@@ -8,23 +8,39 @@ export default function Sobre() {
       <div className="container">
         <h1>{t('nav_sobre')}</h1>
 
-        <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-          <h2 style={{ fontSize: '2rem', marginBottom: '24px', marginTop: '48px' }}>{t('about_story_title')}</h2>
+        {/* História com Foto */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.5fr', gap: '48px', alignItems: 'start', marginTop: '48px', marginBottom: '64px' }}>
+          <div>
+            <img
+              src="/images/about/dennis.webp"
+              alt="Dennis Braguim"
+              style={{
+                width: '100%',
+                borderRadius: '12px',
+                border: '1px solid var(--line)',
+                boxShadow: 'var(--shadow)',
+              }}
+            />
+          </div>
+          <div>
+            <h2 style={{ fontSize: '2rem', marginBottom: '24px' }}>{t('about_story_title')}</h2>
 
-          <p className="lead" style={{ marginBottom: '24px' }}>
-            {t('about_story_p1')}
-          </p>
+            <p className="lead" style={{ marginBottom: '24px' }}>
+              {t('about_story_p1')}
+            </p>
 
-          <p className="lead" style={{ marginBottom: '24px' }}>
-            {t('about_story_p2')}
-          </p>
+            <p className="lead" style={{ marginBottom: '24px' }}>
+              {t('about_story_p2')}
+            </p>
 
-          <p className="lead" style={{ marginBottom: '48px' }}>
-            {t('about_story_p3')}
-          </p>
+            <p className="lead" style={{ marginBottom: '0' }}>
+              {t('about_story_p3')}
+            </p>
+          </div>
+        </div>
 
-          {/* Valores */}
-          <div style={{ display: 'grid', gap: '32px', marginTop: '64px' }}>
+        {/* Valores */}
+        <div style={{ display: 'grid', gap: '32px', marginTop: '64px' }}>
             <div
               style={{
                 background: 'var(--paper)',
@@ -66,7 +82,6 @@ export default function Sobre() {
               </h3>
               <p style={{ color: 'var(--muted)', lineHeight: '1.7' }}>{t('about_value_innovation_text')}</p>
             </div>
-          </div>
         </div>
       </div>
     </section>

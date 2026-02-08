@@ -102,6 +102,7 @@ body {
   min-height: 85vh;
   display: flex;
   align-items: center;
+  justify-content: center;
   background: linear-gradient(135deg, #0a0a0a 0%, #1a1410 100%);
   overflow: hidden;
 }
@@ -111,7 +112,7 @@ body {
   position: absolute;
   inset: 0;
   background: url('/images/hero/hero_placeholder.webp') center/cover;
-  opacity: 0.15;
+  opacity: 0.35;
   z-index: 0;
 }
 
@@ -120,10 +121,17 @@ body {
   z-index: 1;
   width: 100%;
   padding: 60px 0;
+  display: flex;
+  justify-content: center;
 }
 
 .hero__panel {
   max-width: 720px;
+  text-align: center;
+}
+
+.hero__cta {
+  justify-content: center;
 }
 
 .kicker {
