@@ -144,3 +144,6 @@
 - [x] Clarear fontes nas seções Sobre, Contato e About da Home
 - [x] Alinhar botões à esquerda na seção "Quer encomendar uma peça"
 - [x] Adicionar faixa de destaque no bloco "Quero encomendar uma faca"
+
+## Ajuste Contraste Final
+- [x] Aumentar contraste das fontes de conteúdo para melhor legibilidade
