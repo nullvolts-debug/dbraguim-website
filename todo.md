@@ -183,3 +183,11 @@
 - [x] Ajustar página Contato para mobile
 - [x] Melhorar footer para mobile
 - [x] Testar em diferentes tamanhos de tela (320px, 375px, 414px)
+
+## Melhoria do Modal de Facas para Mobile
+- [x] Analisar problemas do modal atual em mobile
+- [x] Redesenhar layout do modal para tela cheia em mobile
+- [x] Ajustar tamanhos de imagem e espaçamentos
+- [x] Melhorar botões de ação (WhatsApp, Email) para mobile
+- [x] Otimizar especificações técnicas para leitura em tela pequena
+- [x] Testar modal em diferentes tamanhos de tela mobile
