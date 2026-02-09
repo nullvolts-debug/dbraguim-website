@@ -304,3 +304,15 @@
 - [x] Corrigir o problema (shared/sanity.ts e sanityImage.ts com fallback hardcoded)
 - [ ] Fazer deploy da correção (precisa exportar para GitHub)
 - [ ] Verificar em produção
+
+## Push para GitHub e redeploy em produção
+- [ ] Fazer push do código atualizado para o GitHub
+- [ ] Verificar redeploy automático na Vercel
+- [ ] Confirmar imagens funcionando em www.dbraguim.com
+
+## Deploy Manual via Vercel CLI
+- [x] Instalar Vercel CLI globalmente
+- [x] Testar build local (sucesso - 794KB bundle)
+- [x] Criar guia de redeploy para o usuário (VERCEL_REDEPLOY_GUIDE.md)
+- [ ] Usuário precisa reconectar GitHub ou fazer deploy manual na Vercel
+- [ ] Confirmar imagens funcionando em www.dbraguim.com
