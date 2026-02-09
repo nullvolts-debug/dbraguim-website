@@ -52,8 +52,17 @@ export default function Home() {
     setTimeout(() => setSelectedKnife(null), 300);
   };
 
-  // Pegar apenas as 3 primeiras facas para destaques
-  const featuredKnives = knivesData.slice(0, 3);
+  // Lógica de destaques: priorizar facas disponíveis
+  const featuredKnives = (() => {
+    // 1. Separar facas por status
+    const disponiveis = knivesData.filter(k => k.status === 'disponivel');
+    const outras = knivesData.filter(k => k.status !== 'disponivel');
+    
+    // 2. Priorizar disponíveis, depois preencher com outras se necessário
+    const featured = [...disponiveis, ...outras].slice(0, 3);
+    
+    return featured;
+  })();
 
   return (
     <>

@@ -223,3 +223,10 @@
 - [x] Verificar conflitos de especificidade CSS (encontrado conflito na linha 736)
 - [x] Aplicar !important se necessário para forçar estilos mobile
 - [x] Validar que mudanças estão sendo aplicadas no browser
+
+## Escalabilidade e Lógica de Destaques
+- [x] Verificar como facas são carregadas na home (hardcoded em knivesData.ts)
+- [x] Implementar lógica de priorização: facas disponíveis primeiro
+- [x] Garantir fallback para preencher 3 destaques se não houver disponíveis suficientes
+- [x] Testar com 20+ facas no sistema (sistema preparado, basta adicionar ao array)
+- [x] Verificar performance com muitos produtos (sem problemas, array estático é performante)
