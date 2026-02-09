@@ -193,3 +193,8 @@
 - [x] Testar modal em diferentes tamanhos de tela mobile
 - [x] Corrigir layout vertical mobile (foto → descrição → botões)
 - [x] Garantir que desktop mantenha layout horizontal original
+
+## Ajustes Finos Modal Mobile (Editor Visual)
+- [x] Diminuir altura da div da foto (deve ser altura da foto)
+- [x] Reorganizar botão fechar e badge status abaixo do título em mobile
+- [x] Ajustar imagem para ocupar largura total da div em mobile
