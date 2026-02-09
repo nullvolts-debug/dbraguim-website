@@ -13,7 +13,7 @@ export function Header() {
       <div className="container header__inner">
         <Link href="/" className="brand" title="D.Braguim - Cutelaria Artesanal">
           <span className="brand__logo">
-            <img src="/images/logo/logo.svg" alt="D.Braguim - Logo" width={48} height={48} />
+            <img src="/images/logo/logo.svg" alt="D.Braguim - Logo" width={70} height={48} />
           </span>
           <span className="brand__name">D.Braguim</span>
         </Link>
