@@ -230,3 +230,13 @@
 - [x] Garantir fallback para preencher 3 destaques se não houver disponíveis suficientes
 - [x] Testar com 20+ facas no sistema (sistema preparado, basta adicionar ao array)
 - [x] Verificar performance com muitos produtos (sem problemas, array estático é performante)
+
+## Ativação Sanity CMS (Project ID: 9kunhe1k)
+- [x] Configurar variáveis de ambiente VITE_SANITY_PROJECT_ID e VITE_SANITY_DATASET
+- [x] Criar schema do Sanity (knife, siteSettings)
+- [x] Migrar dados mockados para Sanity (4 facas + configurações)
+- [x] Atualizar sanityRouter.ts para usar cliente real do Sanity
+- [x] Migrar Home.tsx para usar trpc.sanity.getKnives com lógica de priorização
+- [x] Migrar Portfolio.tsx para usar trpc.sanity.getKnives com filtros
+- [x] Testar adição de faca via Sanity Studio (4 facas migradas com sucesso)
+- [x] Documentar acesso ao Sanity Studio (SANITY_GUIDE.md criado)

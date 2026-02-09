@@ -1,46 +1,18 @@
 import { Link } from 'wouter';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import KnifeModal from '@/components/KnifeModal';
-import { knivesData, type KnifeData } from '@shared/knivesData';
+import { type KnifeData } from '@shared/knivesData';
 import { trpc } from '@/lib/trpc';
-import { KnifeCard } from '@/components/KnifeCard';
-
-function FeaturedKnives() {
-  const { t } = useLanguage();
-  const { data: knives, isLoading } = trpc.sanity.getKnives.useQuery({ featured: true });
-
-  if (isLoading) {
-    return (
-      <section className="section">
-        <div className="container">
-          <h2>{t('home_section_highlights')}</h2>
-          <div className="grid">
-            <div style={{ color: 'var(--muted)' }}>Carregando...</div>
-          </div>
-        </div>
-      </section>
-    );
-  }
-
-  return (
-    <section className="section">
-      <div className="container">
-        <h2>{t('home_section_highlights')}</h2>
-        <div className="grid">
-          {knives?.map((knife) => (
-            <KnifeCard key={knife._id} knife={knife} />
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
+import { type SanityKnife } from '@shared/sanity';
 
 export default function Home() {
   const { t, language } = useLanguage();
   const [selectedKnife, setSelectedKnife] = useState<KnifeData | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Buscar todas as facas do Sanity
+  const { data: allKnives, isLoading } = trpc.sanity.getKnives.useQuery();
 
   const handleKnifeClick = (knife: KnifeData) => {
     setSelectedKnife(knife);
@@ -52,17 +24,47 @@ export default function Home() {
     setTimeout(() => setSelectedKnife(null), 300);
   };
 
-  // Lógica de destaques: priorizar facas disponíveis
-  const featuredKnives = (() => {
-    // 1. Separar facas por status
-    const disponiveis = knivesData.filter(k => k.status === 'disponivel');
-    const outras = knivesData.filter(k => k.status !== 'disponivel');
+  // Converter SanityKnife para KnifeData e aplicar lógica de priorização
+  const featuredKnives = useMemo(() => {
+    if (!allKnives) return [];
+
+    // Converter formato Sanity para formato local
+    const converted: KnifeData[] = allKnives.map((knife: SanityKnife) => ({
+      name: knife.name,
+      category: knife.category === 'hunting' ? 'Caça' : knife.category === 'fighter' ? 'Luta' : 'Chef',
+      status: knife.status === 'available' ? 'disponivel' : knife.status === 'sold' ? 'vendida' : 'encomenda',
+      images: knife.images?.map((img: any) => img.asset?._ref || '') || [],
+      video_mp4: knife.video?.asset?._ref,
+      video_poster: knife.videoPoster?.asset?._ref,
+      description_pt: knife.description_pt,
+      description_en: knife.description_en,
+      modelo: knife.model || '',
+      comprimento: knife.length || '',
+      largura: knife.width || '',
+      espessura: knife.thickness || '',
+      steel_pt: knife.steel_pt || '',
+      steel_en: knife.steel_en || '',
+      handle_pt: knife.handle_pt || '',
+      handle_en: knife.handle_en || '',
+    }));
+
+    // Lógica de priorização: disponíveis primeiro
+    const disponiveis = converted.filter(k => k.status === 'disponivel');
+    const outras = converted.filter(k => k.status !== 'disponivel');
     
-    // 2. Priorizar disponíveis, depois preencher com outras se necessário
-    const featured = [...disponiveis, ...outras].slice(0, 3);
-    
-    return featured;
-  })();
+    return [...disponiveis, ...outras].slice(0, 3);
+  }, [allKnives]);
+
+  // Helper para mapear status
+  const getStatusLabel = (status: string) => {
+    if (status === 'disponivel') {
+      return language === 'pt' ? 'Disponível' : 'Available';
+    } else if (status === 'vendida') {
+      return language === 'pt' ? 'Vendida' : 'Sold';
+    } else {
+      return language === 'pt' ? 'Sob Encomenda' : 'Made to Order';
+    }
+  };
 
   return (
     <>
@@ -95,45 +97,41 @@ export default function Home() {
       <section className="section">
         <div className="container">
           <h2 className="section__title">{t('home_section_highlights')}</h2>
-          <div className="grid">
-            {featuredKnives.map((knife) => (
-              <div
-                key={knife.name}
-                className="card"
-                onClick={() => handleKnifeClick(knife)}
-                style={{ cursor: 'pointer' }}
-              >
-                <div className="card__media">
-                  <img
-                    src={`/images/portfolio/${knife.images[0]}`}
-                    alt={knife.name}
-                    loading="lazy"
-                  />
-                </div>
-                <div className="card__content">
-                  <div className="card__header">
-                    <h3 className="card__title">{knife.name}</h3>
-                    <span className={`badge badge--${knife.status}`}>
-                      {knife.status === 'disponivel'
-                        ? language === 'pt'
-                          ? 'Disponível'
-                          : 'Available'
-                        : knife.status === 'vendida'
-                        ? language === 'pt'
-                          ? 'Vendida'
-                          : 'Sold'
-                        : language === 'pt'
-                        ? 'Sob Encomenda'
-                        : 'Made to Order'}
-                    </span>
+          {isLoading ? (
+            <div className="grid">
+              <div style={{ color: 'var(--muted)' }}>Carregando...</div>
+            </div>
+          ) : (
+            <div className="grid">
+              {featuredKnives.map((knife) => (
+                <div
+                  key={knife.name}
+                  className="card"
+                  onClick={() => handleKnifeClick(knife)}
+                  style={{ cursor: 'pointer' }}
+                >
+                  <div className="card__media">
+                    <img
+                      src={`/images/portfolio/${knife.images[0]}`}
+                      alt={knife.name}
+                      loading="lazy"
+                    />
                   </div>
-                  <p className="card__excerpt">
-                    {language === 'pt' ? knife.description_pt : knife.description_en}
-                  </p>
+                  <div className="card__content">
+                    <div className="card__header">
+                      <h3 className="card__title">{knife.name}</h3>
+                      <span className={`badge badge--${knife.status}`}>
+                        {getStatusLabel(knife.status)}
+                      </span>
+                    </div>
+                    <p className="card__excerpt">
+                      {language === 'pt' ? knife.description_pt : knife.description_en}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
