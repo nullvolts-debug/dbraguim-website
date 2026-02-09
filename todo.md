@@ -212,3 +212,8 @@
 - [x] Remover espaço preto enorme acima da foto
 - [x] Garantir foto imediatamente abaixo do header
 - [x] Tornar conteúdo de texto acessível e visível
+
+## Correções Finais Modal Mobile (Crítico)
+- [x] Habilitar scroll do modal para visualizar conteúdo abaixo da foto
+- [x] Posicionar botão "Assistir Vídeo" absolutamente sobre a foto (canto inferior esquerdo)
+- [x] Remover completamente espaços pretos acima e abaixo da imagem
