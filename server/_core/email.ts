@@ -16,7 +16,7 @@ export interface SendEmailParams {
  * @returns Promise with send result
  */
 export async function sendEmail(params: SendEmailParams) {
-  const { to, subject, html, from = 'noreply@dbraguim.com' } = params;
+  const { to, subject, html, from = 'onboarding@resend.dev' } = params;
 
   try {
     const { data, error } = await resend.emails.send({
@@ -70,7 +70,7 @@ export async function sendContactEmail(params: {
     `;
 
   return sendEmail({
-    to: 'contato@dbraguim.com',
+    to: 'nullvolts@gmail.com', // Temporary: using owner email for testing until domain is verified
     subject,
     html,
   });

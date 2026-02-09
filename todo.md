@@ -173,8 +173,3 @@
 - [ ] Criar documentação de deploy
 - [ ] Documentar registros DNS para Resend
 - [ ] Exportar código para GitHub (repositório: dbraguim-website)
-
-## Atualização Domínio Email Resend
-- [x] Atualizar remetente de onboarding@resend.dev para noreply@dbraguim.com
-- [x] Atualizar destinatário de nullvolts@gmail.com para contato@dbraguim.com
-- [x] Testar envio de email com domínio personalizado
