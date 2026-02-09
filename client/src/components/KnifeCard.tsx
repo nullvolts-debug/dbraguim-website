@@ -1,4 +1,5 @@
 import { useLanguage } from '@/contexts/LanguageContext';
+import { getCardImageUrl } from '@/lib/sanityImage';
 
 interface KnifeCardProps {
   knife: {
@@ -6,7 +7,7 @@ interface KnifeCardProps {
     name: string;
     category: 'hunting' | 'fighter' | 'chef';
     status: 'available' | 'sold' | 'commission';
-    images: Array<{ asset: { _ref: string } }>;
+    images?: Array<any>;
     description_pt: string;
     description_en: string;
   };
@@ -55,8 +56,8 @@ export function KnifeCard({ knife, onClick }: KnifeCardProps) {
     }
   };
 
-  const imageRef = knife.images[0]?.asset?._ref || 'placeholder.webp';
-  const imageSrc = `/images/portfolio/${imageRef}`;
+  // Usar Sanity CDN para imagens
+  const imageSrc = knife.images?.[0] ? getCardImageUrl(knife.images[0]) : '';
 
   const description = language === 'en' ? knife.description_en : knife.description_pt;
 

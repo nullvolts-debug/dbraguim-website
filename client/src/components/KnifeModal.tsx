@@ -8,6 +8,7 @@ interface KnifeData {
   category: string;
   status: 'disponivel' | 'vendida' | 'encomenda';
   images: string[];
+  fullImages?: string[];
   video_mp4?: string;
   video_poster?: string;
   description_pt: string;
@@ -65,6 +66,9 @@ export default function KnifeModal({ knife, isOpen, onClose }: KnifeModalProps) 
   const steel = language === 'pt' ? knife.steel_pt : knife.steel_en;
   const handle = language === 'pt' ? knife.handle_pt : knife.handle_en;
 
+  // Usar fullImages (alta resolução) se disponível, senão images
+  const modalImage = knife.fullImages?.[0] || knife.images[0] || '';
+
   const statusLabels = {
     disponivel: language === 'pt' ? 'Disponível' : 'Available',
     vendida: language === 'pt' ? 'Vendida' : 'Sold',
@@ -108,7 +112,7 @@ export default function KnifeModal({ knife, isOpen, onClose }: KnifeModalProps) 
             <div className="modal__media">
               <div className="modal__photo">
                 <img
-                  src={`/images/portfolio/${knife.images[0]}`}
+                  src={modalImage}
                   alt={knife.name}
                   loading="lazy"
                 />

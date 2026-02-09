@@ -3,6 +3,7 @@ export interface KnifeData {
   category: string;
   status: 'disponivel' | 'vendida' | 'encomenda';
   images: string[];
+  fullImages?: string[];
   video_mp4?: string;
   video_poster?: string;
   description_pt: string;

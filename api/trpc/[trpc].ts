@@ -50,7 +50,7 @@ async function sendContactEmail(params: {
 
   try {
     const { data, error } = await resend.emails.send({
-      from: 'noreply@dbraguim.com',
+      from: 'D.Braguim Site <noreply@dbraguim.com>',
       to: 'contato@dbraguim.com',
       subject,
       html,

@@ -17,8 +17,8 @@
 - [x] Criar componente Footer com redes sociais
 - [x] Criar componente Hero da página inicial
 - [x] Criar componente Card de faca para grid
-- [ ] Criar componente Modal de detalhes da faca
-- [ ] Criar componente Video Lightbox
+- [x] Criar componente Modal de detalhes da faca
+- [x] Criar componente Video Lightbox
 - [x] Criar componente de seletor de idioma PT/EN
 
 ## Páginas
@@ -49,11 +49,11 @@
 - [x] Testar troca de idioma em todas as páginas
 
 ## Funcionalidades Interativas
-- [ ] Modal de detalhes da faca com specs
-- [ ] Lightbox de vídeo em tela cheia
-- [ ] Botões WhatsApp com mensagem pré-preenchida
-- [ ] Links de email com assunto pré-preenchido
-- [ ] Filtros de categoria no portfólio
+- [x] Modal de detalhes da faca com specs
+- [x] Lightbox de vídeo em tela cheia
+- [x] Botões WhatsApp com mensagem pré-preenchida
+- [x] Links de email com assunto pré-preenchido
+- [x] Filtros de categoria no portfólio
 
 ## SEO e Meta Tags
 - [ ] Configurar meta tags Open Graph
@@ -63,11 +63,11 @@
 - [ ] Criar robots.txt
 
 ## Deploy e Documentação
-- [ ] Documentar variáveis de ambiente necessárias
-- [ ] Criar guia de deploy na Vercel
-- [ ] Documentar como adicionar novas facas no Sanity
-- [ ] Testar build de produção
-- [ ] Criar checkpoint final
+- [x] Documentar variáveis de ambiente necessárias
+- [x] Criar guia de deploy na Vercel
+- [x] Documentar como adicionar novas facas no Sanity
+- [x] Testar build de produção
+- [x] Criar checkpoint final
 
 ## Bugs
 - [x] Corrigir erro de <a> aninhado no Header (Link do wouter já renderiza <a>)
@@ -167,12 +167,12 @@
 - [x] Configurar Resend para envio de emails
 - [x] Implementar envio de emails dos formulários via Resend
 - [ ] Remover sistema de autenticação (site público)
-- [ ] Criar arquivo vercel.json
-- [ ] Atualizar package.json para build de produção
-- [ ] Criar arquivo .env.example com variáveis necessárias
-- [ ] Criar documentação de deploy
-- [ ] Documentar registros DNS para Resend
-- [ ] Exportar código para GitHub (repositório: dbraguim-website)
+- [x] Criar arquivo vercel.json
+- [x] Atualizar package.json para build de produção
+- [x] Criar arquivo .env.example com variáveis necessárias
+- [x] Criar documentação de deploy
+- [x] Documentar registros DNS para Resend
+- [x] Exportar código para GitHub (repositório: dbraguim-website)
 
 ## Melhorias de Responsividade Mobile
 - [x] Ajustar header/navegação para mobile
@@ -252,17 +252,36 @@
 ## Deploy Automatizado no Vercel
 - [x] Criar repositório dbraguim-website no GitHub (nullvolts-debug)
 - [x] Fazer push do código para GitHub
-- [ ] Criar projeto no Vercel
-- [ ] Configurar variáveis de ambiente no Vercel
-- [ ] Fazer deploy e obter URL de produção
-- [ ] Verificar site funcionando
+- [x] Criar projeto no Vercel
+- [x] Configurar variáveis de ambiente no Vercel
+- [x] Fazer deploy e obter URL de produção
+- [x] Verificar site funcionando
 
 ## Refatoração para Vercel Serverless
-- [ ] Criar api/ directory com serverless functions
-- [ ] Adaptar sanityRouter para serverless (api/sanity.ts)
-- [ ] Adaptar contactRouter para serverless (api/contact.ts)
-- [ ] Adaptar newsletterRouter para serverless (api/newsletter.ts)
-- [ ] Ajustar frontend para chamar APIs REST diretamente
-- [ ] Atualizar vercel.json com configuração correta
-- [ ] Configurar variáveis de ambiente no Vercel
-- [ ] Fazer deploy e verificar site funcionando
+- [x] Criar api/ directory com serverless functions
+- [x] Adaptar sanityRouter para serverless (api/sanity.ts)
+- [x] Adaptar contactRouter para serverless (api/contact.ts)
+- [x] Adaptar newsletterRouter para serverless (api/newsletter.ts)
+- [x] Ajustar frontend para chamar APIs REST diretamente
+- [x] Atualizar vercel.json com configuração correta
+- [x] Configurar variáveis de ambiente no Vercel
+- [x] Fazer deploy e verificar site funcionando
+
+## Upload de Imagens para Sanity CDN
+- [x] Fazer upload das 4 imagens de facas para o Sanity CDN
+- [x] Associar imagens aos documentos de facas no Sanity
+- [x] Criar helper de imagem frontend (sanityImage.ts) com urlForImage
+- [x] Atualizar Home.tsx para usar imagens do Sanity CDN com fallback local
+- [x] Atualizar Portfolio.tsx para usar imagens do Sanity CDN com fallback local
+- [x] Atualizar KnifeModal.tsx para usar URLs de imagem já resolvidas
+- [x] Adicionar campo fullImages ao tipo KnifeData para imagens em alta resolução
+- [x] Atualizar email remetente para D.Braguim Site <noreply@dbraguim.com>
+- [x] Verificar imagens carregando corretamente no dev server
+
+## Migração de Imagens Locais para CDN
+- [x] Upload de todas as imagens estáticas para S3 CDN
+- [x] Atualizar referência do hero_placeholder.webp no CSS para CDN URL
+- [x] Atualizar referência do dennis.webp na página Sobre para CDN URL
+- [x] Atualizar KnifeCard.tsx para usar imagens do Sanity CDN
+- [x] Mover imagens locais para /home/ubuntu/webdev-static-assets/
+- [x] Todos os 17 testes passando (5 arquivos de teste)

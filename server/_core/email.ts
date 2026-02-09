@@ -70,7 +70,8 @@ export async function sendContactEmail(params: {
     `;
 
   return sendEmail({
-    to: 'nullvolts@gmail.com', // Temporary: using owner email for testing until domain is verified
+    to: 'contato@dbraguim.com',
+    from: 'D.Braguim Site <noreply@dbraguim.com>',
     subject,
     html,
   });

@@ -5,6 +5,7 @@ import KnifeModal from '@/components/KnifeModal';
 import { type KnifeData } from '@shared/knivesData';
 import { trpc } from '@/lib/trpc';
 import { type SanityKnife } from '@shared/sanity';
+import { getCardImageUrl, getFullImageUrl } from '@/lib/sanityImage';
 
 export default function Home() {
   const { t, language } = useLanguage();
@@ -29,24 +30,43 @@ export default function Home() {
     if (!allKnives) return [];
 
     // Converter formato Sanity para formato local
-    const converted: KnifeData[] = allKnives.map((knife: SanityKnife) => ({
-      name: knife.name,
-      category: knife.category === 'hunting' ? 'Caça' : knife.category === 'fighter' ? 'Luta' : 'Chef',
-      status: knife.status === 'available' ? 'disponivel' : knife.status === 'sold' ? 'vendida' : 'encomenda',
-      images: knife.images?.map((img: any) => img.asset?._ref || '') || [],
-      video_mp4: knife.video?.asset?._ref,
-      video_poster: knife.videoPoster?.asset?._ref,
-      description_pt: knife.description_pt,
-      description_en: knife.description_en,
-      modelo: knife.model || '',
-      comprimento: knife.length || '',
-      largura: knife.width || '',
-      espessura: knife.thickness || '',
-      steel_pt: knife.steel_pt || '',
-      steel_en: knife.steel_en || '',
-      handle_pt: knife.handle_pt || '',
-      handle_en: knife.handle_en || '',
-    }));
+    const converted: KnifeData[] = allKnives.map((knife: SanityKnife) => {
+      // Gerar URLs das imagens do Sanity CDN
+      const sanityImages = knife.images?.map((img: any) => {
+        const cardUrl = getCardImageUrl(img);
+        const fullUrl = getFullImageUrl(img);
+        return { cardUrl, fullUrl, raw: img };
+      }) || [];
+
+      // Fallback para imagem local baseada no nome
+      const localImageName = knife.name.toLowerCase().replace(/\s+/g, '_') + '.webp';
+      const fallbackCardUrl = `/images/portfolio/${localImageName}`;
+
+      return {
+        name: knife.name,
+        category: knife.category === 'hunting' ? 'Caça' : knife.category === 'fighter' ? 'Luta' : 'Chef',
+        status: knife.status === 'available' ? 'disponivel' : knife.status === 'sold' ? 'vendida' : 'encomenda',
+        images: sanityImages.length > 0
+          ? sanityImages.map((img: any) => img.cardUrl)
+          : [fallbackCardUrl],
+        // Guardar URLs em alta resolução para o modal
+        fullImages: sanityImages.length > 0
+          ? sanityImages.map((img: any) => img.fullUrl)
+          : [fallbackCardUrl],
+        video_mp4: knife.video?.asset?._ref,
+        video_poster: knife.videoPoster?.asset?._ref,
+        description_pt: knife.description_pt,
+        description_en: knife.description_en,
+        modelo: knife.model || '',
+        comprimento: knife.length || '',
+        largura: knife.width || '',
+        espessura: knife.thickness || '',
+        steel_pt: knife.steel_pt || '',
+        steel_en: knife.steel_en || '',
+        handle_pt: knife.handle_pt || '',
+        handle_en: knife.handle_en || '',
+      };
+    });
 
     // Lógica de priorização: disponíveis primeiro
     const disponiveis = converted.filter(k => k.status === 'disponivel');
@@ -112,7 +132,7 @@ export default function Home() {
                 >
                   <div className="card__media">
                     <img
-                      src={`/images/portfolio/${knife.images[0]}`}
+                      src={knife.images[0]}
                       alt={knife.name}
                       loading="lazy"
                     />
