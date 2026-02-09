@@ -285,3 +285,10 @@
 - [x] Atualizar KnifeCard.tsx para usar imagens do Sanity CDN
 - [x] Mover imagens locais para /home/ubuntu/webdev-static-assets/
 - [x] Todos os 17 testes passando (5 arquivos de teste)
+
+## Deploy do Sanity Studio
+- [x] Criar estrutura do Sanity Studio no projeto
+- [x] Configurar sanity.config.ts com schemas
+- [x] Fazer deploy do Studio para Sanity Cloud (https://dbraguim.sanity.studio)
+- [x] Testar acesso e gerenciamento de facas
+- [x] Entregar URL do Studio ao usuário

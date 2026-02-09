@@ -8,9 +8,8 @@ export default defineCliConfig({
     projectId,
     dataset,
   },
-  /**
-   * Enable auto-updates for studios.
-   * Learn more at https://www.sanity.io/docs/cli#auto-updates
-   */
-  autoUpdates: true,
+  studioHost: 'dbraguim',
+  deployment: {
+    appId: 'jg6f68zqasge699b7sef4jh9',
+  },
 });
