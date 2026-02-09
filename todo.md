@@ -248,3 +248,11 @@
 - [x] Testar build de produção localmente (sucesso, 696KB bundle)
 - [x] Criar guia passo-a-passo de deploy (VERCEL_DEPLOY_GUIDE.md)
 - [x] Documentar configuração de domínio personalizado
+
+## Deploy Automatizado no Vercel
+- [ ] Criar repositório dbraguim-website no GitHub (nullvolts-debug)
+- [ ] Fazer push do código para GitHub
+- [ ] Criar projeto no Vercel
+- [ ] Configurar variáveis de ambiente no Vercel
+- [ ] Fazer deploy e obter URL de produção
+- [ ] Verificar site funcionando
