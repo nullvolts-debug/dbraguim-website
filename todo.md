@@ -217,3 +217,9 @@
 - [x] Habilitar scroll do modal para visualizar conteúdo abaixo da foto
 - [x] Posicionar botão "Assistir Vídeo" absolutamente sobre a foto (canto inferior esquerdo)
 - [x] Remover completamente espaços pretos acima e abaixo da imagem
+
+## Investigação CSS Modal Mobile
+- [x] Verificar se media query está correta
+- [x] Verificar conflitos de especificidade CSS (encontrado conflito na linha 736)
+- [x] Aplicar !important se necessário para forçar estilos mobile
+- [x] Validar que mudanças estão sendo aplicadas no browser
