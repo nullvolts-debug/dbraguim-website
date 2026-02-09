@@ -240,3 +240,11 @@
 - [x] Migrar Portfolio.tsx para usar trpc.sanity.getKnives com filtros
 - [x] Testar adição de faca via Sanity Studio (4 facas migradas com sucesso)
 - [x] Documentar acesso ao Sanity Studio (SANITY_GUIDE.md criado)
+
+## Preparação para Deploy no Vercel
+- [x] Criar vercel.json com configurações de build e rotas
+- [x] Documentar todas as variáveis de ambiente necessárias
+- [x] Criar .vercelignore para otimizar upload
+- [x] Testar build de produção localmente (sucesso, 696KB bundle)
+- [x] Criar guia passo-a-passo de deploy (VERCEL_DEPLOY_GUIDE.md)
+- [x] Documentar configuração de domínio personalizado

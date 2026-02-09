@@ -1,0 +1,43 @@
+# Dependencies
+node_modules
+.pnpm-store
+
+# Build artifacts
+dist
+.next
+out
+
+# Development
+.env.local
+.env.development
+
+# Testing
+coverage
+*.test.ts
+*.test.tsx
+**/*.test.ts
+**/*.test.tsx
+
+# Logs
+logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# Misc
+.git
+.github
+scripts
+SANITY_SETUP.md
+SANITY_GUIDE.md
+README.md
