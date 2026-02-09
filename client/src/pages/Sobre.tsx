@@ -10,7 +10,7 @@ export default function Sobre() {
         <div className="about-story">
           <div>
             <img
-              src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663333456330/XGineyyYBCjxEfVP.webp"
+              src="/images/dennis.webp"
               alt="Dennis Braguim"
               style={{
                 width: '100%',
