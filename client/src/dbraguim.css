@@ -516,7 +516,8 @@ p {
 
   /* Header do modal */
   .modal__top {
-    padding: 16px 20px;
+    padding: 0px 15px 10px 15px;
+    height: 102px;
     flex-shrink: 0;
     background: var(--paper);
     position: sticky;
@@ -525,6 +526,7 @@ p {
     display: flex;
     flex-direction: column;
     gap: 12px;
+    justify-content: center;
   }
 
   .modal__title {
@@ -571,6 +573,8 @@ p {
     flex-shrink: 0;
     background: var(--dark);
     order: 1;
+    padding: 0;
+    position: relative;
   }
 
   .modal__photo {
@@ -581,6 +585,7 @@ p {
     align-items: center;
     justify-content: center;
     padding: 0;
+    position: relative;
   }
 
   .modal__photo img {

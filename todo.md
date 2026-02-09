@@ -201,3 +201,9 @@
 
 ## Ajuste de Cor Página Contato
 - [x] Alterar cor do texto de instruções de var(--muted) para #888888
+
+## Ajustes Finais Modal Mobile (Editor Visual)
+- [x] Reduzir padding do header (15px lateral, 10px inferior, altura 102px)
+- [x] Remover padding da div da foto (0px em todos os lados)
+- [x] Garantir botão "Assistir Vídeo" sobre a imagem no canto inferior esquerdo
+- [x] Garantir que todo conteúdo (imagem + texto + botões) esteja dentro do scroll
