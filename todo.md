@@ -191,3 +191,5 @@
 - [x] Melhorar botões de ação (WhatsApp, Email) para mobile
 - [x] Otimizar especificações técnicas para leitura em tela pequena
 - [x] Testar modal em diferentes tamanhos de tela mobile
+- [x] Corrigir layout vertical mobile (foto → descrição → botões)
+- [x] Garantir que desktop mantenha layout horizontal original

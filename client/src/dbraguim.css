@@ -494,13 +494,15 @@ p {
   font-weight: 600;
 }
 
-/* Responsive - Modal Mobile Optimizations */
+/* Responsive - Modal Mobile Optimizations (ONLY MOBILE) */
 @media (max-width: 768px) {
+  /* Modal overlay - tela cheia sem padding */
   .modalOverlay {
     padding: 0;
     align-items: flex-start;
   }
 
+  /* Modal container - tela cheia vertical */
   .modal {
     width: 100%;
     max-width: 100%;
@@ -509,11 +511,17 @@ p {
     border-radius: 0;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
   }
 
+  /* Header do modal */
   .modal__top {
     padding: 16px 20px;
     flex-shrink: 0;
+    background: var(--paper);
+    position: sticky;
+    top: 0;
+    z-index: 10;
   }
 
   .modal__title {
@@ -534,27 +542,31 @@ p {
     flex-shrink: 0;
   }
 
+  /* Body - VERTICAL: foto → conteúdo */
   .modal__body {
-    grid-template-columns: 1fr;
-    max-height: none;
-    flex: 1;
+    display: flex !important;
+    flex-direction: column !important;
+    grid-template-columns: unset !important;
     overflow-y: auto;
-    display: flex;
-    flex-direction: column;
+    flex: 1;
   }
 
+  /* 1. FOTO DA FACA (topo) */
   .modal__media {
-    max-height: none;
-    min-height: auto;
+    width: 100%;
     flex-shrink: 0;
+    background: var(--dark);
+    order: 1;
   }
 
   .modal__photo {
-    min-height: 300px;
-    max-height: 400px;
+    min-height: 350px;
+    max-height: 450px;
+    height: 350px;
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 20px;
   }
 
   .modal__photo img {
@@ -570,87 +582,113 @@ p {
     padding: 8px 16px;
   }
 
+  /* 2. CONTEÚDO (descrição + specs + botões) */
   .modal__content {
-    padding: 20px;
-    flex: 1;
+    padding: 24px 20px;
+    order: 2;
+    background: var(--paper);
   }
 
   .modal__content p {
-    font-size: 0.9rem;
-    margin-bottom: 20px;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 24px;
+    color: #ccc;
   }
 
+  /* Especificações técnicas */
   .metaRow {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 12px;
+    gap: 0;
+    margin-bottom: 24px;
   }
 
   .metaItem {
     display: flex;
     justify-content: space-between;
-    padding: 10px 0;
+    align-items: center;
+    padding: 12px 0;
     border-bottom: 1px solid var(--line);
   }
 
   .metaLabel {
     font-size: 0.85rem;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
   }
 
   .metaValue {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
+    color: #fff;
+    font-weight: 500;
     text-align: right;
   }
 
+  /* 3. SEÇÃO "TENHO INTERESSE" (botões) */
   .modal__interest {
-    margin-top: 24px;
-    padding: 20px;
+    margin-top: 32px;
+    padding: 24px 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.03);
   }
 
   .modal__interestTitle {
     font-size: 0.8rem;
-    margin-bottom: 12px;
+    margin-bottom: 8px;
   }
 
   .modal__interestText {
-    font-size: 0.85rem;
-    margin-bottom: 16px;
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+    line-height: 1.5;
   }
 
+  /* Botões de ação - VERTICAL */
   .modal__actions {
-    grid-template-columns: 1fr;
-    gap: 10px;
+    display: flex !important;
+    flex-direction: column !important;
+    grid-template-columns: unset !important;
+    gap: 12px;
   }
 
   .modal__actions .btn {
     width: 100%;
-    padding: 14px 20px;
-    font-size: 0.85rem;
+    padding: 16px 24px;
+    font-size: 0.9rem;
+    text-align: center;
   }
 
+  /* Formulário de email */
   .modal__emailForm {
-    padding: 16px;
+    padding: 20px;
+    margin-top: 16px;
   }
 
   .modal__emailForm input {
-    font-size: 0.9rem !important;
-    padding: 12px 14px !important;
+    font-size: 1rem !important;
+    padding: 14px !important;
+    margin-bottom: 12px;
   }
 
   .modal__formActions {
+    display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
+    margin-top: 16px;
   }
 
   .modal__formActions .btn {
     width: 100%;
-    padding: 12px 20px;
+    padding: 14px 20px;
   }
 
-  /* Badge adjustments */
+  /* Badge */
   .badge {
     font-size: 0.7rem;
-    padding: 3px 8px;
+    padding: 4px 10px;
   }
 }
 
