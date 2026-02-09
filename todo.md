@@ -250,9 +250,19 @@
 - [x] Documentar configuração de domínio personalizado
 
 ## Deploy Automatizado no Vercel
-- [ ] Criar repositório dbraguim-website no GitHub (nullvolts-debug)
-- [ ] Fazer push do código para GitHub
+- [x] Criar repositório dbraguim-website no GitHub (nullvolts-debug)
+- [x] Fazer push do código para GitHub
 - [ ] Criar projeto no Vercel
 - [ ] Configurar variáveis de ambiente no Vercel
 - [ ] Fazer deploy e obter URL de produção
 - [ ] Verificar site funcionando
+
+## Refatoração para Vercel Serverless
+- [ ] Criar api/ directory com serverless functions
+- [ ] Adaptar sanityRouter para serverless (api/sanity.ts)
+- [ ] Adaptar contactRouter para serverless (api/contact.ts)
+- [ ] Adaptar newsletterRouter para serverless (api/newsletter.ts)
+- [ ] Ajustar frontend para chamar APIs REST diretamente
+- [ ] Atualizar vercel.json com configuração correta
+- [ ] Configurar variáveis de ambiente no Vercel
+- [ ] Fazer deploy e verificar site funcionando
