@@ -56,7 +56,7 @@ export default function Contato() {
           }}>
             <h2>{t('contact_intro_title')}</h2>
             <p className="lead">{t('contact_intro_text')}</p>
-            <div style={{ marginTop: '24px', display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+            <div className="contact__buttons">
               <a
                 className="btn btn--whatsapp"
                 href={`https://wa.me/${CONTACT.whatsappNumber}`}
@@ -132,7 +132,7 @@ export default function Contato() {
             <h2>{t('contact_news_title')}</h2>
             <p className="lead">{t('contact_news_text')}</p>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '32px', marginTop: '32px' }}>
+            <div className="contact__newsletter-grid">
               {/* WhatsApp */}
               <div
                 style={{

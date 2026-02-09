@@ -15,6 +15,20 @@
       "when": 1770583463263,
       "tag": "0001_careful_skullbuster",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1770601750539,
+      "tag": "0002_light_quasimodo",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1770601891457,
+      "tag": "0003_peaceful_speed_demon",
+      "breakpoints": true
     }
   ]
 }

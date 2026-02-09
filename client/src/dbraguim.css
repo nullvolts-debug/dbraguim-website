@@ -268,8 +268,15 @@ p {
 /* Grid */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 24px;
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
 }
 
 /* Card */
@@ -488,6 +495,36 @@ p {
 }
 
 /* Responsive */
+@media (max-width: 768px) {
+  .modal {
+    width: 95%;
+    max-width: 100%;
+    margin: 10px;
+    max-height: 95vh;
+  }
+
+  .modal__body {
+    grid-template-columns: 1fr;
+    max-height: calc(95vh - 70px);
+  }
+
+  .modal__media {
+    max-height: 50vh;
+  }
+
+  .modal__content {
+    padding: 20px;
+  }
+
+  .modal__header {
+    padding: 16px 20px;
+  }
+
+  .modal__title-group h3 {
+    font-size: 1.5rem;
+  }
+}
+
 @media (max-width: 1024px) {
   .hero::before {
     background-size: cover;
@@ -947,6 +984,8 @@ p {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  flex: 1;
+  min-width: 150px;
 }
 
 .filter__label {
@@ -969,6 +1008,23 @@ p {
   transition: border-color 0.2s;
 }
 
+@media (max-width: 768px) {
+  .filters {
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .filter__group {
+    width: 100%;
+  }
+
+  .filter__select {
+    width: 100%;
+    min-width: unset;
+  }
+}
+
 .filter__select:hover {
   border-color: var(--gold);
 }
@@ -981,4 +1037,269 @@ p {
 /* Utility */
 .no-scroll {
   overflow: hidden;
+}
+
+/* ========================================
+   MOBILE RESPONSIVE STYLES
+   ======================================== */
+
+/* Mobile Menu Button */
+.mobile-menu-button {
+  background: transparent;
+  border: 1px solid var(--line);
+  color: #fff;
+  padding: 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.mobile-menu-button:hover {
+  background: rgba(197, 160, 89, 0.1);
+  border-color: var(--gold);
+}
+
+/* Mobile Navigation */
+.mobile-nav {
+  position: fixed;
+  top: 81px;
+  left: 0;
+  right: 0;
+  background: rgba(8, 8, 8, 0.98);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--line);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  animation: slideDown 0.3s ease-out;
+  z-index: 99;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.mobile-nav a {
+  color: #e0e0e0;
+  text-decoration: none;
+  font-size: 1.1rem;
+  padding: 12px 16px;
+  border-radius: 8px;
+  transition: all 0.2s;
+  text-align: center;
+}
+
+.mobile-nav a:hover,
+.mobile-nav a.active {
+  color: var(--gold);
+  background: rgba(197, 160, 89, 0.1);
+}
+
+.mobile-nav__lang {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+}
+
+.mobile-nav__lang button {
+  background: transparent;
+  border: 1px solid var(--line);
+  color: #888;
+  padding: 8px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+  flex: 1;
+  max-width: 100px;
+}
+
+.mobile-nav__lang button.active {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: #000;
+}
+
+/* Mobile Responsive Breakpoints */
+@media (max-width: 768px) {
+  /* Header adjustments */
+  .header__inner {
+    padding: 12px 16px;
+  }
+
+  .brand {
+    font-size: 1rem;
+  }
+
+  .brand__logo img {
+    width: 40px;
+    height: 40px;
+  }
+
+  /* Hero section mobile */
+  .hero {
+    min-height: 70vh;
+    align-items: center;
+  }
+
+  .hero::before {
+    background-size: cover;
+    background-position: center;
+  }
+
+  .hero__contentOverlay {
+    padding: 30px 20px;
+    margin-bottom: 0;
+  }
+
+  .hero__panel h1 {
+    font-size: 2.5rem;
+  }
+
+  .hero__cta {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .hero__cta a,
+  .hero__cta button {
+    width: 100%;
+  }
+
+  /* Featured knives grid */
+  .featured__grid {
+    grid-template-columns: 1fr !important;
+    gap: 20px;
+  }
+
+  /* Knife cards */
+  .knife-card {
+    max-width: 100%;
+  }
+
+  /* Section spacing */
+  .section {
+    padding: 60px 0;
+  }
+
+  .section__header {
+    margin-bottom: 40px;
+  }
+
+  .section__header h2 {
+    font-size: 2rem;
+  }
+
+  /* Container padding */
+  .container {
+    padding: 0 16px;
+  }
+
+  /* Footer */
+  .footer__inner {
+    flex-direction: column;
+    gap: 24px;
+    text-align: center;
+  }
+
+  .footer__social {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Extra small screens */
+  .hero__panel h1 {
+    font-size: 2rem;
+  }
+
+  .kicker {
+    font-size: 0.75rem;
+  }
+
+  .section__header h2 {
+    font-size: 1.75rem;
+  }
+
+  /* Button adjustments */
+  .btn {
+    padding: 12px 24px;
+    font-size: 0.9rem;
+  }
+}
+
+/* About Page Styles */
+.about-story {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 48px;
+  align-items: start;
+  margin-top: 48px;
+  margin-bottom: 64px;
+}
+
+.about-values {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  margin-top: 64px;
+}
+
+@media (max-width: 768px) {
+  .about-story {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    margin-top: 32px;
+    margin-bottom: 48px;
+  }
+
+  .about-values {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    margin-top: 48px;
+  }
+}
+
+/* Contact Page Styles */
+.contact__buttons {
+  margin-top: 24px;
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.contact__newsletter-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin-top: 32px;
+}
+
+@media (max-width: 768px) {
+  .contact__buttons {
+    flex-direction: column;
+  }
+
+  .contact__buttons .btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .contact__newsletter-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
 }

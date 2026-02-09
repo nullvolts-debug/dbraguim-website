@@ -7,7 +7,7 @@ export default function Sobre() {
     <section className="section">
       <div className="container">
         {/* História com Foto */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.5fr', gap: '48px', alignItems: 'start', marginTop: '48px', marginBottom: '64px' }}>
+        <div className="about-story">
           <div>
             <img
               src="/images/about/dennis.webp"
@@ -36,7 +36,7 @@ export default function Sobre() {
         </div>
 
         {/* Valores */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '32px', marginTop: '64px' }}>
+        <div className="about-values">
             <div
               style={{
                 background: 'var(--paper)',

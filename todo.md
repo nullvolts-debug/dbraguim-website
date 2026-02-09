@@ -173,3 +173,13 @@
 - [ ] Criar documentação de deploy
 - [ ] Documentar registros DNS para Resend
 - [ ] Exportar código para GitHub (repositório: dbraguim-website)
+
+## Melhorias de Responsividade Mobile
+- [x] Ajustar header/navegação para mobile
+- [x] Melhorar hero section da página inicial para telas pequenas
+- [x] Ajustar grid de facas no portfólio para mobile
+- [x] Corrigir modal de detalhes da faca para mobile
+- [x] Ajustar página Sobre para mobile
+- [x] Ajustar página Contato para mobile
+- [x] Melhorar footer para mobile
+- [x] Testar em diferentes tamanhos de tela (320px, 375px, 414px)
