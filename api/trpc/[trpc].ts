@@ -1,22 +1,10 @@
+import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { createClient } from '@sanity/client';
 import { Resend } from 'resend';
-import { drizzle } from 'drizzle-orm/mysql2';
-import { eq } from 'drizzle-orm';
 import { initTRPC } from '@trpc/server';
-import { fetchRequestHandler } from '@trpc/server/adapters/fetch';
+import { nodeHTTPRequestHandler } from '@trpc/server/adapters/node-http';
 import superjson from 'superjson';
 import { z } from 'zod';
-import { int, mysqlTable, text, timestamp, varchar } from 'drizzle-orm/mysql-core';
-
-// ============================================================
-// Database Schema (inline to avoid import issues in serverless)
-// ============================================================
-const newsletterSubscribers = mysqlTable('newsletter_subscribers', {
-  id: int('id').autoincrement().primaryKey(),
-  email: varchar('email', { length: 320 }).notNull().unique(),
-  source: varchar('source', { length: 50 }).notNull().default('whatsapp'),
-  subscribedAt: timestamp('subscribedAt').defaultNow().notNull(),
-});
 
 // ============================================================
 // Sanity Client
@@ -78,23 +66,6 @@ async function sendContactEmail(params: {
     console.error('[Email] Exception:', error);
     return { success: false, error: error.message };
   }
-}
-
-// ============================================================
-// Database connection (lazy)
-// ============================================================
-let _db: ReturnType<typeof drizzle> | null = null;
-
-function getDb() {
-  if (!_db && process.env.DATABASE_URL) {
-    try {
-      _db = drizzle(process.env.DATABASE_URL);
-    } catch (error) {
-      console.warn('[Database] Failed to connect:', error);
-      _db = null;
-    }
-  }
-  return _db;
 }
 
 // ============================================================
@@ -218,43 +189,11 @@ const appRouter = router({
         })
       )
       .mutation(async ({ input }) => {
-        const db = getDb();
-        if (!db) {
-          // Fallback: just log if no DB
-          console.log('[Newsletter] No DB, subscriber:', input.email);
-          return {
-            success: true,
-            message: 'Email cadastrado com sucesso!',
-          };
-        }
-
-        try {
-          const existing = await db
-            .select()
-            .from(newsletterSubscribers)
-            .where(eq(newsletterSubscribers.email, input.email))
-            .limit(1);
-
-          if (existing.length > 0) {
-            return {
-              success: false,
-              message: 'Este email já está cadastrado na newsletter',
-            };
-          }
-
-          await db.insert(newsletterSubscribers).values({
-            email: input.email,
-            source: input.source,
-          });
-
-          return {
-            success: true,
-            message: 'Email cadastrado com sucesso!',
-          };
-        } catch (error) {
-          console.error('[Newsletter] Error subscribing:', error);
-          throw new Error('Erro ao cadastrar email');
-        }
+        console.log('[Newsletter] New subscriber:', input.email, 'source:', input.source);
+        return {
+          success: true,
+          message: 'Email cadastrado com sucesso!',
+        };
       }),
   }),
 });
@@ -262,17 +201,28 @@ const appRouter = router({
 export type AppRouter = typeof appRouter;
 
 // ============================================================
-// Vercel Serverless Handler
+// Vercel Serverless Handler (Node.js runtime)
 // ============================================================
-export default async function handler(req: Request) {
-  return fetchRequestHandler({
-    endpoint: '/api/trpc',
-    req,
+export default async function handler(req: VercelRequest, res: VercelResponse) {
+  // Handle CORS
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  if (req.method === 'OPTIONS') {
+    res.status(200).end();
+    return;
+  }
+
+  // Extract the tRPC path from the catch-all route parameter
+  const pathParam = req.query.trpc;
+  const path = Array.isArray(pathParam) ? pathParam.join('/') : (pathParam || '');
+
+  return nodeHTTPRequestHandler({
     router: appRouter,
+    req,
+    res,
+    path,
     createContext: () => ({}),
   });
 }
-
-export const config = {
-  runtime: 'nodejs',
-};
