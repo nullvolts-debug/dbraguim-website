@@ -207,3 +207,8 @@
 - [x] Remover padding da div da foto (0px em todos os lados)
 - [x] Garantir botão "Assistir Vídeo" sobre a imagem no canto inferior esquerdo
 - [x] Garantir que todo conteúdo (imagem + texto + botões) esteja dentro do scroll
+
+## Correção Espaçamento Modal Mobile
+- [x] Remover espaço preto enorme acima da foto
+- [x] Garantir foto imediatamente abaixo do header
+- [x] Tornar conteúdo de texto acessível e visível
