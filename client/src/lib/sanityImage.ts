@@ -2,6 +2,7 @@ import imageUrlBuilder from '@sanity/image-url';
 import { createClient } from '@sanity/client';
 
 // Cliente Sanity para o frontend (apenas leitura, usa CDN)
+// O projectId é hardcoded como fallback para garantir que funcione em produção
 const client = createClient({
   projectId: import.meta.env.VITE_SANITY_PROJECT_ID || '9kunhe1k',
   dataset: import.meta.env.VITE_SANITY_DATASET || 'production',
@@ -29,8 +30,30 @@ export function urlForImage(source: any) {
 export function getImageUrl(source: any, width: number = 800): string {
   if (!source) return '';
   try {
-    return urlForImage(source).width(width).auto('format').quality(80).url();
+    const url = urlForImage(source).width(width).auto('format').quality(80).url();
+    // Verificar se a URL gerada é válida (deve conter cdn.sanity.io)
+    if (url && url.includes('cdn.sanity.io')) {
+      return url;
+    }
+    // Se a URL não contém cdn.sanity.io, construir manualmente
+    if (source?.asset?._ref) {
+      const ref = source.asset._ref;
+      // Formato: image-{id}-{dimensions}-{format}
+      const match = ref.match(/^image-([a-f0-9]+)-(\d+x\d+)-(\w+)$/);
+      if (match) {
+        return `https://cdn.sanity.io/images/9kunhe1k/production/${ref.replace('image-', '').replace(/-(\w+)$/, '.$1')}?w=${width}&auto=format&q=80`;
+      }
+    }
+    return url || '';
   } catch {
+    // Fallback: construir URL manualmente a partir do _ref
+    if (source?.asset?._ref) {
+      const ref = source.asset._ref;
+      const match = ref.match(/^image-([a-f0-9]+)-(\d+x\d+)-(\w+)$/);
+      if (match) {
+        return `https://cdn.sanity.io/images/9kunhe1k/production/${match[1]}-${match[2]}.${match[3]}?w=${width}&auto=format&q=80`;
+      }
+    }
     return '';
   }
 }

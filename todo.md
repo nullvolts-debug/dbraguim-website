@@ -292,3 +292,15 @@
 - [x] Fazer deploy do Studio para Sanity Cloud (https://dbraguim.sanity.studio)
 - [x] Testar acesso e gerenciamento de facas
 - [x] Entregar URL do Studio ao usuário
+
+## Correção Erro 404 Sanity Studio
+- [ ] Diagnosticar problema do Studio not found (404)
+- [ ] Verificar configuração do studioHost e appId
+- [ ] Fazer redeploy do Sanity Studio
+- [ ] Verificar acesso funcionando
+
+## Bug: Imagens das facas não carregam em produção (www.dbraguim.com)
+- [x] Diagnosticar por que as imagens não carregam em produção
+- [x] Corrigir o problema (shared/sanity.ts e sanityImage.ts com fallback hardcoded)
+- [ ] Fazer deploy da correção (precisa exportar para GitHub)
+- [ ] Verificar em produção

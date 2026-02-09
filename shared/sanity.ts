@@ -2,12 +2,44 @@ import { createClient } from '@sanity/client';
 import imageUrlBuilder from '@sanity/image-url';
 
 // Configuração do cliente Sanity
-// Estas variáveis serão configuradas via environment variables
+// O projectId é hardcoded como fallback para garantir que funcione
+// tanto no servidor (process.env) quanto no frontend (import.meta.env)
+const getProjectId = () => {
+  try {
+    // Frontend (Vite)
+    if (typeof import.meta !== 'undefined' && import.meta.env?.VITE_SANITY_PROJECT_ID) {
+      return import.meta.env.VITE_SANITY_PROJECT_ID;
+    }
+  } catch {}
+  try {
+    // Servidor (Node.js)
+    if (typeof process !== 'undefined' && process.env?.VITE_SANITY_PROJECT_ID) {
+      return process.env.VITE_SANITY_PROJECT_ID;
+    }
+  } catch {}
+  // Fallback hardcoded
+  return '9kunhe1k';
+};
+
+const getDataset = () => {
+  try {
+    if (typeof import.meta !== 'undefined' && import.meta.env?.VITE_SANITY_DATASET) {
+      return import.meta.env.VITE_SANITY_DATASET;
+    }
+  } catch {}
+  try {
+    if (typeof process !== 'undefined' && process.env?.VITE_SANITY_DATASET) {
+      return process.env.VITE_SANITY_DATASET;
+    }
+  } catch {}
+  return 'production';
+};
+
 export const sanityConfig = {
-  projectId: process.env.VITE_SANITY_PROJECT_ID || '',
-  dataset: process.env.VITE_SANITY_DATASET || 'production',
+  projectId: getProjectId(),
+  dataset: getDataset(),
   apiVersion: '2024-02-08',
-  useCdn: process.env.NODE_ENV === 'production',
+  useCdn: true,
 };
 
 // Cliente Sanity para uso no servidor
