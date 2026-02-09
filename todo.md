@@ -198,3 +198,6 @@
 - [x] Diminuir altura da div da foto (deve ser altura da foto)
 - [x] Reorganizar botão fechar e badge status abaixo do título em mobile
 - [x] Ajustar imagem para ocupar largura total da div em mobile
+
+## Ajuste de Cor Página Contato
+- [x] Alterar cor do texto de instruções de var(--muted) para #888888

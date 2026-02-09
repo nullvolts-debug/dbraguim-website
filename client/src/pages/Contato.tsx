@@ -143,7 +143,7 @@ export default function Contato() {
                 }}
               >
                 <h3 style={{ fontSize: '1.2rem', marginBottom: '16px' }}>{t('contact_tab_whatsapp')}</h3>
-                <p style={{ color: 'var(--muted)', marginBottom: '16px' }}>{t('contact_whats_instructions')}</p>
+                <p style={{ color: '#888888', marginBottom: '16px' }}>{t('contact_whats_instructions')}</p>
                 <a
                   className="btn btn--whatsapp"
                   href={`https://wa.me/${CONTACT.whatsappNumber}?text=${encodeURIComponent(broadcastMsg)}`}
@@ -164,7 +164,7 @@ export default function Contato() {
                 }}
               >
                 <h3 style={{ fontSize: '1.2rem', marginBottom: '16px' }}>E-mail</h3>
-                <p style={{ color: 'var(--muted)', marginBottom: '16px' }}>
+                <p style={{ color: '#888888', marginBottom: '16px' }}>
                   {language === 'en'
                     ? 'Enter your email to subscribe to our newsletter.'
                     : 'Digite seu e-mail para se inscrever na nossa newsletter.'}
