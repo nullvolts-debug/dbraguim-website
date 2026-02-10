@@ -4,6 +4,7 @@ import NotFound from "@/pages/NotFound";
 import Contato from "@/pages/Contato";
 import Portfolio from "@/pages/Portfolio";
 import Sobre from "@/pages/Sobre";
+import KnifePage from "@/pages/KnifePage";
 import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
@@ -16,6 +17,7 @@ function Router() {
     <Layout>
       <Switch>
         <Route path={"/"} component={Home} />
+        <Route path={"/faca/:slug"} component={KnifePage} />
         <Route path={"/portfolio"} component={Portfolio} />
         <Route path={"/sobre"} component={Sobre} />
         <Route path={"/contato"} component={Contato} />

@@ -316,3 +316,30 @@
 - [x] Criar guia de redeploy para o usuário (VERCEL_REDEPLOY_GUIDE.md)
 - [ ] Usuário precisa reconectar GitHub ou fazer deploy manual na Vercel
 - [ ] Confirmar imagens funcionando em www.dbraguim.com
+
+## Bugs: Formulários não funcionando
+- [ ] Formulário de contato não envia emails
+- [ ] Formulário de orçamento não envia emails
+- [ ] Newsletter não envia dados para Google Forms
+- [ ] Diagnosticar problema do Resend API
+- [ ] Diagnosticar problema da integração com Google Forms
+- [ ] Corrigir e testar em produção
+
+## Bug: Newsletter não envia para Google Forms
+- [ ] Diagnosticar problema da integração com Google Forms
+- [ ] Verificar URL do Google Forms e campos
+- [ ] Corrigir envio para Google Forms
+- [ ] Testar em produção e verificar respostas no Google Forms
+
+## URLs Únicas para Facas
+- [x] Adicionar campo slug ao schema de facas no Sanity
+- [x] Criar página dedicada para cada faca com rota dinâmica (/faca/[slug])
+- [x] Adicionar links para URLs únicas em Home e Portfolio
+- [x] Testar rotas dinâmicas e validar funcionamento
+- [x] Implementar geração automática de slug a partir do nome
+- [x] Criar endpoint getKnifeBySlug no backend
+
+## Newsletter - Banco de Dados
+- [x] Criar tabela newsletterSubscribers no banco de dados
+- [x] Implementar validação para evitar emails duplicados
+- [x] Testar cadastro de emails na newsletter

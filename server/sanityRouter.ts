@@ -2,6 +2,17 @@ import { router, publicProcedure } from './_core/trpc';
 import { z } from 'zod';
 import { sanityClient } from '@shared/sanity';
 
+// Função para gerar slug a partir do nome
+function generateSlug(name: string): string {
+  return name
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/[^a-z0-9-]/g, '')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
 export const sanityRouter = router({
   // Buscar todas as facas
   getKnives: publicProcedure
@@ -38,7 +49,15 @@ export const sanityRouter = router({
       query += '] | order(order asc)';
 
       const knives = await sanityClient.fetch(query, params);
-      return knives;
+      
+      // Adicionar slug gerado dinamicamente se não existir
+      return knives.map((knife: any) => {
+        const slugValue = knife.slug?.current || generateSlug(knife.name);
+        return {
+          ...knife,
+          slug: { current: slugValue }
+        };
+      });
     }),
 
   // Buscar faca por ID
@@ -49,6 +68,33 @@ export const sanityRouter = router({
         '*[_type == "knife" && _id == $id][0]',
         { id: input.id }
       );
+      
+      if (!knife) {
+        throw new Error('Faca não encontrada');
+      }
+      
+      return knife;
+    }),
+
+  // Buscar faca por slug
+  getKnifeBySlug: publicProcedure
+    .input(z.object({ slug: z.string() }))
+    .query(async ({ input }) => {
+      // Primeiro tenta buscar pelo slug do Sanity
+      let knife = await sanityClient.fetch(
+        '*[_type == "knife" && slug.current == $slug][0]',
+        { slug: input.slug }
+      );
+
+      // Se não encontrar, tenta buscar por nome gerado dinamicamente
+      if (!knife) {
+        const allKnives = await sanityClient.fetch(
+          '*[_type == "knife"] | order(order asc)'
+        );
+        
+        // Encontra a faca cujo slug gerado dinamicamente corresponde
+        knife = allKnives.find((k: any) => generateSlug(k.name) === input.slug);
+      }
       
       if (!knife) {
         throw new Error('Faca não encontrada');

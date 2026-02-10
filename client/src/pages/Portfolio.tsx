@@ -5,6 +5,7 @@ import { type KnifeData } from '@shared/knivesData';
 import { trpc } from '@/lib/trpc';
 import { type SanityKnife } from '@shared/sanity';
 import { getCardImageUrl, getFullImageUrl } from '@/lib/sanityImage';
+import { Link } from 'wouter';
 
 export default function Portfolio() {
   const { t, language } = useLanguage();
@@ -32,6 +33,8 @@ export default function Portfolio() {
 
     // Converter formato Sanity para formato local
     const converted: KnifeData[] = sanityKnives.map((knife: SanityKnife) => {
+      // Guardar slug para URL única
+      const slug = knife.slug?.current || knife.name.toLowerCase().replace(/\s+/g, '-');
       // Gerar URLs das imagens do Sanity CDN
       const sanityImages = knife.images?.map((img: any) => {
         const cardUrl = getCardImageUrl(img);
@@ -45,6 +48,7 @@ export default function Portfolio() {
 
       return {
         name: knife.name,
+        slug: slug,
         category: knife.category === 'hunting' ? 'Caça' : knife.category === 'fighter' ? 'Luta' : 'Chef',
         status: knife.status === 'available' ? 'disponivel' : knife.status === 'sold' ? 'vendida' : 'encomenda',
         images: sanityImages.length > 0

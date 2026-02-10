@@ -57,6 +57,10 @@ export interface SanityKnife {
   _id: string;
   _type: 'knife';
   name: string;
+  slug?: {
+    _type: 'slug';
+    current: string;
+  };
   category: 'hunting' | 'fighter' | 'chef';
   status: 'available' | 'sold' | 'commission';
   images: Array<{

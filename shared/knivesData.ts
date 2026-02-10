@@ -1,5 +1,6 @@
 export interface KnifeData {
   name: string;
+  slug?: string;
   category: string;
   status: 'disponivel' | 'vendida' | 'encomenda';
   images: string[];

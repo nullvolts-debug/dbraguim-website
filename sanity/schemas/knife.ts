@@ -12,6 +12,16 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: 'slug',
+      title: 'Slug (URL)',
+      type: 'slug',
+      options: {
+        source: 'name',
+        maxLength: 96,
+      },
+      validation: (Rule) => Rule.required().unique(),
+    }),
+    defineField({
       name: 'category',
       title: 'Categoria',
       type: 'string',
@@ -143,17 +153,19 @@ export default defineType({
       subtitle: 'category',
       media: 'images.0',
       status: 'status',
+      slug: 'slug',
     },
-    prepare({ title, subtitle, media, status }) {
+    prepare({ title, subtitle, media, status, slug }) {
       const statusLabels: Record<string, string> = {
         available: '✅ Disponível',
         sold: '❌ Vendida',
         commission: '⏳ Encomenda',
       };
+      const slugValue = slug?.current ? ` (/${slug.current})` : '';
       
       return {
         title,
-        subtitle: `${subtitle} - ${statusLabels[status] || status}`,
+        subtitle: `${subtitle} - ${statusLabels[status] || status}${slugValue}`,
         media,
       };
     },
