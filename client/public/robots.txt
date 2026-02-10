@@ -1,0 +1,12 @@
+# Robots.txt para D.Braguim
+# Permite que todos os bots de busca indexem o site
+
+User-agent: *
+Allow: /
+Disallow: /assets/
+
+# Sitemap
+Sitemap: https://dbraguim.com/sitemap.xml
+
+# Crawl delay (em segundos) para respeitar recursos do servidor
+Crawl-delay: 1
