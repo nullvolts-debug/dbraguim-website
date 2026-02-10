@@ -4,7 +4,7 @@ import KnifeModal from '@/components/KnifeModal';
 import { type KnifeData } from '@shared/knivesData';
 import { trpc } from '@/lib/trpc';
 import { type SanityKnife } from '@shared/sanity';
-import { getCardImageUrl, getFullImageUrl } from '@/lib/sanityImage';
+import { getCardImageUrl, getFullImageUrl, getFileUrl } from '@/lib/sanityImage';
 import { Link } from 'wouter';
 
 export default function Portfolio() {
@@ -57,7 +57,7 @@ export default function Portfolio() {
         fullImages: sanityImages.length > 0
           ? sanityImages.map((img: any) => img.fullUrl)
           : [fallbackCardUrl],
-        video_mp4: knife.video?.asset?._ref,
+        video_mp4: getFileUrl(knife.video),
         video_poster: knife.videoPoster?.asset?._ref,
         description_pt: knife.description_pt,
         description_en: knife.description_en,
