@@ -71,3 +71,28 @@ export function getCardImageUrl(source: any): string {
 export function getFullImageUrl(source: any): string {
   return getImageUrl(source, 1200);
 }
+/**
+ * Gera URL de arquivo (Vídeo, PDF, etc) do Sanity
+ * Transforma 'file-123...-mp4' em 'https://cdn.sanity.io/files/...'
+ */
+export function getFileUrl(source: any): string | null {
+  // Tenta pegar o _ref seja passando o objeto completo ou só a string
+  const ref = source?.asset?._ref || (typeof source === 'string' ? source : null);
+
+  if (!ref) return null;
+
+  // O ref vem no formato: "file-ID-FORMATO" (ex: file-abc12345-mp4)
+  const parts = ref.split('-');
+  
+  if (parts.length < 3 || parts[0] !== 'file') {
+    return null; // Não é um arquivo válido
+  }
+
+  const id = parts[1];
+  const format = parts[2];
+
+  // Pega as configs direto do cliente já instanciado no topo do arquivo
+  const { projectId, dataset } = client.config();
+
+  return `https://cdn.sanity.io/files/${projectId}/${dataset}/${id}.${format}`;
+}
