@@ -5,6 +5,7 @@ import { trpc } from '@/lib/trpc';
 import { type SanityKnife } from '@shared/sanity';
 import { getCardImageUrl, getFullImageUrl, getFileUrl } from '@/lib/sanityImage';
 import { toast } from "sonner";
+import { ChevronLeft, ChevronRight, Play, Image as ImageIcon } from 'lucide-react';
 import '../dbraguim.css';
 
 export default function KnifePage() {
@@ -13,7 +14,11 @@ export default function KnifePage() {
   const [, navigate] = useLocation();
   const { language, t } = useLanguage();
   
-  const [activeMedia, setActiveMedia] = useState<'video' | number>(0);
+  // Controle de Mídia
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [showVideo, setShowVideo] = useState(false); // Toggle entre Video e Foto
+
+  // Controle do Form
   const [showEmailForm, setShowEmailForm] = useState(false);
   const [formData, setFormData] = useState({ name: '', email: '' });
   
@@ -36,15 +41,12 @@ export default function KnifePage() {
       raw: img 
     })) || [];
 
-    const videoUrl = getFileUrl(foundSanityKnife.video);
-    const videoPoster = getFileUrl(foundSanityKnife.videoPoster);
-
     return {
       name: foundSanityKnife.name,
-      images: sanityImages.map(i => i.cardUrl),
+      // Array de URLs das imagens Full
       fullImages: sanityImages.map(i => i.fullUrl),
-      video_mp4: videoUrl,
-      video_poster: videoPoster,
+      video_mp4: getFileUrl(foundSanityKnife.video),
+      video_poster: getFileUrl(foundSanityKnife.videoPoster),
       category: foundSanityKnife.category,
       status: foundSanityKnife.status,
       description_pt: foundSanityKnife.description_pt,
@@ -60,6 +62,19 @@ export default function KnifePage() {
     };
   }, [sanityKnives, slug, language]);
 
+  // Navegação de Imagens (Setinhas)
+  const nextImage = () => {
+    if (!knife) return;
+    setCurrentImageIndex((prev) => (prev + 1) % knife.fullImages.length);
+    setShowVideo(false); // Se mudar foto, sai do vídeo
+  };
+
+  const prevImage = () => {
+    if (!knife) return;
+    setCurrentImageIndex((prev) => (prev - 1 + knife.fullImages.length) % knife.fullImages.length);
+    setShowVideo(false);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!knife) return;
@@ -72,140 +87,146 @@ export default function KnifePage() {
           ? `Me interessei pela faca ${knife.name}, gostaria de mais informações.`
           : `I'm interested in the ${knife.name} knife, I would like more information.`,
       });
-
       toast.success(language === 'pt' ? 'Mensagem enviada com sucesso!' : 'Message sent successfully!');
       setTimeout(() => {
         setShowEmailForm(false);
         setFormData({ name: '', email: '' });
       }, 2000);
-
     } catch (error) {
       console.error(error);
-      toast.error(language === 'pt' ? 'Erro ao enviar mensagem. Tente novamente.' : 'Error sending message. Please try again.');
+      toast.error(language === 'pt' ? 'Erro ao enviar mensagem.' : 'Error sending message.');
     }
   };
 
-  if (isLoading) return <div className="min-h-[60vh] flex items-center justify-center text-[var(--muted)]">Carregando...</div>;
+  if (isLoading) return <div className="min-h-screen bg-black flex items-center justify-center text-[var(--muted)]">Carregando...</div>;
 
   if (!knife) {
     return (
-      <div className="min-h-[60vh] flex flex-col items-center justify-center gap-4">
+      <div className="min-h-screen bg-black flex flex-col items-center justify-center gap-4">
         <h2 className="text-white text-xl">Faca não encontrada</h2>
         <button onClick={() => navigate('/portfolio')} className="px-6 py-2 border border-[var(--gold)] text-[var(--gold)] hover:bg-[var(--gold)] hover:text-black transition">
-          Voltar ao Portfólio
+          Voltar
         </button>
       </div>
     );
   }
 
   return (
-    <div className="section page-knife pt-28 pb-20">
-      <div className="container mx-auto px-4 max-w-[1400px]">
+    <div className="bg-black min-h-screen">
+      <div className="container mx-auto px-4 max-w-[1600px] pt-24 pb-20">
         
-        {/* Botão Voltar */}
+        {/* Botão Voltar (Mobile apenas, no Desktop fica no layout) */}
         <button 
           onClick={() => navigate('/portfolio')} 
-          className="text-[var(--muted)] hover:text-[var(--gold)] mb-6 flex items-center gap-2 text-xs uppercase tracking-[0.2em] transition-colors"
+          className="lg:hidden text-[var(--muted)] hover:text-[var(--gold)] mb-6 flex items-center gap-2 text-xs uppercase tracking-[0.2em]"
         >
-          ← {language === 'pt' ? 'Voltar ao Portfolio' : 'Back to Portfolio'}
+          ← {language === 'pt' ? 'Voltar' : 'Back'}
         </button>
 
-        {/* 
-            GRID LAYOUT:
-            Ajustei para lg:grid-cols-2 (50% / 50%) para equilibrar melhor o espaço 
-        */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
           
-          {/* COLUNA ESQUERDA: Mídia Fixa */}
-          <div className="lg:sticky lg:top-28 space-y-4">
-            {/* 
-               FIX DO TAMANHO: 
-               Removi 'aspect-square'.
-               Usei h-[50vh] no mobile e h-[calc(100vh-180px)] no desktop.
-               Isso garante que a imagem nunca seja maior que a tela.
-            */}
-            <div className="w-full h-[50vh] lg:h-[calc(100vh-180px)] bg-[#0a0a0a] border border-[var(--line)] rounded-sm overflow-hidden relative group flex items-center justify-center">
-              {activeMedia === 'video' && knife.video_mp4 ? (
-                <video 
-                  src={knife.video_mp4} 
-                  controls 
-                  autoPlay 
-                  className="w-full h-full object-contain" // object-contain é o segredo
-                  poster={knife.video_poster || undefined}
-                />
-              ) : (
-                <img 
-                  src={knife.fullImages[typeof activeMedia === 'number' ? activeMedia : 0]} 
-                  alt={knife.name}
-                  className="w-full h-full object-contain p-2 lg:p-8 transition-transform duration-500 hover:scale-105"
-                />
-              )}
-            </div>
+          {/* --- COLUNA ESQUERDA: Mídia Grande (7 colunas) --- 
+              Sticky: Fica parada enquanto rola a direita
+          */}
+          <div className="lg:col-span-7 lg:sticky lg:top-24 h-[50vh] lg:h-[calc(100vh-8rem)] bg-[#050505] border border-[var(--line)] rounded-sm overflow-hidden relative group">
+            
+            {/* Visualizador */}
+            {showVideo && knife.video_mp4 ? (
+              <video 
+                src={knife.video_mp4} 
+                controls 
+                autoPlay 
+                className="w-full h-full object-contain"
+                poster={knife.video_poster || undefined}
+              />
+            ) : (
+              <img 
+                src={knife.fullImages[currentImageIndex]} 
+                alt={knife.name}
+                className="w-full h-full object-contain p-4 lg:p-8 transition-transform duration-700 hover:scale-105"
+              />
+            )}
 
-            {/* Miniaturas */}
-            <div className="flex gap-2 overflow-x-auto pb-2 custom-scrollbar justify-center lg:justify-start">
-              {knife.video_mp4 && (
-                <button
-                  onClick={() => setActiveMedia('video')}
-                  className={`flex-shrink-0 w-16 h-16 lg:w-20 lg:h-20 border-2 rounded-sm overflow-hidden relative transition-all duration-300
-                    ${activeMedia === 'video' ? 'border-[var(--gold)] opacity-100' : 'border-transparent opacity-50 hover:opacity-100'}`}
-                >
-                  <div className="absolute inset-0 flex items-center justify-center bg-black/50">
-                    <span className="text-white text-xl">▶</span>
-                  </div>
-                  {knife.video_poster && <img src={knife.video_poster} className="w-full h-full object-cover" />}
+            {/* Navegação (Setas) - Só mostra se não estiver vendo vídeo e tiver mais de 1 foto */}
+            {!showVideo && knife.fullImages.length > 1 && (
+              <>
+                <button onClick={prevImage} className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-[var(--gold)] hover:text-black transition-all opacity-0 group-hover:opacity-100">
+                  <ChevronLeft size={24} />
                 </button>
-              )}
-              {knife.images.map((img: string, idx: number) => (
-                <button
-                  key={idx}
-                  onClick={() => setActiveMedia(idx)}
-                  className={`flex-shrink-0 w-16 h-16 lg:w-20 lg:h-20 border-2 rounded-sm overflow-hidden transition-all duration-300
-                    ${activeMedia === idx ? 'border-[var(--gold)] opacity-100' : 'border-transparent opacity-50 hover:opacity-100'}`}
-                >
-                  <img src={img} alt={`View ${idx}`} className="w-full h-full object-cover" />
+                <button onClick={nextImage} className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-[var(--gold)] hover:text-black transition-all opacity-0 group-hover:opacity-100">
+                  <ChevronRight size={24} />
                 </button>
-              ))}
-            </div>
+                {/* Contador discreto */}
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-[var(--muted)] text-xs tracking-widest bg-black/50 px-3 py-1 rounded-full">
+                  {currentImageIndex + 1} / {knife.fullImages.length}
+                </div>
+              </>
+            )}
+
+            {/* Botão Flutuante: Trocar Foto/Vídeo */}
+            {knife.video_mp4 && (
+              <button 
+                onClick={() => setShowVideo(!showVideo)}
+                className="absolute top-4 right-4 z-10 flex items-center gap-2 bg-black/60 backdrop-blur-sm border border-[var(--line)] text-white px-4 py-2 rounded-full hover:border-[var(--gold)] hover:text-[var(--gold)] transition-all text-xs uppercase tracking-widest"
+              >
+                {showVideo ? (
+                  <> <ImageIcon size={14} /> {language === 'pt' ? 'Ver Fotos' : 'Photos'} </>
+                ) : (
+                  <> <Play size={14} /> {language === 'pt' ? 'Ver Vídeo' : 'Video'} </>
+                )}
+              </button>
+            )}
           </div>
 
-          {/* COLUNA DIREITA: Conteúdo Rolável */}
-          <div className="flex flex-col gap-8 lg:max-w-xl">
+          {/* --- COLUNA DIREITA: Conteúdo (5 colunas) --- */}
+          <div className="lg:col-span-5 flex flex-col gap-10 lg:pl-8">
             
-            {/* Header */}
-            <div>
-              <span className="text-[var(--gold)] uppercase tracking-[0.2em] text-xs font-bold mb-2 block">
+            {/* Header Texto */}
+            <div className="space-y-4">
+              <button 
+                onClick={() => navigate('/portfolio')} 
+                className="hidden lg:flex text-[var(--muted)] hover:text-[var(--gold)] items-center gap-2 text-xs uppercase tracking-[0.2em] mb-8 transition-colors"
+              >
+                ← {language === 'pt' ? 'Voltar ao Portfolio' : 'Back to Portfolio'}
+              </button>
+
+              <span className="text-[var(--gold)] uppercase tracking-[0.2em] text-xs font-bold block">
                 D.Braguim Custom Knives
               </span>
-              <h1 className="text-4xl md:text-5xl font-playfair text-white mb-4 leading-tight">
+              <h1 className="text-5xl lg:text-6xl font-playfair text-white leading-none">
                 {knife.name}
               </h1>
               
-              <div className={`inline-flex items-center px-4 py-1.5 rounded-full border text-xs uppercase tracking-widest font-medium
-                ${knife.status === 'available' 
-                  ? 'border-green-500/30 text-green-400 bg-green-900/10' 
-                  : 'border-red-500/30 text-red-400 bg-red-900/10'}`}>
-                {knife.status === 'available' 
-                  ? (language === 'pt' ? 'Disponível' : 'Available')
-                  : (knife.status === 'sold' 
-                      ? (language === 'pt' ? 'Vendida' : 'Sold') 
-                      : (language === 'pt' ? 'Sob Encomenda' : 'Made to Order'))}
+              <div className="flex items-center gap-4">
+                <div className={`inline-flex items-center px-4 py-1.5 rounded-full border text-xs uppercase tracking-widest font-medium
+                  ${knife.status === 'available' 
+                    ? 'border-green-500/30 text-green-400 bg-green-900/10' 
+                    : 'border-red-500/30 text-red-400 bg-red-900/10'}`}>
+                  {knife.status === 'available' 
+                    ? (language === 'pt' ? 'Disponível' : 'Available')
+                    : (knife.status === 'sold' 
+                        ? (language === 'pt' ? 'Vendida' : 'Sold') 
+                        : (language === 'pt' ? 'Sob Encomenda' : 'Made to Order'))}
+                </div>
+                <span className="text-[var(--muted)] text-sm font-light uppercase tracking-wider">
+                  {knife.category}
+                </span>
               </div>
             </div>
 
             {/* Descrição */}
-            <div className="text-[var(--muted)] leading-relaxed text-base font-light border-l-2 border-[var(--line)] pl-4">
+            <div className="text-[var(--muted)] leading-relaxed text-lg font-light">
               {language === 'pt' ? knife.description_pt : knife.description_en}
             </div>
 
             {/* Specs */}
-            <div className="pt-6 border-t border-[var(--line)]">
-              <h3 className="text-white font-playfair text-xl mb-6">
+            <div className="pt-8 border-t border-[var(--line)]">
+              <h3 className="text-white font-playfair text-2xl mb-6">
                 {language === 'pt' ? 'Especificações' : 'Specifications'}
               </h3>
-              <div className="space-y-3">
+              <div className="grid grid-cols-1 gap-4">
                 {knife.specs.map((spec: any, idx: number) => (
-                  <div key={idx} className="flex justify-between items-center text-sm">
+                  <div key={idx} className="flex justify-between items-center py-2 border-b border-[var(--line)] border-dashed">
                     <span className="text-[var(--muted)] uppercase tracking-wider text-xs">{spec.label}</span>
                     <span className="text-white font-medium">{spec.value}</span>
                   </div>
@@ -213,15 +234,15 @@ export default function KnifePage() {
               </div>
             </div>
 
-            {/* ÁREA DE INTERESSE */}
-            <div className="mt-8 bg-[var(--paper)] p-6 border border-[var(--line)] rounded-sm shadow-2xl">
+            {/* Área de Ação (Sticky bottom no mobile se quiser, mas aqui deixei normal) */}
+            <div className="bg-[var(--paper)] p-8 border border-[var(--line)] rounded-sm">
               <h4 className="text-[var(--gold)] font-bold text-sm tracking-widest uppercase mb-2">
                 {language === 'pt' ? "TENHO INTERESSE" : "I'M INTERESTED"}
               </h4>
-              <p className="text-[var(--muted)] text-sm mb-6">
+              <p className="text-[var(--muted)] text-sm mb-6 font-light">
                 {language === 'pt'
-                  ? 'Se tem interesse em uma peça como essa, escolha uma opção abaixo.'
-                  : "If you're interested in a piece like this, choose an option below."}
+                  ? 'Peça exclusiva. Entre em contato para adquirir ou encomendar.'
+                  : "Exclusive piece. Contact us to purchase or order."}
               </p>
 
               {!showEmailForm ? (
