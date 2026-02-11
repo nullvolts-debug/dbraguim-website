@@ -113,7 +113,6 @@ export default function KnifePage() {
     <div className="section page-knife pt-28 pb-20">
       <div className="container mx-auto px-4 max-w-[1400px]">
         
-        {/* Botão Voltar */}
         <button 
           onClick={() => navigate('/portfolio')} 
           className="text-[var(--muted)] hover:text-[var(--gold)] mb-8 flex items-center gap-2 text-xs uppercase tracking-[0.2em] transition-colors"
@@ -122,31 +121,32 @@ export default function KnifePage() {
         </button>
 
         {/* 
-            !!! AQUI ESTAVA O PROBLEMA !!!
-            Mudei de lg:grid-cols-12 para md:grid-cols-12
-            Isso força o layout horizontal muito mais cedo (Tablet/Laptop)
+            SOLUÇÃO COM FLEXBOX (Mais robusto que Grid)
+            Mobile: flex-col (Um embaixo do outro)
+            Tablet/Desktop: flex-row (Um ao lado do outro)
         */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-start">
+        <div className="flex flex-col md:flex-row gap-8 lg:gap-16 items-start">
           
           {/* 
-             COLUNA ESQUERDA: Mídia 
-             md:col-span-8 garante que ocupe 66% da tela em qualquer monitor
+             COLUNA ESQUERDA (FOTO)
+             w-full no mobile
+             w-[60%] no desktop
           */}
-          <div className="md:col-span-8 w-full relative group">
+          <div className="w-full md:w-[60%] lg:w-[65%] relative group">
             <div className="w-full bg-[#050505] border border-[var(--line)] rounded-sm overflow-hidden relative">
               {showVideo && knife.video_mp4 ? (
                 <video 
                   src={knife.video_mp4} 
                   controls 
                   autoPlay 
-                  className="w-full h-auto max-h-[85vh] object-contain mx-auto"
+                  className="w-full h-auto object-contain"
                   poster={knife.video_poster || undefined}
                 />
               ) : (
                 <img 
                   src={knife.fullImages[currentIndex]} 
                   alt={knife.name}
-                  className="w-full h-auto max-h-[85vh] object-contain mx-auto p-4 md:p-8"
+                  className="w-full h-auto object-contain p-4 md:p-8"
                 />
               )}
 
@@ -188,10 +188,11 @@ export default function KnifePage() {
           </div>
 
           {/* 
-             COLUNA DIREITA: Conteúdo
-             md:col-span-4 garante que ocupe 33% da tela ao lado da imagem
+             COLUNA DIREITA (CONTEÚDO)
+             w-full no mobile
+             w-[40%] no desktop
           */}
-          <div className="md:col-span-4 flex flex-col gap-8">
+          <div className="w-full md:w-[40%] lg:w-[35%] flex flex-col gap-8">
             
             {/* Header */}
             <div>
