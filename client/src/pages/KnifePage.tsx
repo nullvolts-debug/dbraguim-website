@@ -197,7 +197,7 @@ export default function KnifePage() {
             {/* Header */}
             <div>
               <span className="text-[var(--gold)] uppercase tracking-[0.2em] text-xs font-bold mb-2 block">
-                D.Braguim Custom Knives
+                D.Braguim <div className="kicker">{t('hero_kicker')}</div>
               </span>
               <h1 className="text-4xl md:text-5xl font-playfair text-white mb-4 leading-tight">
                 {knife.name}
