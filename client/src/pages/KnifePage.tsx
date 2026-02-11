@@ -14,7 +14,7 @@ export default function KnifePage() {
   const [, navigate] = useLocation();
   const { language, t } = useLanguage();
   
-  // Controle de Mídia: Índice da foto e Toggle do Vídeo
+  // Controle de Mídia
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showVideo, setShowVideo] = useState(false);
   
@@ -65,7 +65,7 @@ export default function KnifePage() {
     };
   }, [sanityKnives, slug, language]);
 
-  // Funções de Navegação (já que removemos os thumbs)
+  // Navegação (Setas)
   const nextImage = () => {
     if (!knife) return;
     setCurrentIndex((prev) => (prev + 1) % knife.fullImages.length);
@@ -103,11 +103,11 @@ export default function KnifePage() {
     }
   };
 
-  if (isLoading) return <div className="min-h-[60vh] bg-black flex items-center justify-center text-[var(--muted)]">Carregando...</div>;
+  if (isLoading) return <div className="min-h-[60vh] flex items-center justify-center text-[var(--muted)]">Carregando...</div>;
 
   if (!knife) {
     return (
-      <div className="min-h-[60vh] bg-black flex flex-col items-center justify-center gap-4">
+      <div className="min-h-[60vh] flex flex-col items-center justify-center gap-4">
         <h2 className="text-white text-xl">Faca não encontrada</h2>
         <button onClick={() => navigate('/portfolio')} className="px-6 py-2 border border-[var(--gold)] text-[var(--gold)] hover:bg-[var(--gold)] hover:text-black transition">
           Voltar ao Portfólio
@@ -117,108 +117,103 @@ export default function KnifePage() {
   }
 
   return (
-    <div className="bg-black min-h-screen">
-      {/* Botão Voltar (Mobile apenas) */}
-      <div className="lg:hidden container pt-24 px-4">
+    <div className="section page-knife pt-28 pb-20">
+      <div className="container mx-auto px-4 max-w-[1400px]">
+        
+        {/* Botão Voltar (Aparece no Mobile e Desktop) */}
         <button 
           onClick={() => navigate('/portfolio')} 
-          className="text-[var(--muted)] hover:text-[var(--gold)] flex items-center gap-2 text-xs uppercase tracking-[0.2em] transition-colors"
+          className="text-[var(--muted)] hover:text-[var(--gold)] mb-8 flex items-center gap-2 text-xs uppercase tracking-[0.2em] transition-colors"
         >
-          ← {language === 'pt' ? 'Voltar' : 'Back'}
+          ← {language === 'pt' ? 'Voltar ao Portfolio' : 'Back to Portfolio'}
         </button>
-      </div>
 
-      {/* 
-         LAYOUT GRID PRINCIPAL 
-         Desktop: 12 Colunas (8 para imagem, 4 para texto)
-      */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 min-h-screen">
-        
-        {/* --- COLUNA ESQUERDA: MÍDIA (8 colunas) --- 
-            Mobile: h-[50vh]
-            Desktop: h-screen (Tela cheia) e Sticky (Presa no topo)
+        {/* 
+            LAYOUT GRID: 
+            - lg:grid-cols-12 para ter controle fino das larguras.
+            - gap-12 para espaçamento.
+            - items-start para que ambos comecem no topo e rolem naturalmente.
         */}
-        <div className="lg:col-span-8 lg:sticky lg:top-0 h-[50vh] lg:h-screen bg-[#050505] border-b lg:border-b-0 lg:border-r border-[var(--line)] relative group flex items-center justify-center overflow-hidden">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
           
-          {/* Mídia (Foto ou Vídeo) */}
-          {showVideo && knife.video_mp4 ? (
-            <video 
-              src={knife.video_mp4} 
-              controls 
-              autoPlay 
-              className="w-full h-full object-contain bg-black"
-              poster={knife.video_poster || undefined}
-            />
-          ) : (
-            <img 
-              src={knife.fullImages[currentIndex]} 
-              alt={knife.name}
-              className="w-full h-full object-contain p-4 lg:p-12 transition-transform duration-700 hover:scale-105"
-            />
-          )}
-
-          {/* Navegação por Setas (Só aparece no Desktop ou se tiver > 1 foto) */}
-          {!showVideo && knife.fullImages.length > 1 && (
-            <>
-              <button 
-                onClick={prevImage}
-                className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/30 backdrop-blur-sm border border-white/10 text-white p-3 rounded-full hover:bg-[var(--gold)] hover:text-black transition-all opacity-0 group-hover:opacity-100"
-              >
-                <ChevronLeft size={24} />
-              </button>
-              <button 
-                onClick={nextImage}
-                className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/30 backdrop-blur-sm border border-white/10 text-white p-3 rounded-full hover:bg-[var(--gold)] hover:text-black transition-all opacity-0 group-hover:opacity-100"
-              >
-                <ChevronRight size={24} />
-              </button>
-              {/* Contador */}
-              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/50 text-xs tracking-[0.3em] bg-black/30 px-4 py-2 rounded-full backdrop-blur-md">
-                {currentIndex + 1} / {knife.fullImages.length}
-              </div>
-            </>
-          )}
-
-          {/* Botão Flutuante (Foto vs Vídeo) */}
-          {knife.video_mp4 && (
-            <button 
-              onClick={() => setShowVideo(!showVideo)}
-              className="absolute top-6 right-6 z-20 flex items-center gap-2 bg-black/40 backdrop-blur-md border border-white/20 text-white px-5 py-2 rounded-full hover:bg-[var(--gold)] hover:text-black hover:border-[var(--gold)] transition-all text-xs uppercase tracking-widest font-medium"
-            >
-              {showVideo ? (
-                <> <ImageIcon size={14} /> {language === 'pt' ? 'Ver Fotos' : 'Photos'} </>
+          {/* 
+             COLUNA ESQUERDA: Mídia (Ocupa 7 de 12 colunas = ~58% da largura) 
+             Sem sticky, sem h-screen. Altura definida pela imagem ou max-height para não exagerar.
+          */}
+          <div className="lg:col-span-7 w-full relative group">
+            
+            <div className="w-full bg-[#050505] border border-[var(--line)] rounded-sm overflow-hidden relative">
+              {showVideo && knife.video_mp4 ? (
+                <video 
+                  src={knife.video_mp4} 
+                  controls 
+                  autoPlay 
+                  className="w-full h-auto max-h-[85vh] object-contain mx-auto"
+                  poster={knife.video_poster || undefined}
+                />
               ) : (
-                <> <Play size={14} /> {language === 'pt' ? 'Ver Vídeo' : 'Video'} </>
+                <img 
+                  src={knife.fullImages[currentIndex]} 
+                  alt={knife.name}
+                  // max-h-[85vh] garante que a imagem não fique maior que a tela, mas respeita a proporção
+                  className="w-full h-auto max-h-[85vh] object-contain mx-auto p-4 lg:p-8"
+                />
               )}
-            </button>
-          )}
-        </div>
 
-        {/* --- COLUNA DIREITA: CONTEÚDO (4 colunas) --- 
-            Mobile: Padding normal
-            Desktop: Padding generoso e centralizado verticalmente
-        */}
-        <div className="lg:col-span-4 flex flex-col justify-center px-6 py-12 lg:px-16 lg:py-24 bg-black min-h-[50vh] lg:min-h-screen">
-          
-          <div className="flex flex-col gap-10">
+              {/* Botão Flutuante (Foto vs Vídeo) */}
+              {knife.video_mp4 && (
+                <button 
+                  onClick={() => setShowVideo(!showVideo)}
+                  className="absolute top-4 right-4 z-20 flex items-center gap-2 bg-black/60 backdrop-blur-md border border-[var(--line)] text-white px-4 py-2 rounded-full hover:border-[var(--gold)] hover:text-[var(--gold)] transition-all text-xs uppercase tracking-widest"
+                >
+                  {showVideo ? (
+                    <> <ImageIcon size={14} /> {language === 'pt' ? 'Ver Fotos' : 'Photos'} </>
+                  ) : (
+                    <> <Play size={14} /> {language === 'pt' ? 'Ver Vídeo' : 'Video'} </>
+                  )}
+                </button>
+              )}
+
+              {/* Setas de Navegação (Sobre a imagem) */}
+              {!showVideo && knife.fullImages.length > 1 && (
+                <>
+                  <button 
+                    onClick={prevImage}
+                    className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/40 text-white p-3 rounded-full hover:bg-[var(--gold)] hover:text-black transition-all opacity-0 group-hover:opacity-100"
+                  >
+                    <ChevronLeft size={24} />
+                  </button>
+                  <button 
+                    onClick={nextImage}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/40 text-white p-3 rounded-full hover:bg-[var(--gold)] hover:text-black transition-all opacity-0 group-hover:opacity-100"
+                  >
+                    <ChevronRight size={24} />
+                  </button>
+                  {/* Contador */}
+                  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white/50 text-xs tracking-[0.2em] bg-black/40 px-3 py-1 rounded-full">
+                    {currentIndex + 1} / {knife.fullImages.length}
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+
+          {/* 
+             COLUNA DIREITA: Conteúdo (Ocupa 5 de 12 colunas = ~42% da largura)
+             Rola naturalmente junto com a página.
+          */}
+          <div className="lg:col-span-5 flex flex-col gap-8">
+            
             {/* Header */}
             <div>
-               {/* Botão Voltar (Desktop) */}
-               <button 
-                onClick={() => navigate('/portfolio')} 
-                className="hidden lg:flex text-[var(--muted)] hover:text-[var(--gold)] mb-8 items-center gap-2 text-xs uppercase tracking-[0.2em] transition-colors"
-              >
-                ← {language === 'pt' ? 'Voltar' : 'Back'}
-              </button>
-
-              <span className="text-[var(--gold)] uppercase tracking-[0.2em] text-xs font-bold mb-3 block">
+              <span className="text-[var(--gold)] uppercase tracking-[0.2em] text-xs font-bold mb-2 block">
                 D.Braguim Custom Knives
               </span>
-              <h1 className="text-4xl lg:text-5xl font-playfair text-white mb-4 leading-[1.1]">
+              <h1 className="text-4xl md:text-5xl font-playfair text-white mb-4 leading-tight">
                 {knife.name}
               </h1>
               
-              <div className="flex flex-wrap items-center gap-4">
+              <div className="flex items-center gap-4">
                 <div className={`inline-flex items-center px-4 py-1.5 rounded-full border text-xs uppercase tracking-widest font-medium
                   ${knife.status === 'available' 
                     ? 'border-green-500/30 text-green-400 bg-green-900/10' 
@@ -229,25 +224,25 @@ export default function KnifePage() {
                         ? (language === 'pt' ? 'Vendida' : 'Sold') 
                         : (language === 'pt' ? 'Sob Encomenda' : 'Made to Order'))}
                 </div>
-                <span className="text-[var(--muted)] text-xs font-medium uppercase tracking-widest border-l border-white/10 pl-4">
+                <span className="text-[var(--muted)] text-xs font-medium uppercase tracking-widest pl-2 border-l border-[var(--line)]">
                   {knife.category}
                 </span>
               </div>
             </div>
 
             {/* Descrição */}
-            <div className="text-[var(--muted)] leading-relaxed text-base font-light">
+            <div className="text-[var(--muted)] leading-relaxed text-base font-light border-l-2 border-[var(--line)] pl-4">
               {language === 'pt' ? knife.description_pt : knife.description_en}
             </div>
 
             {/* Specs */}
-            <div className="pt-8 border-t border-[var(--line)]">
+            <div className="pt-6 border-t border-[var(--line)]">
               <h3 className="text-white font-playfair text-xl mb-6">
                 {language === 'pt' ? 'Especificações' : 'Specifications'}
               </h3>
-              <div className="grid grid-cols-1 gap-y-4">
+              <div className="space-y-3">
                 {knife.specs.map((spec: any, idx: number) => (
-                  <div key={idx} className="flex justify-between items-center text-sm border-b border-white/5 pb-2">
+                  <div key={idx} className="flex justify-between items-center text-sm border-b border-[var(--line)] border-dashed pb-2">
                     <span className="text-[var(--muted)] uppercase tracking-wider text-xs">{spec.label}</span>
                     <span className="text-white font-medium">{spec.value}</span>
                   </div>
@@ -255,19 +250,24 @@ export default function KnifePage() {
               </div>
             </div>
 
-            {/* Ações / Formulário */}
-            <div className="mt-4 bg-[var(--paper)] p-8 border border-[var(--line)] rounded-sm">
-              <h4 className="text-[var(--gold)] font-bold text-xs tracking-[0.2em] uppercase mb-6 text-center">
+            {/* ÁREA DE INTERESSE */}
+            <div className="mt-4 bg-[var(--paper)] p-6 border border-[var(--line)] rounded-sm">
+              <h4 className="text-[var(--gold)] font-bold text-sm tracking-widest uppercase mb-2">
                 {language === 'pt' ? "TENHO INTERESSE" : "I'M INTERESTED"}
               </h4>
 
               {!showEmailForm ? (
                 <div className="flex flex-col gap-3">
+                  <p className="text-[var(--muted)] text-sm mb-4">
+                    {language === 'pt'
+                      ? 'Se tem interesse em uma peça como essa, escolha uma opção abaixo.'
+                      : "If you're interested in a piece like this, choose an option below."}
+                  </p>
                   <a
                     href={`https://wa.me/5518996346820?text=${language === 'pt' ? 'Olá! Tenho interesse na faca' : 'Hi! I\'m interested in the knife'} ${knife.name}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-full text-center bg-[var(--gold)] text-black font-bold uppercase tracking-[0.15em] py-4 px-6 rounded-sm hover:brightness-110 transition-all"
+                    className="w-full text-center bg-[var(--gold)] text-black font-bold uppercase tracking-[0.15em] py-4 px-6 rounded-sm hover:brightness-110 transition-all shadow-lg shadow-[var(--gold)]/20"
                   >
                     {t('portfolio_interest_whatsapp') || 'WhatsApp'}
                   </a>
@@ -280,6 +280,9 @@ export default function KnifePage() {
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="flex flex-col gap-4 animate-in fade-in slide-in-from-bottom-2 duration-300">
+                  <p className="text-[var(--muted)] text-xs mb-2">
+                    {language === 'pt' ? 'Preencha seus dados para receber o contato.' : 'Fill in your details to get in touch.'}
+                  </p>
                   <input
                     type="text"
                     required
