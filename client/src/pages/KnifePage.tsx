@@ -14,11 +14,8 @@ export default function KnifePage() {
   const [, navigate] = useLocation();
   const { language, t } = useLanguage();
   
-  // Controle de Mídia
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showVideo, setShowVideo] = useState(false);
-  
-  // Controle do Form
   const [showEmailForm, setShowEmailForm] = useState(false);
   const [formData, setFormData] = useState({ name: '', email: '' });
   
@@ -65,7 +62,6 @@ export default function KnifePage() {
     };
   }, [sanityKnives, slug, language]);
 
-  // Navegação (Setas)
   const nextImage = () => {
     if (!knife) return;
     setCurrentIndex((prev) => (prev + 1) % knife.fullImages.length);
@@ -81,7 +77,6 @@ export default function KnifePage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!knife) return;
-
     try {
       await contactMutation.mutateAsync({
         name: formData.name,
@@ -90,16 +85,14 @@ export default function KnifePage() {
           ? `Me interessei pela faca ${knife.name}, gostaria de mais informações.`
           : `I'm interested in the ${knife.name} knife, I would like more information.`,
       });
-
       toast.success(language === 'pt' ? 'Mensagem enviada com sucesso!' : 'Message sent successfully!');
       setTimeout(() => {
         setShowEmailForm(false);
         setFormData({ name: '', email: '' });
       }, 2000);
-
     } catch (error) {
       console.error(error);
-      toast.error(language === 'pt' ? 'Erro ao enviar mensagem. Tente novamente.' : 'Error sending message. Please try again.');
+      toast.error(language === 'pt' ? 'Erro ao enviar mensagem.' : 'Error sending message.');
     }
   };
 
@@ -120,7 +113,7 @@ export default function KnifePage() {
     <div className="section page-knife pt-28 pb-20">
       <div className="container mx-auto px-4 max-w-[1400px]">
         
-        {/* Botão Voltar (Aparece no Mobile e Desktop) */}
+        {/* Botão Voltar */}
         <button 
           onClick={() => navigate('/portfolio')} 
           className="text-[var(--muted)] hover:text-[var(--gold)] mb-8 flex items-center gap-2 text-xs uppercase tracking-[0.2em] transition-colors"
@@ -129,19 +122,17 @@ export default function KnifePage() {
         </button>
 
         {/* 
-            LAYOUT GRID: 
-            - lg:grid-cols-12 para ter controle fino das larguras.
-            - gap-12 para espaçamento.
-            - items-start para que ambos comecem no topo e rolem naturalmente.
+            !!! AQUI ESTAVA O PROBLEMA !!!
+            Mudei de lg:grid-cols-12 para md:grid-cols-12
+            Isso força o layout horizontal muito mais cedo (Tablet/Laptop)
         */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-start">
           
           {/* 
-             COLUNA ESQUERDA: Mídia (Ocupa 7 de 12 colunas = ~58% da largura) 
-             Sem sticky, sem h-screen. Altura definida pela imagem ou max-height para não exagerar.
+             COLUNA ESQUERDA: Mídia 
+             md:col-span-8 garante que ocupe 66% da tela em qualquer monitor
           */}
-          <div className="lg:col-span-7 w-full relative group">
-            
+          <div className="md:col-span-8 w-full relative group">
             <div className="w-full bg-[#050505] border border-[var(--line)] rounded-sm overflow-hidden relative">
               {showVideo && knife.video_mp4 ? (
                 <video 
@@ -155,12 +146,11 @@ export default function KnifePage() {
                 <img 
                   src={knife.fullImages[currentIndex]} 
                   alt={knife.name}
-                  // max-h-[85vh] garante que a imagem não fique maior que a tela, mas respeita a proporção
-                  className="w-full h-auto max-h-[85vh] object-contain mx-auto p-4 lg:p-8"
+                  className="w-full h-auto max-h-[85vh] object-contain mx-auto p-4 md:p-8"
                 />
               )}
 
-              {/* Botão Flutuante (Foto vs Vídeo) */}
+              {/* Botão Flutuante */}
               {knife.video_mp4 && (
                 <button 
                   onClick={() => setShowVideo(!showVideo)}
@@ -174,7 +164,7 @@ export default function KnifePage() {
                 </button>
               )}
 
-              {/* Setas de Navegação (Sobre a imagem) */}
+              {/* Setas de Navegação */}
               {!showVideo && knife.fullImages.length > 1 && (
                 <>
                   <button 
@@ -189,7 +179,6 @@ export default function KnifePage() {
                   >
                     <ChevronRight size={24} />
                   </button>
-                  {/* Contador */}
                   <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white/50 text-xs tracking-[0.2em] bg-black/40 px-3 py-1 rounded-full">
                     {currentIndex + 1} / {knife.fullImages.length}
                   </div>
@@ -199,10 +188,10 @@ export default function KnifePage() {
           </div>
 
           {/* 
-             COLUNA DIREITA: Conteúdo (Ocupa 5 de 12 colunas = ~42% da largura)
-             Rola naturalmente junto com a página.
+             COLUNA DIREITA: Conteúdo
+             md:col-span-4 garante que ocupe 33% da tela ao lado da imagem
           */}
-          <div className="lg:col-span-5 flex flex-col gap-8">
+          <div className="md:col-span-4 flex flex-col gap-8">
             
             {/* Header */}
             <div>
@@ -250,7 +239,7 @@ export default function KnifePage() {
               </div>
             </div>
 
-            {/* ÁREA DE INTERESSE */}
+            {/* AREA DE INTERESSE */}
             <div className="mt-4 bg-[var(--paper)] p-6 border border-[var(--line)] rounded-sm">
               <h4 className="text-[var(--gold)] font-bold text-sm tracking-widest uppercase mb-2">
                 {language === 'pt' ? "TENHO INTERESSE" : "I'M INTERESTED"}
