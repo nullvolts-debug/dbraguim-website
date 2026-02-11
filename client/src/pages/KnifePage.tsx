@@ -5,38 +5,49 @@ import { trpc } from '@/lib/trpc';
 import KnifeModal from '@/components/KnifeModal';
 import { type KnifeData } from '@shared/knivesData';
 import { type SanityKnife } from '@shared/sanity';
-import { getCardImageUrl, getFullImageUrl } from '@/lib/sanityImage';
+// IMPORTE A FUNÇÃO DO VÍDEO AQUI
+import { getCardImageUrl, getFullImageUrl, getFileUrl } from '@/lib/sanityImage';
 import '../dbraguim.css';
 
 export default function KnifePage() {
-  const { slug } = useParams<{ slug: string }>();
+  // Pega o slug da URL (ex: blue-hunter)
+  const params = useParams();
+  const slug = params.slug; 
+  
   const [, navigate] = useLocation();
   const { language } = useLanguage();
 
-  // Buscar todas as facas do Sanity
+  // Buscar todas as facas
   const { data: sanityKnives, isLoading } = trpc.sanity.getKnives.useQuery();
 
-  // Encontrar e converter a faca correspondente ao slug
   const knife = useMemo(() => {
-    if (!sanityKnives) return null;
+    if (!sanityKnives || !slug) return null;
 
-    const foundSanityKnife = sanityKnives.find(
-      (k: SanityKnife) => k.slug?.current === slug
-    );
+    // --- CORREÇÃO PRINCIPAL AQUI ---
+    // Tenta encontrar a faca comparando o slug da URL tanto com o slug do banco
+    // quanto com o slug gerado (nome transformado), para garantir que encontre.
+    const foundSanityKnife = sanityKnives.find((k: SanityKnife) => {
+      const storedSlug = k.slug?.current;
+      const generatedSlug = k.name.toLowerCase().trim().replace(/\s+/g, '-');
+      
+      // Verifica se o slug da URL bate com algum dos dois
+      return storedSlug === slug || generatedSlug === slug;
+    });
+    // --------------------------------
 
     if (!foundSanityKnife) return null;
 
-    // Converter formato Sanity para formato local
+    // Converter as imagens
     const sanityImages = foundSanityKnife.images?.map((img: any) => {
       const cardUrl = getCardImageUrl(img);
       const fullUrl = getFullImageUrl(img);
       return { cardUrl, fullUrl, raw: img };
     }) || [];
 
-    // Fallback para imagem local baseada no nome
     const localImageName = foundSanityKnife.name.toLowerCase().replace(/\s+/g, '_') + '.webp';
     const fallbackCardUrl = `/images/portfolio/${localImageName}`;
 
+    // Montar o objeto final
     const converted: KnifeData = {
       name: foundSanityKnife.name,
       slug: slug,
@@ -48,8 +59,12 @@ export default function KnifePage() {
       fullImages: sanityImages.length > 0
         ? sanityImages.map((img: any) => img.fullUrl)
         : [fallbackCardUrl],
-      video_mp4: foundSanityKnife.video?.asset?._ref,
-      video_poster: foundSanityKnife.videoPoster?.asset?._ref,
+        
+      // --- CORREÇÃO DO VÍDEO AQUI ---
+      video_mp4: getFileUrl(foundSanityKnife.video),
+      video_poster: getFileUrl(foundSanityKnife.videoPoster),
+      // ------------------------------
+
       description_pt: foundSanityKnife.description_pt,
       description_en: foundSanityKnife.description_en,
       modelo: foundSanityKnife.model || '',
@@ -68,7 +83,7 @@ export default function KnifePage() {
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-black">
-        <div className="text-white text-lg">Carregando...</div>
+        <div className="text-white text-lg">Carregando detalhes...</div>
       </div>
     );
   }
@@ -77,7 +92,7 @@ export default function KnifePage() {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-black gap-6">
         <div className="text-white text-lg text-center">
-          Faca não encontrada
+          Faca não encontrada: "{slug}"
         </div>
         <button
           onClick={() => navigate('/portfolio')}
@@ -89,7 +104,7 @@ export default function KnifePage() {
     );
   }
 
-  // Renderizar o modal da faca em tela cheia
+  // Renderiza o modal forçado como "aberto"
   return (
     <div className="min-h-screen bg-black">
       <KnifeModal
