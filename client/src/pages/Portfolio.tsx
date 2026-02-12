@@ -1,54 +1,49 @@
 import { useState, useMemo } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
-import KnifeModal from '@/components/KnifeModal';
+// Removi o KnifeModal import
 import { type KnifeData } from '@shared/knivesData';
 import { trpc } from '@/lib/trpc';
 import { type SanityKnife } from '@shared/sanity';
-import { getCardImageUrl, getFullImageUrl, getFileUrl } from '@/lib/sanityImage';
-import { Link } from 'wouter';
+import { getCardImageUrl, getFullImageUrl } from '@/lib/sanityImage';
+import { useLocation } from 'wouter'; // Import para navegação
 
 export default function Portfolio() {
   const { t, language } = useLanguage();
-  const [selectedKnife, setSelectedKnife] = useState<KnifeData | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [, navigate] = useLocation(); // Hook de navegação
+
+  // Removi os estados do Modal (selectedKnife, isModalOpen)
+  
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
   const [statusFilter, setStatusFilter] = useState<string>('all');
 
-  // Buscar todas as facas do Sanity
   const { data: sanityKnives, isLoading } = trpc.sanity.getKnives.useQuery();
 
+  // Função atualizada: Navega para a página em vez de abrir modal
   const handleKnifeClick = (knife: KnifeData) => {
-    setSelectedKnife(knife);
-    setIsModalOpen(true);
+    // Rola para o topo antes de navegar (opcional, mas bom para UX)
+    window.scrollTo(0, 0);
+    navigate(`/faca/${knife.slug}`);
   };
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setTimeout(() => setSelectedKnife(null), 300);
-  };
-
-  // Converter e filtrar facas
   const filteredKnives = useMemo(() => {
     if (!sanityKnives) return [];
 
-    // Converter formato Sanity para formato local
     const converted: KnifeData[] = sanityKnives.map((knife: SanityKnife) => {
-      // Guardar slug para URL única
-      const slug = knife.slug?.current || knife.name.toLowerCase().replace(/\s+/g, '-');
-      // Gerar URLs das imagens do Sanity CDN
+      // Garante que o slug existe
+      const slug = knife.slug?.current || knife.name.toLowerCase().trim().replace(/\s+/g, '-');
+      
       const sanityImages = knife.images?.map((img: any) => {
         const cardUrl = getCardImageUrl(img);
         const fullUrl = getFullImageUrl(img);
         return { cardUrl, fullUrl, raw: img };
       }) || [];
 
-      // Fallback para imagem local baseada no nome
       const localImageName = knife.name.toLowerCase().replace(/\s+/g, '_') + '.webp';
       const fallbackCardUrl = `/images/portfolio/${localImageName}`;
 
       return {
         name: knife.name,
-        slug: slug,
+        slug: slug, // Importante: O slug está sendo passado aqui
         category: knife.category === 'hunting' ? 'Caça' : knife.category === 'fighter' ? 'Luta' : 'Chef',
         status: knife.status === 'available' ? 'disponivel' : knife.status === 'sold' ? 'vendida' : 'encomenda',
         images: sanityImages.length > 0
@@ -57,7 +52,7 @@ export default function Portfolio() {
         fullImages: sanityImages.length > 0
           ? sanityImages.map((img: any) => img.fullUrl)
           : [fallbackCardUrl],
-        video_mp4: getFileUrl(knife.video),
+        video_mp4: knife.video?.asset?._ref,
         video_poster: knife.videoPoster?.asset?._ref,
         description_pt: knife.description_pt,
         description_en: knife.description_en,
@@ -72,7 +67,6 @@ export default function Portfolio() {
       };
     });
 
-    // Aplicar filtros
     return converted.filter((knife) => {
       if (categoryFilter !== 'all' && knife.category !== categoryFilter) return false;
       if (statusFilter !== 'all' && knife.status !== statusFilter) return false;
@@ -80,7 +74,6 @@ export default function Portfolio() {
     });
   }, [sanityKnives, categoryFilter, statusFilter]);
 
-  // Helper para mapear status
   const getStatusLabel = (status: string) => {
     if (status === 'disponivel') {
       return language === 'pt' ? 'Disponível' : 'Available';
@@ -131,7 +124,7 @@ export default function Portfolio() {
           </div>
 
           {isLoading ? (
-            <div style={{ color: 'var(--muted)', padding: '2rem 0' }}>Carregando...</div>
+            <div style={{ color: 'var(--muted)', padding: '2rem 0', textAlign: 'center' }}>Carregando...</div>
           ) : (
             <div className="grid">
               {filteredKnives.map((knife) => (
@@ -166,7 +159,7 @@ export default function Portfolio() {
         </div>
       </section>
 
-      <KnifeModal knife={selectedKnife} isOpen={isModalOpen} onClose={handleCloseModal} />
+      {/* Removi o componente <KnifeModal /> daqui */}
     </>
   );
 }
