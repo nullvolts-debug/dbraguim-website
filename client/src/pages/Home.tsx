@@ -1,7 +1,7 @@
-import { Link } from 'wouter';
-import { useState, useMemo } from 'react';
+import { Link, useLocation } from 'wouter'; // Adicionado useLocation
+import { useMemo } from 'react'; // Removido useState (não precisa mais)
 import { useLanguage } from '@/contexts/LanguageContext';
-import KnifeModal from '@/components/KnifeModal';
+// Removido KnifeModal import
 import { type KnifeData } from '@shared/knivesData';
 import { trpc } from '@/lib/trpc';
 import { type SanityKnife } from '@shared/sanity';
@@ -9,47 +9,45 @@ import { getCardImageUrl, getFullImageUrl } from '@/lib/sanityImage';
 
 export default function Home() {
   const { t, language } = useLanguage();
-  const [selectedKnife, setSelectedKnife] = useState<KnifeData | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [, navigate] = useLocation(); // Hook de navegação
+
+  // Removi os estados do modal (selectedKnife, isModalOpen)
 
   // Buscar todas as facas do Sanity
   const { data: allKnives, isLoading } = trpc.sanity.getKnives.useQuery();
 
   const handleKnifeClick = (knife: KnifeData) => {
-    setSelectedKnife(knife);
-    setIsModalOpen(true);
+    // Rola para o topo e navega para a página da faca
+    window.scrollTo(0, 0);
+    navigate(`/faca/${knife.slug}`);
   };
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setTimeout(() => setSelectedKnife(null), 300);
-  };
+  // Removi handleCloseModal
 
-  // Converter SanityKnife para KnifeData e aplicar lógica de priorização
   const featuredKnives = useMemo(() => {
     if (!allKnives) return [];
 
-    // Converter formato Sanity para formato local
     const converted: KnifeData[] = allKnives.map((knife: SanityKnife) => {
-      // Gerar URLs das imagens do Sanity CDN
+      // ADICIONADO: Gerar o slug para poder navegar
+      const slug = knife.slug?.current || knife.name.toLowerCase().trim().replace(/\s+/g, '-');
+
       const sanityImages = knife.images?.map((img: any) => {
         const cardUrl = getCardImageUrl(img);
         const fullUrl = getFullImageUrl(img);
         return { cardUrl, fullUrl, raw: img };
       }) || [];
 
-      // Fallback para imagem local baseada no nome
       const localImageName = knife.name.toLowerCase().replace(/\s+/g, '_') + '.webp';
       const fallbackCardUrl = `/images/portfolio/${localImageName}`;
 
       return {
         name: knife.name,
+        slug: slug, // ADICIONADO: Passando o slug no objeto
         category: knife.category === 'hunting' ? 'Caça' : knife.category === 'fighter' ? 'Luta' : 'Chef',
         status: knife.status === 'available' ? 'disponivel' : knife.status === 'sold' ? 'vendida' : 'encomenda',
         images: sanityImages.length > 0
           ? sanityImages.map((img: any) => img.cardUrl)
           : [fallbackCardUrl],
-        // Guardar URLs em alta resolução para o modal
         fullImages: sanityImages.length > 0
           ? sanityImages.map((img: any) => img.fullUrl)
           : [fallbackCardUrl],
@@ -75,7 +73,6 @@ export default function Home() {
     return [...disponiveis, ...outras].slice(0, 3);
   }, [allKnives]);
 
-  // Helper para mapear status
   const getStatusLabel = (status: string) => {
     if (status === 'disponivel') {
       return language === 'pt' ? 'Disponível' : 'Available';
@@ -119,7 +116,7 @@ export default function Home() {
           <h2 className="section__title">{t('home_section_highlights')}</h2>
           {isLoading ? (
             <div className="grid">
-              <div style={{ color: 'var(--muted)' }}>Carregando...</div>
+              <div style={{ color: 'var(--muted)', textAlign: 'center' }}>Carregando...</div>
             </div>
           ) : (
             <div className="grid">
@@ -155,7 +152,7 @@ export default function Home() {
         </div>
       </section>
 
-      <KnifeModal knife={selectedKnife} isOpen={isModalOpen} onClose={handleCloseModal} />
+      {/* Removido o KnifeModal daqui */}
 
       {/* Sobre Section */}
       <section className="section">
