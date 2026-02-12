@@ -154,7 +154,7 @@ export default function KnifePage() {
               {knife.video_mp4 && (
                 <button 
                   onClick={() => setShowVideo(!showVideo)}
-                  className="absolute top-4 right-4 z-20 flex items-center gap-2 bg-black/60 backdrop-blur-md border border-[var(--line)] text-white px-4 py-2 rounded-full hover:border-[var(--gold)] hover:text-[var(--gold)] transition-all text-xs uppercase tracking-widest"
+                  className="absolute top-4 left-4 z-20 flex items-center gap-2 bg-black/60 backdrop-blur-md border border-[var(--line)] text-white px-4 py-2 rounded-full hover:border-[var(--gold)] hover:text-[var(--gold)] transition-all text-xs uppercase tracking-widest"
                 >
                   {showVideo ? (
                     <> <ImageIcon size={14} /> {language === 'pt' ? 'Ver Fotos' : 'Photos'} </>
