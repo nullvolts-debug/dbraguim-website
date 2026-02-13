@@ -3,29 +3,28 @@ import { trpc } from '@/lib/trpc';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { toast } from 'sonner'; // Importante para feedback visual
+import { toast } from 'sonner';
 
 export default function NewsletterForm() {
   const { language } = useLanguage();
   const [email, setEmail] = useState('');
 
-  // MUDANÇA 1: Usar 'contact.subscribe' em vez de 'newsletter.subscribe'
-  // (Ou verifique se no backend existe mesmo 'newsletter')
-  const subscribe = trpc.contact.subscribe.useMutation({
-    onSuccess: () => {
-      toast.success(
-        language === 'en' 
-          ? 'Successfully subscribed!' 
-          : 'Inscrito com sucesso!'
-      );
-      setEmail('');
+  // 1. APONTA PARA O ROUTER CORRETO (newsletter)
+  const subscribe = trpc.newsletter.subscribe.useMutation({
+    onSuccess: (data) => {
+      if (data.success) {
+        toast.success(data.message); // Usa a mensagem que vem do backend
+        setEmail('');
+      } else {
+        toast.error(data.message); // Email já cadastrado, etc.
+      }
     },
     onError: (error) => {
-      toast.error(
+      toast.error(error.message || (
         language === 'en' 
-          ? error.message || 'Error subscribing.' 
-          : error.message || 'Erro ao se inscrever.'
-      );
+          ? 'Error subscribing.' 
+          : 'Erro ao se inscrever.'
+      ));
     },
   });
 
@@ -33,8 +32,11 @@ export default function NewsletterForm() {
     e.preventDefault();
     if (!email) return;
 
-    // MUDANÇA 2: Enviar apenas o email (a menos que o backend exija 'source')
-    subscribe.mutate({ email });
+    // 2. ENVIA O OBJETO COMO O ZOD ESPERA (com source)
+    subscribe.mutate({ 
+      email, 
+      source: 'email' 
+    });
   };
 
   return (
