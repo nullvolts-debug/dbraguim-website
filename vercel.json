@@ -1,5 +1,5 @@
 {
-  "buildCommand": "ls -R && pnpm exec tsx scripts/generate-sitemap.ts && npx vite build",
+  "buildCommand": "pnpm exec tsx src/generate-sitemap.ts && npx vite build",
   "outputDirectory": "dist/public",
   "installCommand": "pnpm install",
   "framework": null,
