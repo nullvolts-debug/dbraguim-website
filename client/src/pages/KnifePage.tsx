@@ -79,7 +79,7 @@ export default function KnifePage() {
 
   // --- PREPARAÇÃO DOS DADOS DE SEO ---
   const seoTitle = knife 
-    ? `${knife.name} - Faca Artesanal | D.Braguim`
+    ? `${knife.name} - Faca Artesanal`
     : 'D.Braguim - Cutelaria Artesanal';
 
   const descText = knife 
@@ -124,7 +124,7 @@ export default function KnifePage() {
     return (
       <div className="min-h-[60vh] flex flex-col items-center justify-center gap-4">
         {/* SEO para página 404/Não encontrada */}
-        <SEO title="Faca não encontrada | D.Braguim" />
+        <SEO title="Faca não encontrada" />
         
         <h2 className="text-white text-xl">Faca não encontrada</h2>
         <button onClick={() => navigate('/portfolio')} className="px-6 py-2 border border-[var(--gold)] text-[var(--gold)] hover:bg-[var(--gold)] hover:text-black transition">

@@ -51,7 +51,7 @@ export default function Contato() {
     <>
       {/* 2. ADICIONE O COMPONENTE SEO AQUI */}
       <SEO
-        title="Contato | D.Braguim Cutelaria"
+        title="Contato"
         description="Entre em contato para encomendas, dúvidas ou compra de facas artesanais exclusivas."
         url="https://www.dbraguim.com/contato"
       />
