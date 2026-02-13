@@ -1,5 +1,5 @@
 import { useParams, useLocation } from 'wouter';
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { trpc } from '@/lib/trpc';
 import { type SanityKnife } from '@shared/sanity';
@@ -43,8 +43,8 @@ export default function KnifePage() {
 
     return {
       name: foundSanityKnife.name,
-      images: sanityImages.map(i => i.cardUrl),
-      fullImages: sanityImages.map(i => i.fullUrl),
+      images: sanityImages.map((i: any) => i.cardUrl),
+      fullImages: sanityImages.map((i: any) => i.fullUrl),
       video_mp4: videoUrl,
       video_poster: videoPoster,
       category: foundSanityKnife.category,
@@ -73,6 +73,65 @@ export default function KnifePage() {
     setCurrentIndex((prev) => (prev - 1 + knife.fullImages.length) % knife.fullImages.length);
     setShowVideo(false);
   };
+
+  // Atualizar meta tags dinâmicas para SEO
+  useEffect(() => {
+    if (!knife) {
+      document.title = 'D.Braguim - Cutelaria Artesanal';
+      return;
+    }
+
+    // Título dinâmico
+    const title = `${knife.name} - Faca Artesanal | D.Braguim`;
+    document.title = title;
+
+    // Meta description
+    let descMeta = document.querySelector('meta[name="description"]');
+    if (!descMeta) {
+      descMeta = document.createElement('meta');
+      descMeta.setAttribute('name', 'description');
+      document.head.appendChild(descMeta);
+    }
+    const description = language === 'pt' ? knife.description_pt : knife.description_en;
+    descMeta.setAttribute('content', `${knife.name} - ${description.substring(0, 120)}...`);
+
+    // Open Graph tags
+    const updateOGTag = (property: string, content: string) => {
+      let tag = document.querySelector(`meta[property="${property}"]`);
+      if (!tag) {
+        tag = document.createElement('meta');
+        tag.setAttribute('property', property);
+        document.head.appendChild(tag);
+      }
+      tag.setAttribute('content', content);
+    };
+
+    updateOGTag('og:title', title);
+    updateOGTag('og:description', description.substring(0, 120));
+    updateOGTag('og:type', 'product');
+    updateOGTag('og:url', `${window.location.origin}/faca/${slug}`);
+    if (knife.images && knife.images.length > 0) {
+      updateOGTag('og:image', knife.images[0]);
+    }
+
+    // Twitter Card tags
+    const updateTwitterTag = (name: string, content: string) => {
+      let tag = document.querySelector(`meta[name="${name}"]`);
+      if (!tag) {
+        tag = document.createElement('meta');
+        tag.setAttribute('name', name);
+        document.head.appendChild(tag);
+      }
+      tag.setAttribute('content', content);
+    };
+
+    updateTwitterTag('twitter:card', 'summary_large_image');
+    updateTwitterTag('twitter:title', title);
+    updateTwitterTag('twitter:description', description.substring(0, 120));
+    if (knife.images && knife.images.length > 0) {
+      updateTwitterTag('twitter:image', knife.images[0]);
+    }
+  }, [knife, slug, language]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
