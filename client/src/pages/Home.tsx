@@ -6,6 +6,7 @@ import { type KnifeData } from '@shared/knivesData';
 import { trpc } from '@/lib/trpc';
 import { type SanityKnife } from '@shared/sanity';
 import { getCardImageUrl, getFullImageUrl } from '@/lib/sanityImage';
+import { useSEO } from '../hooks/useSEO';
 
 export default function Home() {
   const { t, language } = useLanguage();
@@ -21,6 +22,13 @@ export default function Home() {
     window.scrollTo(0, 0);
     navigate(`/faca/${knife.slug}`);
   };
+  //SEO
+   useSEO({
+      title: 'D.Braguim - Cutelaria Artesanal',
+      description: 'Facas artesanais exclusivas feitas à mão com aço de alta qualidade.',
+      image: 'https://seusite.com/imagem-capa-home.jpg', // Opcional
+      url: window.location.href
+    });
 
   // Removi handleCloseModal
 
