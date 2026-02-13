@@ -76,7 +76,7 @@ async function generateSitemap() {
     }
 
     fs.writeFileSync(path.join(publicDir, 'sitemap.xml'), xml);
-    console.log('✅ sitemap.xml gerado com sucesso em /public/sitemap.xml');
+    console.log('✅ sitemap.xml gerado com sucesso em client/public/sitemap.xml');
 
   } catch (error) {
     console.error('❌ Erro ao gerar sitemap:', error);
