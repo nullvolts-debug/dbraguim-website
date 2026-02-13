@@ -142,12 +142,9 @@ importers:
       date-fns:
         specifier: ^4.1.0
         version: 4.1.0
-      dotenv:
-        specifier: ^17.2.2
-        version: 17.2.3
       drizzle-orm:
         specifier: ^0.44.5
-        version: 0.44.6(mysql2@3.15.1)
+        version: 0.44.6(mysql2@3.15.1)(postgres@3.4.8)
       embla-carousel-react:
         specifier: ^8.6.0
         version: 8.6.0(react@19.2.4)
@@ -178,6 +175,9 @@ importers:
       next-themes:
         specifier: ^0.4.6
         version: 0.4.6(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      postgres:
+        specifier: ^3.4.8
+        version: 3.4.8
       react:
         specifier: ^19.2.4
         version: 19.2.4
@@ -269,6 +269,9 @@ importers:
       autoprefixer:
         specifier: ^10.4.20
         version: 10.4.21(postcss@8.5.6)
+      dotenv:
+        specifier: ^17.2.3
+        version: 17.2.3
       drizzle-kit:
         specifier: ^0.31.4
         version: 0.31.5
@@ -7546,6 +7549,10 @@ packages:
   postcss@8.5.6:
     resolution: {integrity: sha512-3Ybi1tAuwAP9s0r1UQ2J4n5Y0G05bJkpUIO0/bI9MhwmD70S5aTWbXGBwxHrelT+XM1k6dM0pk+SwNkpTRN7Pg==}
     engines: {node: ^10 || ^12 || >=14}
+
+  postgres@3.4.8:
+    resolution: {integrity: sha512-d+JFcLM17njZaOLkv6SCev7uoLaBtfK86vMUXhW1Z4glPWh4jozno9APvW/XKFJ3CCxVoC7OL38BqRydtu5nGg==}
+    engines: {node: '>=12'}
 
   preferred-pm@4.1.1:
     resolution: {integrity: sha512-rU+ZAv1Ur9jAUZtGPebQVQPzdGhNzaEiQ7VL9+cjsAWPHFYOccNXPNiev1CCDSOg/2j7UujM7ojNhpkuILEVNQ==}
@@ -15234,9 +15241,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  drizzle-orm@0.44.6(mysql2@3.15.1):
+  drizzle-orm@0.44.6(mysql2@3.15.1)(postgres@3.4.8):
     optionalDependencies:
       mysql2: 3.15.1
+      postgres: 3.4.8
 
   dunder-proto@1.0.1:
     dependencies:
@@ -17530,6 +17538,8 @@ snapshots:
       nanoid: 3.3.11
       picocolors: 1.1.1
       source-map-js: 1.2.1
+
+  postgres@3.4.8: {}
 
   preferred-pm@4.1.1:
     dependencies:

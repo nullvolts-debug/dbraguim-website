@@ -1,8 +1,19 @@
 import { z } from 'zod';
 import { publicProcedure, router } from './_core/trpc';
-import { getDb } from './db';
-import { newsletterSubscribers } from '../drizzle/schema';
+// Importamos o Drizzle direto daqui, sem getDb complicado
+import { drizzle } from "drizzle-orm/postgres-js";
+import postgres from "postgres";
+import { newsletterSubscribers } from '../drizzle/schema'; // Ajuste o caminho se necessário
 import { eq } from 'drizzle-orm';
+import * as dotenv from "dotenv";
+
+dotenv.config();
+
+// Configura conexão rápida para a rota
+const connectionString = process.env.DATABASE_URL!;
+// O cliente do banco
+const client = postgres(connectionString);
+const db = drizzle(client);
 
 export const newsletterRouter = router({
   subscribe: publicProcedure
@@ -13,12 +24,9 @@ export const newsletterRouter = router({
       })
     )
     .mutation(async ({ input }) => {
-      const db = await getDb();
-      if (!db) {
-        throw new Error('Database not available');
-      }
-
       try {
+        console.log(`[Newsletter] Tentando inscrever: ${input.email}`);
+
         // Verificar se já existe
         const existing = await db
           .select()
@@ -27,6 +35,7 @@ export const newsletterRouter = router({
           .limit(1);
 
         if (existing.length > 0) {
+          console.log('[Newsletter] Email já existe.');
           return {
             success: false,
             message: 'Este email já está cadastrado na newsletter',
@@ -39,13 +48,14 @@ export const newsletterRouter = router({
           source: input.source,
         });
 
+        console.log('[Newsletter] Sucesso!');
         return {
           success: true,
           message: 'Email cadastrado com sucesso!',
         };
       } catch (error) {
-        console.error('[Newsletter] Error subscribing:', error);
-        throw new Error('Erro ao cadastrar email');
+        console.error('[Newsletter] Erro ao cadastrar:', error);
+        throw new Error('Erro ao salvar no banco de dados');
       }
     }),
 });
