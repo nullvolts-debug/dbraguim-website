@@ -1,27 +1,74 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://dbraguim.com/</loc>
-    <lastmod>2026-02-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://dbraguim.com/portfolio/</loc>
-    <lastmod>2026-02-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://dbraguim.com/sobre/</loc>
-    <lastmod>2026-02-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://dbraguim.com/contato/</loc>
-    <lastmod>2026-02-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
+<url>
+<loc>https://dbraguim.com/</loc>
+<lastmod>2026-02-13</lastmod>
+<changefreq>weekly</changefreq>
+<priority>1.0</priority>
+</url>
+<url>
+<loc>https://dbraguim.com/portfolio/</loc>
+<lastmod>2026-02-13</lastmod>
+<changefreq>weekly</changefreq>
+<priority>0.9</priority>
+</url>
+<url>
+<loc>https://dbraguim.com/sobre/</loc>
+<lastmod>2026-02-13</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.5</priority>
+</url>
+<url>
+<loc>https://dbraguim.com/contato/</loc>
+<lastmod>2026-02-13</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.5</priority>
+</url>
+<url>
+<loc>https://dbraguim.com/faca/spear-bowie</loc>
+<lastmod>2026-02-10</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.8</priority>
+</url>
+<url>
+<loc>https://dbraguim.com/faca/blue-hunter</loc>
+<lastmod>2026-02-09</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.8</priority>
+</url>
+<url>
+<loc>https://dbraguim.com/faca/flame-chef</loc>
+<lastmod>2026-02-09</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.8</priority>
+</url>
+<url>
+<loc>https://dbraguim.com/faca/amber-chef</loc>
+<lastmod>2026-02-09</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.8</priority>
+</url>
+<url>
+<loc>https://dbraguim.com/faca/brute-bbq</loc>
+<lastmod>2026-02-09</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.8</priority>
+</url>
+<url>
+<loc>https://dbraguim.com/faca/shank</loc>
+<lastmod>2026-02-09</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.8</priority>
+</url>
+<url>
+<loc>https://dbraguim.com/faca/classic-hunter</loc>
+<lastmod>2026-02-09</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.8</priority>
+</url>
+<url>
+<loc>https://dbraguim.com/faca/karambit</loc>
+<lastmod>2026-02-09</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.8</priority>
+</url>
 </urlset>
