@@ -44,8 +44,8 @@ export default function Contato() {
       ? "Hi! I'd like to join your D.Braguim broadcast list. My name is _____. Thank you!"
       : 'Olá! Quero entrar na sua lista de transmissão da D.Braguim. Meu nome é _____. Obrigado!';
    useSEO({
-    title: 'Sobre Mim | D.Braguim',
-    description: 'Conheça a história e o processo artesanal por trás das facas D.Braguim.',
+    title: 'Contato | D.Braguim',
+    description: 'Mais informações, compra ou encomenda de faca, fale comigo.',
   });
 
   return (
