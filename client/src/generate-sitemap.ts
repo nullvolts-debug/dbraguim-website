@@ -68,7 +68,7 @@ async function generateSitemap() {
     xml += `</urlset>`;
 
     // 5. Salvar o arquivo na pasta public
-    const publicDir = path.resolve(process.cwd(), 'public');
+    const publicDir = path.resolve(process.cwd(), 'client', 'public');
     
     // Garante que a pasta public existe
     if (!fs.existsSync(publicDir)) {
