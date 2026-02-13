@@ -23,6 +23,10 @@ const generateSitemapPlugin = () => {
 }
 export default defineConfig({
   root: templateRoot,
+  plugins: [
+    generateSitemapPlugin(),
+    react(),
+  ],
   resolve: {
     alias: {
       "@": path.resolve(templateRoot, "client", "src"),
