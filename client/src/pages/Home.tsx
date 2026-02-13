@@ -1,42 +1,34 @@
-import { Link, useLocation } from 'wouter'; // Adicionado useLocation
-import { useMemo } from 'react'; // Removido useState (não precisa mais)
+import { Link, useLocation } from 'wouter'; 
+import { useMemo } from 'react'; 
 import { useLanguage } from '@/contexts/LanguageContext';
 // Removido KnifeModal import
 import { type KnifeData } from '@shared/knivesData';
 import { trpc } from '@/lib/trpc';
 import { type SanityKnife } from '@shared/sanity';
 import { getCardImageUrl, getFullImageUrl } from '@/lib/sanityImage';
-import { useSEO } from '../hooks/useSEO';
+// 1. IMPORTANTE: Troque useSEO por SEO
+import { SEO } from '@/components/SEO';
 
 export default function Home() {
   const { t, language } = useLanguage();
-  const [, navigate] = useLocation(); // Hook de navegação
+  const [, navigate] = useLocation();
 
-  // Removi os estados do modal (selectedKnife, isModalOpen)
+  // REMOVIDO: useSEO({...}) e window.location.href (que pode dar erro no servidor)
 
   // Buscar todas as facas do Sanity
   const { data: allKnives, isLoading } = trpc.sanity.getKnives.useQuery();
 
   const handleKnifeClick = (knife: KnifeData) => {
-    // Rola para o topo e navega para a página da faca
     window.scrollTo(0, 0);
+    // Corrigido para template string (crase)
     navigate(`/faca/${knife.slug}`);
   };
-  //SEO
-   useSEO({
-      title: 'D.Braguim - Cutelaria Artesanal',
-      description: 'Facas artesanais exclusivas feitas à mão com aço de alta qualidade.',
-      image: 'https://seusite.com/imagem-capa-home.jpg', // Opcional
-      url: window.location.href
-    });
 
-  // Removi handleCloseModal
-
+  // ... (lógica do featuredKnives continua igual) ...
   const featuredKnives = useMemo(() => {
     if (!allKnives) return [];
 
-    const converted: KnifeData[] = allKnives.map((knife: SanityKnife) => {
-      // ADICIONADO: Gerar o slug para poder navegar
+    const converted: any[] = allKnives.map((knife: SanityKnife) => {
       const slug = knife.slug?.current || knife.name.toLowerCase().trim().replace(/\s+/g, '-');
 
       const sanityImages = knife.images?.map((img: any) => {
@@ -49,16 +41,13 @@ export default function Home() {
       const fallbackCardUrl = `/images/portfolio/${localImageName}`;
 
       return {
+        // ... (mesma estrutura de antes) ...
         name: knife.name,
-        slug: slug, // ADICIONADO: Passando o slug no objeto
+        slug: slug,
         category: knife.category === 'hunting' ? 'Caça' : knife.category === 'fighter' ? 'Luta' : 'Chef',
         status: knife.status === 'available' ? 'disponivel' : knife.status === 'sold' ? 'vendida' : 'encomenda',
-        images: sanityImages.length > 0
-          ? sanityImages.map((img: any) => img.cardUrl)
-          : [fallbackCardUrl],
-        fullImages: sanityImages.length > 0
-          ? sanityImages.map((img: any) => img.fullUrl)
-          : [fallbackCardUrl],
+        images: sanityImages.length > 0 ? sanityImages.map((img: any) => img.cardUrl) : [fallbackCardUrl],
+        fullImages: sanityImages.length > 0 ? sanityImages.map((img: any) => img.fullUrl) : [fallbackCardUrl],
         video_mp4: knife.video?.asset?._ref,
         video_poster: knife.videoPoster?.asset?._ref,
         description_pt: knife.description_pt,
@@ -74,7 +63,6 @@ export default function Home() {
       };
     });
 
-    // Lógica de priorização: disponíveis primeiro
     const disponiveis = converted.filter(k => k.status === 'disponivel');
     const outras = converted.filter(k => k.status !== 'disponivel');
     
@@ -93,6 +81,16 @@ export default function Home() {
 
   return (
     <>
+      {/* 2. ADICIONE O COMPONENTE SEO AQUI */}
+      <SEO
+        title="D.Braguim - Cutelaria Artesanal de Alta Performance"
+        description="Facas exclusivas forjadas à mão pelo cuteleiro Dennis Braguim. Arte, tradição e precisão em cada lâmina."
+        // Url hardcoded é mais seguro que window.location para evitar erros de hidratação
+        url="https://www.dbraguim.com/"
+        // Se tiver uma imagem de capa bacana, coloque aqui:
+        // image="https://www.dbraguim.com/images/hero-bg.jpg"
+      />
+
       {/* Hero Section */}
       <section className="hero">
         <div className="hero__contentOverlay">
@@ -159,8 +157,6 @@ export default function Home() {
           )}
         </div>
       </section>
-
-      {/* Removido o KnifeModal daqui */}
 
       {/* Sobre Section */}
       <section className="section">

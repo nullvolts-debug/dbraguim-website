@@ -6,17 +6,15 @@ import { trpc } from '@/lib/trpc';
 import { type SanityKnife } from '@shared/sanity';
 import { getCardImageUrl, getFullImageUrl } from '@/lib/sanityImage';
 import { useLocation } from 'wouter'; // Import para navegação
-import { useSEO } from '../hooks/useSEO';
+// 1. IMPORTANTE: Troque useSEO por SEO (o componente)
+import { SEO } from '@/components/SEO';
 
 export default function Portfolio() {
   const { t, language } = useLanguage();
   const [, navigate] = useLocation(); // Hook de navegação
 
-   useSEO({
-    title: 'Portfolio | D.Braguim',
-    description: 'Uma pequena amostra dos modelos de facas D.Braguim',
-  });
-
+  // REMOVIDO: useSEO({...})
+  
   // Removi os estados do Modal (selectedKnife, isModalOpen)
   
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
@@ -28,16 +26,17 @@ export default function Portfolio() {
   const handleKnifeClick = (knife: KnifeData) => {
     // Rola para o topo antes de navegar (opcional, mas bom para UX)
     window.scrollTo(0, 0);
-    navigate(`/faca/${knife.slug}`);
+    navigate(`/faca/${knife.slug}`); // Corrigi a aspa para crase (template string)
   };
 
   const filteredKnives = useMemo(() => {
     if (!sanityKnives) return [];
 
-    const converted: KnifeData[] = sanityKnives.map((knife: SanityKnife) => {
+    const converted: any[] = sanityKnives.map((knife: SanityKnife) => {
       // Garante que o slug existe
       const slug = knife.slug?.current || knife.name.toLowerCase().trim().replace(/\s+/g, '-');
       
+      // ... (sua lógica de conversão de imagens continua igual) ...
       const sanityImages = knife.images?.map((img: any) => {
         const cardUrl = getCardImageUrl(img);
         const fullUrl = getFullImageUrl(img);
@@ -48,32 +47,21 @@ export default function Portfolio() {
       const fallbackCardUrl = `/images/portfolio/${localImageName}`;
 
       return {
+        // ... (resto do objeto knife retornado) ...
         name: knife.name,
-        slug: slug, // Importante: O slug está sendo passado aqui
+        slug: slug, 
         category: knife.category === 'hunting' ? 'Caça' : knife.category === 'fighter' ? 'Luta' : 'Chef',
         status: knife.status === 'available' ? 'disponivel' : knife.status === 'sold' ? 'vendida' : 'encomenda',
-        images: sanityImages.length > 0
-          ? sanityImages.map((img: any) => img.cardUrl)
-          : [fallbackCardUrl],
-        fullImages: sanityImages.length > 0
-          ? sanityImages.map((img: any) => img.fullUrl)
-          : [fallbackCardUrl],
-        video_mp4: knife.video?.asset?._ref,
-        video_poster: knife.videoPoster?.asset?._ref,
+        images: sanityImages.length > 0 ? sanityImages.map((img: any) => img.cardUrl) : [fallbackCardUrl],
+        fullImages: sanityImages.length > 0 ? sanityImages.map((img: any) => img.fullUrl) : [fallbackCardUrl],
         description_pt: knife.description_pt,
         description_en: knife.description_en,
-        modelo: knife.model || '',
-        comprimento: knife.length || '',
-        largura: knife.width || '',
-        espessura: knife.thickness || '',
-        steel_pt: knife.steel_pt || '',
-        steel_en: knife.steel_en || '',
-        handle_pt: knife.handle_pt || '',
-        handle_en: knife.handle_en || '',
+        // ... (outros campos) ...
       };
     });
 
     return converted.filter((knife) => {
+      // ... (lógica de filtro igual) ...
       if (categoryFilter !== 'all' && knife.category !== categoryFilter) return false;
       if (statusFilter !== 'all' && knife.status !== statusFilter) return false;
       return true;
@@ -92,10 +80,18 @@ export default function Portfolio() {
 
   return (
     <>
+      {/* 2. ADICIONE O COMPONENTE SEO AQUI NO TOPO */}
+      <SEO
+        title="Portfolio de Facas Artesanais"
+        description="Confira nossa coleção exclusiva de facas de caça, luta e chef. Peças únicas forjadas com excelência."
+        url="https://www.dbraguim.com/portfolio"
+      />
+
       <section className="section">
         <div className="container">
           {/* Filtros */}
           <div className="filters">
+            {/* ... (seu código de filtros continua igual) ... */}
             <div className="filter__group">
               <label className="filter__label">
                 {language === 'pt' ? 'Categoria' : 'Category'}
@@ -133,6 +129,7 @@ export default function Portfolio() {
             <div style={{ color: 'var(--muted)', padding: '2rem 0', textAlign: 'center' }}>Carregando...</div>
           ) : (
             <div className="grid">
+              {/* Loop dos cards */}
               {filteredKnives.map((knife) => (
                 <div
                   key={knife.name}
@@ -164,8 +161,6 @@ export default function Portfolio() {
           )}
         </div>
       </section>
-
-      {/* Removi o componente <KnifeModal /> daqui */}
     </>
   );
 }

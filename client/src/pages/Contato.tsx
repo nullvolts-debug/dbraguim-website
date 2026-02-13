@@ -7,7 +7,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import NewsletterForm from '@/components/NewsletterForm';
-import { useSEO } from '../hooks/useSEO';
+// 1. IMPORTANTE: Use o componente SEO
+import { SEO } from '@/components/SEO';
 
 const CONTACT = {
   whatsappNumber: '5511991953021',
@@ -43,13 +44,18 @@ export default function Contato() {
     language === 'en'
       ? "Hi! I'd like to join your D.Braguim broadcast list. My name is _____. Thank you!"
       : 'Olá! Quero entrar na sua lista de transmissão da D.Braguim. Meu nome é _____. Obrigado!';
-   useSEO({
-    title: 'Contato | D.Braguim',
-    description: 'Mais informações, compra ou encomenda de faca, fale comigo.',
-  });
+
+  // REMOVIDO: useSEO(...)
 
   return (
     <>
+      {/* 2. ADICIONE O COMPONENTE SEO AQUI */}
+      <SEO
+        title="Contato | D.Braguim Cutelaria"
+        description="Entre em contato para encomendas, dúvidas ou compra de facas artesanais exclusivas."
+        url="https://www.dbraguim.com/contato"
+      />
+
       <section className="section">
         <div className="container">
           <div className="contact__intro" style={{ 
@@ -85,49 +91,49 @@ export default function Contato() {
           {showEmailForm && (
             <div style={{ maxWidth: '600px', marginBottom: '48px', marginTop: '48px' }}>
               <h2 style={{ marginBottom: '24px' }}>Formulário de Contato</h2>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <Label htmlFor="name">{t('contact_form_name_label')}</Label>
-                <Input
-                  id="name"
-                  type="text"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  placeholder={t('contact_form_name_placeholder')}
-                  required
-                  disabled={submitContact.isPending}
-                />
-              </div>
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div>
+                  <Label htmlFor="name">{t('contact_form_name_label')}</Label>
+                  <Input
+                    id="name"
+                    type="text"
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    placeholder={t('contact_form_name_placeholder')}
+                    required
+                    disabled={submitContact.isPending}
+                  />
+                </div>
 
-              <div>
-                <Label htmlFor="email">{t('contact_form_email_label')}</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  placeholder={t('contact_form_email_placeholder')}
-                  required
-                  disabled={submitContact.isPending}
-                />
-              </div>
+                <div>
+                  <Label htmlFor="email">{t('contact_form_email_label')}</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    placeholder={t('contact_form_email_placeholder')}
+                    required
+                    disabled={submitContact.isPending}
+                  />
+                </div>
 
-              <div>
-                <Label htmlFor="message">{t('contact_form_message_label')}</Label>
-                <Textarea
-                  id="message"
-                  value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  placeholder={t('contact_form_message_placeholder')}
-                  required
-                  disabled={submitContact.isPending}
-                  rows={6}
-                />
-              </div>
+                <div>
+                  <Label htmlFor="message">{t('contact_form_message_label')}</Label>
+                  <Textarea
+                    id="message"
+                    value={formData.message}
+                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                    placeholder={t('contact_form_message_placeholder')}
+                    required
+                    disabled={submitContact.isPending}
+                    rows={6}
+                  />
+                </div>
 
-              <Button type="submit" disabled={submitContact.isPending} className="w-full">
-                {submitContact.isPending ? 'Enviando...' : t('contact_form_submit')}
-              </Button>
+                <Button type="submit" disabled={submitContact.isPending} className="w-full">
+                  {submitContact.isPending ? 'Enviando...' : t('contact_form_submit')}
+                </Button>
               </form>
             </div>
           )}
