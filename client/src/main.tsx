@@ -33,14 +33,17 @@ const trpcClient = trpc.createClient({
   ],
 });
 
+const helmetContext = {};
+
 createRoot(document.getElementById("root")!).render(
   <trpc.Provider client={trpcClient} queryClient={queryClient}>
     <QueryClientProvider client={queryClient}>
       {/* INÍCIO DA ALTERAÇÃO */}
-      <HelmetProvider>
+      <HelmetProvider context={helmetContext}>
         <App />
       </HelmetProvider>
       {/* FIM DA ALTERAÇÃO */}
     </QueryClientProvider>
   </trpc.Provider>
 );
+
