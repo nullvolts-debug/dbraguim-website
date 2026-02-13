@@ -5,12 +5,14 @@ import { publicProcedure, router } from "./_core/trpc";
 import { contactRouter } from "./contactRouter";
 import { sanityRouter } from "./sanityRouter";
 import { newsletterRouter } from "./newsletterRouter";
+import { sitemapRouter } from "./sitemapRouter";
 
 export const appRouter = router({
   system: systemRouter,
   contact: contactRouter,
   sanity: sanityRouter,
   newsletter: newsletterRouter,
+  sitemap: sitemapRouter,
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),
     logout: publicProcedure.mutation(({ ctx }) => {
