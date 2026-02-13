@@ -1,7 +1,12 @@
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useSEO } from '../hooks/useSEO';
 
 export default function Sobre() {
   const { t } = useLanguage();
+   useSEO({
+    title: 'Sobre Mim | D.Braguim',
+    description: 'Conheça a história e o processo artesanal por trás das facas D.Braguim.',
+  });
 
   return (
     <section className="section">
