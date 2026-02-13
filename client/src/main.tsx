@@ -5,6 +5,7 @@ import { createRoot } from "react-dom/client";
 import superjson from "superjson";
 import App from "./App";
 import "./index.css";
+// Import do HelmetProvider (você já tinha colocado, está correto)
 import { HelmetProvider } from 'react-helmet-async';
 
 const queryClient = new QueryClient();
@@ -35,7 +36,11 @@ const trpcClient = trpc.createClient({
 createRoot(document.getElementById("root")!).render(
   <trpc.Provider client={trpcClient} queryClient={queryClient}>
     <QueryClientProvider client={queryClient}>
-      <App />
+      {/* INÍCIO DA ALTERAÇÃO */}
+      <HelmetProvider>
+        <App />
+      </HelmetProvider>
+      {/* FIM DA ALTERAÇÃO */}
     </QueryClientProvider>
   </trpc.Provider>
 );
