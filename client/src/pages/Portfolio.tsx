@@ -12,6 +12,11 @@ export default function Portfolio() {
   const { t, language } = useLanguage();
   const [, navigate] = useLocation(); // Hook de navegação
 
+   useSEO({
+    title: 'Portfolio | D.Braguim',
+    description: 'Uma pequena amostra dos modelos de facas D.Braguim',
+  });
+
   // Removi os estados do Modal (selectedKnife, isModalOpen)
   
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
