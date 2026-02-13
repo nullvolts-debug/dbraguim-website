@@ -131,6 +131,10 @@ export default function KnifePage() {
     if (knife.images && knife.images.length > 0) {
       updateTwitterTag('twitter:image', knife.images[0]);
     }
+    return () => {
+      document.title = 'D.Braguim - Cutelaria Artesanal';
+      // Opcional: remover ou limpar as meta tags específicas se quiser
+    };
   }, [knife, slug, language]);
 
   const handleSubmit = async (e: React.FormEvent) => {
