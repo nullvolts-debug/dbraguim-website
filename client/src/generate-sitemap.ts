@@ -2,6 +2,16 @@ import 'dotenv/config';
 import fs from 'fs';
 import path from 'path';
 import { createClient } from '@sanity/client';
+import { execSync } from 'child_process';
+
+console.log('🕵️‍♂️ Procurando pastas public...');
+try {
+  // Lista todas as pastas chamadas 'public' no projeto
+  const output = execSync('find . -type d -name "public"').toString();
+  console.log('📂 Pastas public encontradas:\n', output);
+} catch (e) {
+  console.log('Erro ao buscar pastas public');
+}
 
 // 1. Configurar Cliente Sanity (usando as vars de ambiente)
 const client = createClient({
