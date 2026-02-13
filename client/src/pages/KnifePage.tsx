@@ -1,5 +1,5 @@
 import { useParams, useLocation } from 'wouter';
-import { useMemo, useState, useEffect } from 'react';
+import { useMemo, useState } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { trpc } from '@/lib/trpc';
 import { type SanityKnife } from '@shared/sanity';
@@ -7,6 +7,9 @@ import { getCardImageUrl, getFullImageUrl, getFileUrl } from '@/lib/sanityImage'
 import { toast } from "sonner";
 import { ChevronLeft, ChevronRight, Play, Image as ImageIcon } from 'lucide-react';
 import '../dbraguim.css';
+
+// Importando o novo hook
+import { useSEO } from '@/hooks/useSEO';
 
 export default function KnifePage() {
   const params = useParams();
@@ -74,68 +77,30 @@ export default function KnifePage() {
     setShowVideo(false);
   };
 
-  // Atualizar meta tags dinâmicas para SEO
-  useEffect(() => {
-    if (!knife) {
-      document.title = 'D.Braguim - Cutelaria Artesanal';
-      return;
-    }
+  // --- CONFIGURAÇÃO DE SEO ---
+  const seoTitle = knife 
+    ? `${knife.name} - Faca Artesanal | D.Braguim`
+    : 'D.Braguim - Cutelaria Artesanal';
 
-    // Título dinâmico
-    const title = `${knife.name} - Faca Artesanal | D.Braguim`;
-    document.title = title;
+  const descText = knife 
+    ? (language === 'pt' ? knife.description_pt : knife.description_en) 
+    : '';
 
-    // Meta description
-    let descMeta = document.querySelector('meta[name="description"]');
-    if (!descMeta) {
-      descMeta = document.createElement('meta');
-      descMeta.setAttribute('name', 'description');
-      document.head.appendChild(descMeta);
-    }
-    const description = language === 'pt' ? knife.description_pt : knife.description_en;
-    descMeta.setAttribute('content', `${knife.name} - ${description.substring(0, 120)}...`);
+  const seoDesc = descText 
+    ? descText.substring(0, 150) + '...'
+    : 'Cutelaria artesanal de alta qualidade.';
 
-    // Open Graph tags
-    const updateOGTag = (property: string, content: string) => {
-      let tag = document.querySelector(`meta[property="${property}"]`);
-      if (!tag) {
-        tag = document.createElement('meta');
-        tag.setAttribute('property', property);
-        document.head.appendChild(tag);
-      }
-      tag.setAttribute('content', content);
-    };
+  const seoImage = (knife?.images && knife.images.length > 0) 
+    ? knife.images[0] 
+    : ''; // Se tiver uma imagem padrão do site, coloque aqui
 
-    updateOGTag('og:title', title);
-    updateOGTag('og:description', description.substring(0, 120));
-    updateOGTag('og:type', 'product');
-    updateOGTag('og:url', `${window.location.origin}/faca/${slug}`);
-    if (knife.images && knife.images.length > 0) {
-      updateOGTag('og:image', knife.images[0]);
-    }
-
-    // Twitter Card tags
-    const updateTwitterTag = (name: string, content: string) => {
-      let tag = document.querySelector(`meta[name="${name}"]`);
-      if (!tag) {
-        tag = document.createElement('meta');
-        tag.setAttribute('name', name);
-        document.head.appendChild(tag);
-      }
-      tag.setAttribute('content', content);
-    };
-
-    updateTwitterTag('twitter:card', 'summary_large_image');
-    updateTwitterTag('twitter:title', title);
-    updateTwitterTag('twitter:description', description.substring(0, 120));
-    if (knife.images && knife.images.length > 0) {
-      updateTwitterTag('twitter:image', knife.images[0]);
-    }
-    return () => {
-      document.title = 'D.Braguim - Cutelaria Artesanal';
-      // Opcional: remover ou limpar as meta tags específicas se quiser
-    };
-  }, [knife, slug, language]);
+  useSEO({
+    title: seoTitle,
+    description: seoDesc,
+    image: seoImage,
+    url: window.location.href
+  });
+  // ---------------------------
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
