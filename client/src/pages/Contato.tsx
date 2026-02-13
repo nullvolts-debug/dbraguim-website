@@ -7,6 +7,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import NewsletterForm from '@/components/NewsletterForm';
+import { useSEO } from '../hooks/useSEO';
 
 const CONTACT = {
   whatsappNumber: '5511991953021',
@@ -42,6 +43,10 @@ export default function Contato() {
     language === 'en'
       ? "Hi! I'd like to join your D.Braguim broadcast list. My name is _____. Thank you!"
       : 'Olá! Quero entrar na sua lista de transmissão da D.Braguim. Meu nome é _____. Obrigado!';
+   useSEO({
+    title: 'Sobre Mim | D.Braguim',
+    description: 'Conheça a história e o processo artesanal por trás das facas D.Braguim.',
+  });
 
   return (
     <>
