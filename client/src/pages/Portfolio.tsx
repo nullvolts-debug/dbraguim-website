@@ -6,6 +6,7 @@ import { trpc } from '@/lib/trpc';
 import { type SanityKnife } from '@shared/sanity';
 import { getCardImageUrl, getFullImageUrl } from '@/lib/sanityImage';
 import { useLocation } from 'wouter'; // Import para navegação
+import { useSEO } from '../hooks/useSEO';
 
 export default function Portfolio() {
   const { t, language } = useLanguage();
