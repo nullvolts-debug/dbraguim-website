@@ -5,6 +5,14 @@ import { initTRPC } from '@trpc/server';
 import { nodeHTTPRequestHandler } from '@trpc/server/adapters/node-http';
 import superjson from 'superjson';
 import { z } from 'zod';
+// NOVOS IMPORTS PARA O BANCO DE DADOS
+import { neon } from '@neondatabase/serverless';
+import { drizzle } from 'drizzle-orm/neon-http';
+import { newsletterSubscribers } from '../src/drizzle/schema'; // VERIFIQUE SE O CAMINHO ESTÁ CERTO!
+import { eq, count } from 'drizzle-orm';
+import * as dotenv from "dotenv";
+
+dotenv.config();
 
 // ============================================================
 // Sanity Client
@@ -67,6 +75,13 @@ async function sendContactEmail(params: {
     return { success: false, error: error.message };
   }
 }
+
+// ============================================================
+// Banco de Dados (Neon + Drizzle)
+// ============================================================
+// Conexão Segura via HTTP para Serverless
+const sql = neon(process.env.DATABASE_URL!);
+const db = drizzle(sql);
 
 // ============================================================
 // tRPC Setup
@@ -180,6 +195,9 @@ const appRouter = router({
       }),
   }),
 
+  // ========================================================
+  // NEWSLETTER (AGORA COM BANCO REAL)
+  // ========================================================
   newsletter: router({
     subscribe: publicProcedure
       .input(
@@ -189,11 +207,49 @@ const appRouter = router({
         })
       )
       .mutation(async ({ input }) => {
-        console.log('[Newsletter] New subscriber:', input.email, 'source:', input.source);
-        return {
-          success: true,
-          message: 'Email cadastrado com sucesso!',
-        };
+        // Log para debug
+        console.log('[DEBUG] URL do Banco:', process.env.DATABASE_URL?.substring(0, 15) + '...');
+        
+        try {
+          console.log(`[Newsletter] Tentando inscrever: ${input.email}`);
+
+          // 1. Verificar se já existe
+          const existing = await db
+            .select()
+            .from(newsletterSubscribers)
+            .where(eq(newsletterSubscribers.email, input.email));
+
+          if (existing.length > 0) {
+            console.log('[Newsletter] Email já existe.');
+            return {
+              success: false,
+              message: 'Este email já está cadastrado na newsletter',
+            };
+          }
+
+          // 2. Inserir novo subscriber
+          const result = await db.insert(newsletterSubscribers).values({
+            email: input.email,
+            source: input.source,
+          }).returning({ insertedId: newsletterSubscribers.id });
+          
+          const insertedId = result[0]?.insertedId;
+
+          // 3. Contagem total para debug
+          const totalResult = await db.select({ count: count() }).from(newsletterSubscribers);
+          const totalCount = totalResult[0]?.count || 0;
+
+          console.log(`[Newsletter] Sucesso! ID: ${insertedId}, Total: ${totalCount}`);
+          
+          return {
+            success: true,
+            // A mensagem mágica que prova que funcionou
+            message: `Cadastrado com sucesso! ID: ${insertedId} (Total: ${totalCount})`,
+          };
+        } catch (error) {
+          console.error('[Newsletter] Erro ao cadastrar:', error);
+          throw new Error('Erro ao salvar no banco de dados');
+        }
       }),
   }),
 });
