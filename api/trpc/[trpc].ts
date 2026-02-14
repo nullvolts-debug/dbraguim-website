@@ -8,7 +8,7 @@ import { z } from 'zod';
 // NOVOS IMPORTS PARA O BANCO DE DADOS
 import { neon } from '@neondatabase/serverless';
 import { drizzle } from 'drizzle-orm/neon-http';
-import { newsletterSubscribers } from '../src/drizzle/schema'; // VERIFIQUE SE O CAMINHO ESTÁ CERTO!
+import { newsletterSubscribers } from '../client/src/drizzle/schema'; // VERIFIQUE SE O CAMINHO ESTÁ CERTO!
 import { eq, count } from 'drizzle-orm';
 import * as dotenv from "dotenv";
 
