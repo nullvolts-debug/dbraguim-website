@@ -5,14 +5,28 @@ import { initTRPC } from '@trpc/server';
 import { nodeHTTPRequestHandler } from '@trpc/server/adapters/node-http';
 import superjson from 'superjson';
 import { z } from 'zod';
-// NOVOS IMPORTS PARA O BANCO DE DADOS
+
+// ============================================================
+// IMPORTS DO NEON + DRIZZLE (Adicionados)
+// ============================================================
 import { neon } from '@neondatabase/serverless';
 import { drizzle } from 'drizzle-orm/neon-http';
-import { newsletterSubscribers } from '../drizzle/schema'; // VERIFIQUE SE O CAMINHO ESTÁ CERTO!
 import { eq, count } from 'drizzle-orm';
+// Imports para definir a tabela IN-LINE (Bala de Prata)
+import { pgTable, serial, varchar, timestamp } from "drizzle-orm/pg-core";
 import * as dotenv from "dotenv";
 
 dotenv.config();
+
+// ============================================================
+// DEFINIÇÃO DA TABELA IN-LINE (Para evitar erro de import no Vercel)
+// ============================================================
+const newsletterSubscribers = pgTable("newsletter_subscribers", {
+  id: serial("id").primaryKey(),
+  email: varchar("email", { length: 320 }).notNull().unique(),
+  source: varchar("source", { length: 50 }).notNull().default("whatsapp"),
+  subscribedAt: timestamp("subscribedAt").defaultNow().notNull(),
+});
 
 // ============================================================
 // Sanity Client
@@ -77,9 +91,8 @@ async function sendContactEmail(params: {
 }
 
 // ============================================================
-// Banco de Dados (Neon + Drizzle)
+// Banco de Dados (Neon + Drizzle) - Conexão HTTP Segura
 // ============================================================
-// Conexão Segura via HTTP para Serverless
 const sql = neon(process.env.DATABASE_URL!);
 const db = drizzle(sql);
 
@@ -195,9 +208,6 @@ const appRouter = router({
       }),
   }),
 
-  // ========================================================
-  // NEWSLETTER (AGORA COM BANCO REAL)
-  // ========================================================
   newsletter: router({
     subscribe: publicProcedure
       .input(
@@ -235,7 +245,7 @@ const appRouter = router({
           
           const insertedId = result[0]?.insertedId;
 
-          // 3. Contagem total para debug
+          // 3. Contagem total
           const totalResult = await db.select({ count: count() }).from(newsletterSubscribers);
           const totalCount = totalResult[0]?.count || 0;
 
