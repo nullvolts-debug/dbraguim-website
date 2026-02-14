@@ -7,6 +7,8 @@ import { registerOAuthRoutes } from "./oauth";
 import { appRouter } from "../routers";
 import { createContext } from "./context";
 import { serveStatic, setupVite } from "./vite";
+import * as dotenv from "dotenv";
+dotenv.config(); // ISSO CARREGA O ARQUIVO .ENV
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {

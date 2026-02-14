@@ -1,7 +1,7 @@
 import { Resend } from 'resend';
 
-// Initialize Resend with API key from environment
-const resend = new Resend(process.env.RESEND_API_KEY);
+// REMOVEMOS A INICIALIZAÇÃO GLOBAL AQUI QUE CAUSAVA O ERRO
+// const resend = new Resend(process.env.RESEND_API_KEY); 
 
 export interface SendEmailParams {
   to: string;
@@ -17,6 +17,19 @@ export interface SendEmailParams {
  */
 export async function sendEmail(params: SendEmailParams) {
   const { to, subject, html, from = 'onboarding@resend.dev' } = params;
+
+  // VERIFICAÇÃO DE SEGURANÇA
+  const apiKey = process.env.RESEND_API_KEY;
+  
+  if (!apiKey) {
+    console.error('[Email] ERRO CRÍTICO: RESEND_API_KEY não encontrada no .env');
+    return { success: false, error: "Server configuration error: Missing API Key" };
+  }
+
+  // INICIALIZAÇÃO "LAZY" (Preguiçosa)
+  // Só cria o cliente quando a função é chamada. 
+  // Nesse momento, o .env JÁ vai estar carregado com certeza.
+  const resend = new Resend(apiKey);
 
   try {
     const { data, error } = await resend.emails.send({

@@ -24,6 +24,7 @@ export const newsletterRouter = router({
       })
     )
     .mutation(async ({ input }) => {
+      console.log('[DEBUG] URL do Banco:', process.env.DATABASE_URL?.substring(0, 20) + '...');
       try {
         console.log(`[Newsletter] Tentando inscrever: ${input.email}`);
 
