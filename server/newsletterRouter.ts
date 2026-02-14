@@ -1,19 +1,18 @@
 import { z } from 'zod';
 import { publicProcedure, router } from './_core/trpc';
-// Importamos o Drizzle direto daqui, sem getDb complicado
-import { drizzle } from "drizzle-orm/postgres-js";
-import postgres from "postgres";
-import { newsletterSubscribers } from '../drizzle/schema'; // Ajuste o caminho se necessário
+// MUDANÇA: Usando o driver Serverless do Neon (HTTP)
+import { neon } from '@neondatabase/serverless';
+import { drizzle } from 'drizzle-orm/neon-http';
+import { newsletterSubscribers } from '../drizzle/schema';
 import { eq } from 'drizzle-orm';
 import * as dotenv from "dotenv";
 
 dotenv.config();
 
-// Configura conexão rápida para a rota
-const connectionString = process.env.DATABASE_URL!;
-// O cliente do banco
-const client = postgres(process.env.DATABASE_URL!, { prepare: false });
-const db = drizzle(client);
+// MUDANÇA: Configuração de conexão HTTP (Mais segura para Serverless)
+// O neon() cria uma conexão leve via HTTP, perfeita para Vercel
+const sql = neon(process.env.DATABASE_URL!);
+const db = drizzle(sql);
 
 export const newsletterRouter = router({
   subscribe: publicProcedure
@@ -24,7 +23,9 @@ export const newsletterRouter = router({
       })
     )
     .mutation(async ({ input }) => {
-      console.log('[DEBUG] URL do Banco:', process.env.DATABASE_URL?.substring(0, 20) + '...');
+      // Log para debug (pode remover depois se quiser)
+      console.log('[DEBUG] URL do Banco (Início):', process.env.DATABASE_URL?.substring(0, 15) + '...');
+      
       try {
         console.log(`[Newsletter] Tentando inscrever: ${input.email}`);
 
@@ -32,8 +33,8 @@ export const newsletterRouter = router({
         const existing = await db
           .select()
           .from(newsletterSubscribers)
-          .where(eq(newsletterSubscribers.email, input.email))
-          .limit(1);
+          .where(eq(newsletterSubscribers.email, input.email));
+          // Nota: neon-http retorna array direto, não precisa de .execute()
 
         if (existing.length > 0) {
           console.log('[Newsletter] Email já existe.');
@@ -49,7 +50,7 @@ export const newsletterRouter = router({
           source: input.source,
         });
 
-        console.log('[Newsletter] Sucesso!');
+        console.log('[Newsletter] Sucesso! Registro inserido via HTTP.');
         return {
           success: true,
           message: 'Email cadastrado com sucesso!',
