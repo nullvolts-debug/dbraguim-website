@@ -12,7 +12,7 @@ dotenv.config();
 // Configura conexão rápida para a rota
 const connectionString = process.env.DATABASE_URL!;
 // O cliente do banco
-const client = postgres(connectionString);
+const client = postgres(process.env.DATABASE_URL!, { prepare: false });
 const db = drizzle(client);
 
 export const newsletterRouter = router({
