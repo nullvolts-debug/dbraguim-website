@@ -7,19 +7,19 @@ import superjson from 'superjson';
 import { z } from 'zod';
 
 // ============================================================
-// IMPORTS DO NEON + DRIZZLE (Adicionados)
+// IMPORTS DO NEON + DRIZZLE
 // ============================================================
 import { neon } from '@neondatabase/serverless';
 import { drizzle } from 'drizzle-orm/neon-http';
-import { eq, count } from 'drizzle-orm';
-// Imports para definir a tabela IN-LINE (Bala de Prata)
+import { eq } from 'drizzle-orm';
+// Imports para definir a tabela IN-LINE
 import { pgTable, serial, varchar, timestamp } from "drizzle-orm/pg-core";
 import * as dotenv from "dotenv";
 
 dotenv.config();
 
 // ============================================================
-// DEFINIÇÃO DA TABELA IN-LINE (Para evitar erro de import no Vercel)
+// DEFINIÇÃO DA TABELA IN-LINE (Mantendo a "Bala de Prata")
 // ============================================================
 const newsletterSubscribers = pgTable("newsletter_subscribers", {
   id: serial("id").primaryKey(),
@@ -91,7 +91,7 @@ async function sendContactEmail(params: {
 }
 
 // ============================================================
-// Banco de Dados (Neon + Drizzle) - Conexão HTTP Segura
+// Banco de Dados (Neon + Drizzle)
 // ============================================================
 const sql = neon(process.env.DATABASE_URL!);
 const db = drizzle(sql);
@@ -217,11 +217,8 @@ const appRouter = router({
         })
       )
       .mutation(async ({ input }) => {
-        // Log para debug
-        console.log('[DEBUG] URL do Banco:', process.env.DATABASE_URL?.substring(0, 15) + '...');
-        
         try {
-          console.log(`[Newsletter] Tentando inscrever: ${input.email}`);
+          console.log(`[Newsletter] Inscrevendo: ${input.email}`);
 
           // 1. Verificar se já existe
           const existing = await db
@@ -230,7 +227,6 @@ const appRouter = router({
             .where(eq(newsletterSubscribers.email, input.email));
 
           if (existing.length > 0) {
-            console.log('[Newsletter] Email já existe.');
             return {
               success: false,
               message: 'Este email já está cadastrado na newsletter',
@@ -238,26 +234,17 @@ const appRouter = router({
           }
 
           // 2. Inserir novo subscriber
-          const result = await db.insert(newsletterSubscribers).values({
+          await db.insert(newsletterSubscribers).values({
             email: input.email,
             source: input.source,
-          }).returning({ insertedId: newsletterSubscribers.id });
-          
-          const insertedId = result[0]?.insertedId;
-
-          // 3. Contagem total
-          const totalResult = await db.select({ count: count() }).from(newsletterSubscribers);
-          const totalCount = totalResult[0]?.count || 0;
-
-          console.log(`[Newsletter] Sucesso! ID: ${insertedId}, Total: ${totalCount}`);
+          });
           
           return {
             success: true,
-            // A mensagem mágica que prova que funcionou
-            message: `Cadastrado com sucesso! ID: ${insertedId} (Total: ${totalCount})`,
+            message: 'Email cadastrado com sucesso!',
           };
         } catch (error) {
-          console.error('[Newsletter] Erro ao cadastrar:', error);
+          console.error('[Newsletter] Erro:', error);
           throw new Error('Erro ao salvar no banco de dados');
         }
       }),
@@ -280,7 +267,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return;
   }
 
-  // Extract the tRPC path from the catch-all route parameter
   const pathParam = req.query.trpc;
   const path = Array.isArray(pathParam) ? pathParam.join('/') : (pathParam || '');
 
