@@ -91,10 +91,10 @@ export default function KnifePage() {
           .url();
       } catch (e) {
         console.error('Erro ao gerar imagem SEO:', e);
-        return 'https://dbraguim.com/og-image.jpg';
+        return 'https://www.dbraguim.com/og-image.jpg';
       }
     }
-    return 'https://dbraguim.com/og-image.jpg';
+    return 'https://www.dbraguim.com/og-image.jpg';
   }, [knife]);
 
 
