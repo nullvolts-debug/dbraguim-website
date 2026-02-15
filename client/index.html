@@ -1,27 +1,48 @@
 <!doctype html>
-<html lang="en">
-
+<html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" href="/favicon.svg" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1" />
-    <title>D.Braguim - Cutelaria Artesanal</title>    
-    <!-- THIS IS THE START OF A COMMENT BLOCK, BLOCK TO BE DELETED: Google Fonts here, example:
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+    
+    <!-- TÍTULO E DESCRIÇÃO (SEO BÁSICO) -->
+    <title>D.Braguim - Cutelaria Artesanal</title>
+    <meta name="description" content="Tradição Forjada, Emoção Afiada. Facas artesanais exclusivas para churrasco, cozinha e coleção. Peças únicas feitas à mão." />
+    <meta name="keywords" content="cutelaria, facas artesanais, churrasco, damasco, faca chef, dbraguim, custom knives" />
+    <meta name="author" content="D.Braguim" />
+
+    <!-- FAVICON -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="alternate icon" href="/favicon.ico" />
+
+    <!-- OPEN GRAPH / FACEBOOK / WHATSAPP -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://dbraguim.com/" />
+    <meta property="og:title" content="D.Braguim - Cutelaria Artesanal" />
+    <meta property="og:description" content="Tradição Forjada, Emoção Afiada. Conheça nossas facas exclusivas." />
+    <meta property="og:image" content="https://dbraguim.com/og-image.jpg" />
+
+    <!-- TWITTER -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://dbraguim.com/" />
+    <meta property="twitter:title" content="D.Braguim - Cutelaria Artesanal" />
+    <meta property="twitter:description" content="Tradição Forjada, Emoção Afiada. Conheça nossas facas exclusivas." />
+    <meta property="twitter:image" content="https://dbraguim.com/og-image.jpg" />
+
+    <!-- FONTES (Mantenha se estiver usando) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    THIS IS THE END OF A COMMENT BLOCK, BLOCK TO BE DELETED -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
   </head>
 
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    
+    <!-- ANALYTICS -->
     <script
       defer
       src="%VITE_ANALYTICS_ENDPOINT%/umami"
-      data-website-id="%VITE_ANALYTICS_WEBSITE_ID%"></script>
+      data-website-id="%VITE_ANALYTICS_WEBSITE_ID%">
+    </script>
   </body>
-
 </html>

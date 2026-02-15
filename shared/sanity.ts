@@ -1,5 +1,5 @@
 import { createClient } from '@sanity/client';
-import imageUrlBuilder from '@sanity/image-url';
+import createImageUrlBuilder from '@sanity/image-url';
 
 // Configuração do cliente Sanity
 // O projectId é hardcoded como fallback para garantir que funcione
@@ -46,7 +46,7 @@ export const sanityConfig = {
 export const sanityClient = createClient(sanityConfig);
 
 // Builder para URLs de imagens
-const builder = imageUrlBuilder(sanityClient);
+const builder = createImageUrlBuilder(sanityClient); 
 
 export function urlForImage(source: any) {
   return builder.image(source);

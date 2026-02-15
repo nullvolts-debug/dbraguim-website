@@ -4,12 +4,13 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { trpc } from '@/lib/trpc';
 import { type SanityKnife } from '@shared/sanity';
 import { getCardImageUrl, getFullImageUrl, getFileUrl } from '@/lib/sanityImage';
+// 1. IMPORTAR A FUNÇÃO DO SANITY.TS
+// Ajuste o caminho '@shared/sanity' se seu sanity.ts estiver em outro lugar (ex: '@/lib/sanity')
+import { urlForImage } from '@shared/sanity'; 
 import { toast } from "sonner";
 import { ChevronLeft, ChevronRight, Play, Image as ImageIcon } from 'lucide-react';
-import '../dbraguim.css';
-
-// 1. IMPORTANTE: Importe o componente SEO
 import { SEO } from '@/components/SEO';
+import '../dbraguim.css';
 
 export default function KnifePage() {
   const params = useParams();
@@ -38,7 +39,7 @@ export default function KnifePage() {
     const sanityImages = foundSanityKnife.images?.map((img: any) => ({
       cardUrl: getCardImageUrl(img),
       fullUrl: getFullImageUrl(img),
-      raw: img 
+      raw: img // Guardamos o objeto original para usar no SEO
     })) || [];
 
     const videoUrl = getFileUrl(foundSanityKnife.video);
@@ -48,6 +49,7 @@ export default function KnifePage() {
       name: foundSanityKnife.name,
       images: sanityImages.map((i: any) => i.cardUrl),
       fullImages: sanityImages.map((i: any) => i.fullUrl),
+      rawImages: sanityImages.map((i: any) => i.raw), // Adicionado para acesso fácil
       video_mp4: videoUrl,
       video_poster: videoPoster,
       category: foundSanityKnife.category,
@@ -65,6 +67,37 @@ export default function KnifePage() {
     };
   }, [sanityKnives, slug, language]);
 
+  // --- PREPARAÇÃO DOS DADOS DE SEO (ATUALIZADO) ---
+  const seoTitle = knife 
+    ? `${knife.name} | D.Braguim`
+    : 'D.Braguim - Cutelaria Artesanal';
+
+  const descText = knife 
+    ? (language === 'pt' ? knife.description_pt : knife.description_en) 
+    : '';
+
+  const seoDesc = descText 
+    ? descText.substring(0, 150) + '...'
+    : 'Detalhes exclusivos desta peça de cutelaria artesanal.';
+
+  // 2. GERAR URL DA IMAGEM OTIMIZADA PARA WHATSAPP (1200x630)
+  const seoImage = useMemo(() => {
+    if (knife?.rawImages && knife.rawImages.length > 0) {
+      try {
+        return urlForImage(knife.rawImages[0])
+          .width(1200)
+          .height(630)
+          .fit('crop')
+          .url();
+      } catch (e) {
+        console.error('Erro ao gerar imagem SEO:', e);
+        return 'https://dbraguim.com/og-image.jpg';
+      }
+    }
+    return 'https://dbraguim.com/og-image.jpg';
+  }, [knife]);
+
+
   const nextImage = () => {
     if (!knife) return;
     setCurrentIndex((prev) => (prev + 1) % knife.fullImages.length);
@@ -76,25 +109,6 @@ export default function KnifePage() {
     setCurrentIndex((prev) => (prev - 1 + knife.fullImages.length) % knife.fullImages.length);
     setShowVideo(false);
   };
-
-  // --- PREPARAÇÃO DOS DADOS DE SEO ---
-  const seoTitle = knife 
-    ? `${knife.name} - Faca Artesanal`
-    : 'D.Braguim - Cutelaria Artesanal';
-
-  const descText = knife 
-    ? (language === 'pt' ? knife.description_pt : knife.description_en) 
-    : '';
-
-  const seoDesc = descText 
-    ? descText.substring(0, 150) + '...'
-    : 'Detalhes exclusivos desta peça de cutelaria artesanal.';
-
-  const seoImage = (knife?.images && knife.images.length > 0) 
-    ? knife.images[0] 
-    : undefined;
-
-  // REMOVIDO: useSEO({...})
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -123,9 +137,7 @@ export default function KnifePage() {
   if (!knife) {
     return (
       <div className="min-h-[60vh] flex flex-col items-center justify-center gap-4">
-        {/* SEO para página 404/Não encontrada */}
         <SEO title="Faca não encontrada" />
-        
         <h2 className="text-white text-xl">Faca não encontrada</h2>
         <button onClick={() => navigate('/portfolio')} className="px-6 py-2 border border-[var(--gold)] text-[var(--gold)] hover:bg-[var(--gold)] hover:text-black transition">
           Voltar ao Portfólio
@@ -136,11 +148,11 @@ export default function KnifePage() {
 
   return (
     <>
-      {/* 2. ADICIONE O COMPONENTE SEO PRINCIPAL AQUI */}
+      {/* 3. PASSANDO A URL OTIMIZADA PARA O SEO */}
       <SEO
         title={seoTitle}
         description={seoDesc}
-        image={seoImage}
+        image={seoImage} // Agora é a URL 1200x630 do Sanity
         url={`https://www.dbraguim.com/faca/${slug}`}
       />
 
@@ -154,25 +166,24 @@ export default function KnifePage() {
             ← {language === 'pt' ? 'Voltar ao Portfolio' : 'Back to Portfolio'}
           </button>
 
-          {/* ... (O RESTO DO SEU LAYOUT CONTINUA EXATAMENTE IGUAL DAQUI PARA BAIXO) ... */}
           <div className="flex flex-col md:flex-row gap-8 lg:gap-16 items-start">
             
             {/* COLUNA ESQUERDA (FOTO) */}
             <div className="w-full md:w-[60%] lg:w-[65%] relative group">
-              <div className="w-full bg-[#050505] border border-[var(--line)] rounded-sm overflow-hidden relative">
+              <div className="w-full bg-[#050505] border border-[var(--line)] rounded-sm overflow-hidden relative aspect-[4/3] flex items-center justify-center">
                 {showVideo && knife.video_mp4 ? (
                   <video 
                     src={knife.video_mp4} 
                     controls 
                     autoPlay 
-                    className="w-full h-auto object-contain"
+                    className="w-full h-full object-contain"
                     poster={knife.video_poster || undefined}
                   />
                 ) : (
                   <img 
                     src={knife.fullImages[currentIndex]} 
                     alt={knife.name}
-                    className="w-full h-auto object-contain p-4 md:p-8"
+                    className="w-full h-full object-contain p-4 md:p-8"
                   />
                 )}
 
