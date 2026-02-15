@@ -1,14 +1,25 @@
-// middleware.ts (Versão para Vite/Vercel Puro)
+// middleware.ts (Versão Blindada - Vite/Vercel)
 
 export const config = {
-  // Roda em todas as rotas, exceto arquivos estáticos
-  matcher: '/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)',
+  // MATCHER MAIS ROBUSTO:
+  // Exclui API, Next.js internals, e arquivos estáticos comuns (jpg, png, svg, ico, etc)
+  matcher: [
+    '/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt|.*\.png$|.*\.jpg$|.*\.jpeg$|.*\.gif$|.*\.svg$|.*\.webp$).*)',
+  ],
 };
 
 export default function middleware(request: Request) {
+  const url = new URL(request.url);
   const userAgent = request.headers.get('user-agent')?.toLowerCase() || '';
+
+  // PROTEÇÃO EXTRA NO CÓDIGO (Caso o matcher falhe):
+  // Se a URL terminar com extensão de imagem/arquivo, PARA AQUI.
+  const isStaticFile = /\.(jpg|jpeg|png|gif|svg|ico|webp|css|js)$/i.test(url.pathname);
+  if (isStaticFile) {
+    return; // Deixa o Vercel entregar o arquivo direto (sem Prerender)
+  }
   
-  // Lista de Bots (mesma de antes)
+  // Lista de Bots
   const botUserAgents = [
     'googlebot', 'yahoo! slurp', 'bingbot', 'yandex', 'baiduspider', 
     'facebookexternalhit', 'twitterbot', 'rogerbot', 'linkedinbot', 
