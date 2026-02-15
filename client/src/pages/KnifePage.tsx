@@ -1,5 +1,5 @@
 import { useParams, useLocation } from 'wouter';
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react'; // Adicionado useEffect
 import { useLanguage } from '@/contexts/LanguageContext';
 import { trpc } from '@/lib/trpc';
 import { type SanityKnife } from '@shared/sanity';
@@ -66,6 +66,20 @@ export default function KnifePage() {
       ].filter(spec => spec.value)
     };
   }, [sanityKnives, slug, language]);
+
+  // --- CONTROLE DO PRERENDER (NOVO) ---
+  // Avisa o Prerender quando a faca estiver carregada e pronta para o snapshot
+  useEffect(() => {
+    if (knife) {
+      // Pequeno delay para garantir que o React Helmet atualizou o <head> (título e og:image)
+      const timer = setTimeout(() => {
+        (window as any).prerenderReady = true;
+        // console.log('Prerender liberado! 📸'); 
+      }, 500); // 500ms é seguro
+      
+      return () => clearTimeout(timer); // Limpa se desmontar
+    }
+  }, [knife]); // Roda sempre que a faca mudar (carregar)
 
   // --- PREPARAÇÃO DOS DADOS DE SEO (ATUALIZADO) ---
   const seoTitle = knife 
