@@ -70,8 +70,12 @@ export default function KnifePage() {
 
   // 2. GERAÇÃO DA IMAGEM SEO (Otimizada para 1200x630)
   const seoImage = useMemo(() => {
+    // 🚨 MUDANÇA CRUCIAL: Se a faca ainda não carregou, retorna undefined.
+    // Isso diz para o componente SEO: "ESPERE! Ainda estou carregando..."
+    if (!knife) return undefined;
+
     // Se tiver imagem raw, tenta gerar a URL do Sanity
-    if (knife?.rawImages && knife.rawImages.length > 0) {
+    if (knife.rawImages && knife.rawImages.length > 0) {
       try {
         const url = urlForImage(knife.rawImages[0])
           .width(1200)
@@ -81,11 +85,12 @@ export default function KnifePage() {
         return url;
       } catch (e) {
         console.error('❌ ERRO CRÍTICO AO GERAR IMAGEM SEO:', e);
-        // Fallback em caso de erro
+        // Em caso de erro REAL (faca carregou mas deu pau), aí sim retorna a padrão.
         return 'https://www.dbraguim.com/og-image.jpg';
       }
     }
-    // Fallback se não tiver imagens na faca
+    
+    // Faca carregou mas não tem foto? Retorna a padrão.
     return 'https://www.dbraguim.com/og-image.jpg';
   }, [knife]);
 
