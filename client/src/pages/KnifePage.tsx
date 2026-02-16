@@ -105,19 +105,6 @@ export default function KnifePage() {
     }
   }, [knife, seoImage]);
 
-  // 4. CONTROLE DO PRERENDER
-  // Libera o Prerender apenas após 1 segundo que a faca carregou
-  useEffect(() => {
-    if (knife) {
-      const timer = setTimeout(() => {
-        (window as any).prerenderReady = true;
-        // console.log('📸 Prerender liberado!'); 
-      }, 1000); // 1000ms de segurança
-      
-      return () => clearTimeout(timer);
-    }
-  }, [knife]);
-
   // --- PREPARAÇÃO DOS TEXTOS DE SEO ---
   const seoTitle = knife 
     ? `${knife.name} | D.Braguim`
