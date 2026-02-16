@@ -6,7 +6,7 @@ Allow: /
 Disallow: /assets/
 
 # Sitemap
-Sitemap: https://dbraguim.com/sitemap.xml
+Sitemap: https://www.dbraguim.com/sitemap.xml
 
 # Crawl delay (em segundos) para respeitar recursos do servidor
 Crawl-delay: 1
