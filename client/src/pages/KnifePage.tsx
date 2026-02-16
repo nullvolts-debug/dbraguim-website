@@ -81,6 +81,8 @@ export default function KnifePage() {
           .width(1200)
           .height(630)
           .fit('crop')
+          .format('jpg') // FORÇA JPG (O WhatsApp ama JPG)
+          .quality(75)   // Reduz qualidade para garantir < 300KB
           .url();
         return url;
       } catch (e) {

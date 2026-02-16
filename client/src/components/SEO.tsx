@@ -51,6 +51,12 @@ export function SEO({ title, description, image, url }: SEOProps) {
       {/* Força a renderização da imagem se existir */}
       {image && <meta property="og:image" content={image} />}
       {url && <meta property="og:url" content={url} />}
+      {/* Adicione esta linha para o WhatsApp (Schema.org) */}
+      {image && <meta itemProp="image" content={image} />} 
+      
+      {/* Importante: Adicione dimensões para ajudar o WhatsApp a não baixar à toa */}
+      {image && <meta property="og:image:width" content="1200" />}
+      {image && <meta property="og:image:height" content="630" />}
       
       {/* Twitter */}
       <meta name="twitter:card" content="summary_large_image" />
