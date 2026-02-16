@@ -1,11 +1,10 @@
 import { useParams, useLocation } from 'wouter';
-import { useMemo, useState, useEffect } from 'react'; // Adicionado useEffect
+import { useMemo, useState, useEffect } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { trpc } from '@/lib/trpc';
 import { type SanityKnife } from '@shared/sanity';
 import { getCardImageUrl, getFullImageUrl, getFileUrl } from '@/lib/sanityImage';
-// 1. IMPORTAR A FUNÇÃO DO SANITY.TS
-// Ajuste o caminho '@shared/sanity' se seu sanity.ts estiver em outro lugar (ex: '@/lib/sanity')
+// Importação do builder de imagem do Sanity
 import { urlForImage } from '@shared/sanity'; 
 import { toast } from "sonner";
 import { ChevronLeft, ChevronRight, Play, Image as ImageIcon } from 'lucide-react';
@@ -26,6 +25,7 @@ export default function KnifePage() {
   const contactMutation = trpc.contact.submit.useMutation();
   const { data: sanityKnives, isLoading } = trpc.sanity.getKnives.useQuery();
 
+  // 1. MEMO PRINCIPAL: Organiza os dados da faca
   const knife = useMemo(() => {
     if (!sanityKnives || !slug) return null;
 
@@ -39,7 +39,8 @@ export default function KnifePage() {
     const sanityImages = foundSanityKnife.images?.map((img: any) => ({
       cardUrl: getCardImageUrl(img),
       fullUrl: getFullImageUrl(img),
-      raw: img // Guardamos o objeto original para usar no SEO
+      // MUDANÇA: Garante que o objeto raw tenha a estrutura que o urlForImage espera
+      raw: img 
     })) || [];
 
     const videoUrl = getFileUrl(foundSanityKnife.video);
@@ -49,7 +50,7 @@ export default function KnifePage() {
       name: foundSanityKnife.name,
       images: sanityImages.map((i: any) => i.cardUrl),
       fullImages: sanityImages.map((i: any) => i.fullUrl),
-      rawImages: sanityImages.map((i: any) => i.raw), // Adicionado para acesso fácil
+      rawImages: sanityImages.map((i: any) => i.raw),
       video_mp4: videoUrl,
       video_poster: videoPoster,
       category: foundSanityKnife.category,
@@ -67,21 +68,57 @@ export default function KnifePage() {
     };
   }, [sanityKnives, slug, language]);
 
-  // --- CONTROLE DO PRERENDER (NOVO) ---
-  // Avisa o Prerender quando a faca estiver carregada e pronta para o snapshot
+  // 2. GERAÇÃO DA IMAGEM SEO (Otimizada para 1200x630)
+  const seoImage = useMemo(() => {
+    // Se tiver imagem raw, tenta gerar a URL do Sanity
+    if (knife?.rawImages && knife.rawImages.length > 0) {
+      try {
+        const url = urlForImage(knife.rawImages[0])
+          .width(1200)
+          .height(630)
+          .fit('crop')
+          .url();
+        return url;
+      } catch (e) {
+        console.error('❌ ERRO CRÍTICO AO GERAR IMAGEM SEO:', e);
+        // Fallback em caso de erro
+        return 'https://www.dbraguim.com/og-image.jpg';
+      }
+    }
+    // Fallback se não tiver imagens na faca
+    return 'https://www.dbraguim.com/og-image.jpg';
+  }, [knife]);
+
+  // 3. DEBUGGER ESPIÃO (Veja no Console F12)
+  // Isso vai te mostrar se a imagem está sendo gerada corretamente
   useEffect(() => {
     if (knife) {
-      // Pequeno delay para garantir que o React Helmet atualizou o <head> (título e og:image)
+      console.group("🔍 Auditoria da Imagem SEO");
+      console.log("🔪 Faca:", knife.name);
+      console.log("🖼️ URL Final Gerada:", seoImage);
+      if (seoImage.includes("cdn.sanity.io")) {
+        console.log("✅ SUCESSO: A imagem é do Sanity!");
+      } else {
+        console.log("⚠️ ALERTA: Está usando a imagem padrão fallback.");
+      }
+      console.groupEnd();
+    }
+  }, [knife, seoImage]);
+
+  // 4. CONTROLE DO PRERENDER
+  // Libera o Prerender apenas após 1 segundo que a faca carregou
+  useEffect(() => {
+    if (knife) {
       const timer = setTimeout(() => {
         (window as any).prerenderReady = true;
-        // console.log('Prerender liberado! 📸'); 
-      }, 1000); // 500ms é seguro
+        // console.log('📸 Prerender liberado!'); 
+      }, 1000); // 1000ms de segurança
       
-      return () => clearTimeout(timer); // Limpa se desmontar
+      return () => clearTimeout(timer);
     }
-  }, [knife]); // Roda sempre que a faca mudar (carregar)
+  }, [knife]);
 
-  // --- PREPARAÇÃO DOS DADOS DE SEO (ATUALIZADO) ---
+  // --- PREPARAÇÃO DOS TEXTOS DE SEO ---
   const seoTitle = knife 
     ? `${knife.name} | D.Braguim`
     : 'D.Braguim - Cutelaria Artesanal';
@@ -94,24 +131,8 @@ export default function KnifePage() {
     ? descText.substring(0, 150) + '...'
     : 'Detalhes exclusivos desta peça de cutelaria artesanal.';
 
-  // 2. GERAR URL DA IMAGEM OTIMIZADA PARA WHATSAPP (1200x630)
-  const seoImage = useMemo(() => {
-    if (knife?.rawImages && knife.rawImages.length > 0) {
-      try {
-        return urlForImage(knife.rawImages[0])
-          .width(1200)
-          .height(630)
-          .fit('crop')
-          .url();
-      } catch (e) {
-        console.error('Erro ao gerar imagem SEO:', e);
-        return 'https://www.dbraguim.com/og-image.jpg';
-      }
-    }
-    return 'https://www.dbraguim.com/og-image.jpg';
-  }, [knife]);
 
-
+  // Funções de navegação da galeria
   const nextImage = () => {
     if (!knife) return;
     setCurrentIndex((prev) => (prev + 1) % knife.fullImages.length);
@@ -124,6 +145,7 @@ export default function KnifePage() {
     setShowVideo(false);
   };
 
+  // Formulário de contato
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!knife) return;
@@ -162,11 +184,10 @@ export default function KnifePage() {
 
   return (
     <>
-      {/* 3. PASSANDO A URL OTIMIZADA PARA O SEO */}
       <SEO
         title={seoTitle}
         description={seoDesc}
-        image={seoImage} // Agora é a URL 1200x630 do Sanity
+        image={seoImage}
         url={`https://www.dbraguim.com/faca/${slug}`}
       />
 
