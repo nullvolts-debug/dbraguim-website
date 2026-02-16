@@ -75,7 +75,7 @@ export default function KnifePage() {
       const timer = setTimeout(() => {
         (window as any).prerenderReady = true;
         // console.log('Prerender liberado! 📸'); 
-      }, 500); // 500ms é seguro
+      }, 1000); // 500ms é seguro
       
       return () => clearTimeout(timer); // Limpa se desmontar
     }
