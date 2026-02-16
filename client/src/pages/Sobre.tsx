@@ -1,20 +1,16 @@
 import { useLanguage } from '@/contexts/LanguageContext';
-// 1. IMPORTANTE: Importe o componente SEO que criamos
+import { Link } from 'wouter'; // Importante para o botão funcionar
 import { SEO } from '@/components/SEO'; 
+import { ArrowRight } from 'lucide-react'; // Ícone para dar um charme (opcional, mas fica ótimo)
 
 export default function Sobre() {
   const { t } = useLanguage();
 
-  // Removemos o hook useSEO e usamos o componente direto no JSX
-  
   return (
     <>
-      {/* 2. INSERÇÃO DO HELMET AQUI */}
       <SEO
         title="Sobre Mim"
         description="Conheça a história de Dennis Braguim e o processo artesanal de alta performance por trás de cada faca exclusiva."
-        // Se quiser, pode adicionar a imagem do Dennis para aparecer no compartilhamento:
-        //image="/images/dennis.webp"
         image="https://www.dbraguim.com/og-image.jpg" 
       />
 
@@ -32,20 +28,30 @@ export default function Sobre() {
                 }}
               />
             </div>
-            <div>
+            
+            <div className="flex flex-col items-start">
               <h2 style={{ fontSize: '2rem', marginBottom: '24px' }}>{t('about_story_title')}</h2>
 
               <p className="lead" style={{ marginBottom: '24px' }}>
                 {t('about_story_p1')}
               </p>
-
+              
               <p className="lead" style={{ marginBottom: '24px' }}>
                 {t('about_story_p2')}
               </p>
 
-              <p className="lead" style={{ marginBottom: '0' }}>
+              {/* Texto limpo e finalizado */}
+              <p className="lead" style={{ marginBottom: '32px' }}>
                 {t('about_story_p3')}
               </p>
+
+              {/* BOTÃO PREMIUM "VER PORTFÓLIO" */}
+              <Link href="/portfolio">
+                <a className="inline-flex items-center gap-2 px-8 py-3 border border-white/20 text-white uppercase tracking-widest text-sm font-medium hover:border-[var(--gold)] hover:text-[var(--gold)] transition-all duration-300 group">
+                  {t('hero_cta_primary') || "Ver Portfólio"}
+                  <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                </a>
+              </Link>
             </div>
           </div>
 
