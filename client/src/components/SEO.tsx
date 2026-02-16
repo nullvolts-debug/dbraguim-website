@@ -22,10 +22,6 @@ export function SEO({ title, description, image, url }: SEOProps) {
       // 🚨 TRAVA DE SEGURANÇA CRÍTICA:
       // Se a imagem for a PADRÃO (fallback), NÃO LIBERA O PRERENDER AINDA!
       // Isso obriga o Prerender a esperar a imagem do Sanity chegar.
-      if (image.includes('og-image.jpg')) {
-        // console.log('⏳ SEO: Imagem padrão detectada. Aguardando Sanity...');
-        return; 
-      }
 
       // ✅ Se chegou aqui, é uma imagem REAL (do Sanity ou outra específica)
       // console.log('✅ SEO: Imagem Real detectada! Preparando liberação...', image);

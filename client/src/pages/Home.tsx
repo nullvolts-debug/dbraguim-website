@@ -88,7 +88,7 @@ export default function Home() {
         // Url hardcoded é mais seguro que window.location para evitar erros de hidratação
         url="https://www.dbraguim.com/"
         // Se tiver uma imagem de capa bacana, coloque aqui:
-        // image="https://www.dbraguim.com/images/hero-bg.jpg"
+        image="https://www.dbraguim.com/og-image.jpg" 
       />
 
       {/* Hero Section */}

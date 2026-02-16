@@ -14,7 +14,8 @@ export default function Sobre() {
         title="Sobre Mim"
         description="Conheça a história de Dennis Braguim e o processo artesanal de alta performance por trás de cada faca exclusiva."
         // Se quiser, pode adicionar a imagem do Dennis para aparecer no compartilhamento:
-        image="/images/dennis.webp"
+        //image="/images/dennis.webp"
+        image="https://www.dbraguim.com/og-image.jpg" 
       />
 
       <section className="section">

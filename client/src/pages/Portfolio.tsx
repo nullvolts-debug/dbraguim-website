@@ -85,6 +85,7 @@ export default function Portfolio() {
         title="Portfolio de Facas Artesanais"
         description="Confira nossa coleção exclusiva de facas de caça, luta e chef. Peças únicas forjadas com excelência."
         url="https://www.dbraguim.com/portfolio"
+        image="https://www.dbraguim.com/og-image.jpg"
       />
 
       <section className="section">

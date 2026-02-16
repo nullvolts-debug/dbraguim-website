@@ -54,6 +54,7 @@ export default function Contato() {
         title="Contato"
         description="Entre em contato para encomendas, dúvidas ou compra de facas artesanais exclusivas."
         url="https://www.dbraguim.com/contato"
+        image="https://www.dbraguim.com/og-image.jpg" 
       />
 
       <section className="section">

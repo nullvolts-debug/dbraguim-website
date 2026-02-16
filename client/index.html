@@ -2,16 +2,21 @@
 <html lang="pt-BR">
   <head>
     <script>
+      // 🛑 Trava inicial para o Prerender
       window.prerenderReady = false;
-      // O Plano B: Se demorar mais de 5s, libera de qualquer jeito!
+      
+      // 🕰️ Plano B: Se o React/Sanity demorar mais de 15s, libera de qualquer jeito
+      // para garantir que a página seja indexada, mesmo que com dados padrão.
       setTimeout(function() {
         window.prerenderReady = true;
       }, 15000);
     </script>
+    
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
     
-    <!-- TÍTULO E DESCRIÇÃO (SEO BÁSICO) -->
+    <!-- TÍTULO E DESCRIÇÃO PADRÃO (Fallback) -->
+    <!-- O React irá substituir estes valores dinamicamente -->
     <title>D.Braguim - Cutelaria Artesanal</title>
     <meta name="description" content="Tradição Forjada, Emoção Afiada. Facas artesanais exclusivas para churrasco, cozinha e coleção. Peças únicas feitas à mão." />
     <meta name="keywords" content="cutelaria, facas artesanais, churrasco, damasco, faca chef, dbraguim, custom knives" />
@@ -21,21 +26,14 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="alternate icon" href="/favicon.ico" />
 
-    <!-- OPEN GRAPH / FACEBOOK / WHATSAPP -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://www.dbraguim.com/" />
-    <meta property="og:title" content="D.Braguim - Cutelaria Artesanal" />
-    <meta property="og:description" content="Tradição Forjada, Emoção Afiada. Conheça nossas facas exclusivas." />
-    <meta property="og:image" content="https://www.dbraguim.com/og-image.jpg" />
+    <!-- 
+      ⚠️ NOTA IMPORTANTE:
+      As meta tags de compartilhamento (Open Graph / Twitter) foram removidas daqui.
+      Elas agora são gerenciadas exclusivamente pelo componente React <SEO />.
+      Isso evita duplicidade e garante que a imagem correta da faca seja exibida.
+    -->
 
-    <!-- TWITTER -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="https://www.dbraguim.com/" />
-    <meta property="twitter:title" content="D.Braguim - Cutelaria Artesanal" />
-    <meta property="twitter:description" content="Tradição Forjada, Emoção Afiada. Conheça nossas facas exclusivas." />
-    <meta property="twitter:image" content="https://www.dbraguim.com/og-image.jpg" />
-
-    <!-- FONTES (Mantenha se estiver usando) -->
+    <!-- FONTES -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
