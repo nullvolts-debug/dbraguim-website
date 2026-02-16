@@ -2,7 +2,6 @@ import { Link, useLocation } from 'wouter';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
-// IMPORT NOVO
 import { GlobalShareButton } from '@/components/ui/GlobalShareButton';
 
 export function Header() {
@@ -11,70 +10,91 @@ export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className="header">
-      <div className="container header__inner flex items-center justify-between">
+    <header className="header fixed top-0 left-0 w-full z-[100] bg-black/80 backdrop-blur-md border-b border-white/5">
+      <div className="container h-20 flex items-center justify-between">
         
-        {/* LOGO E NOME */}
+        {/* 1. LOGO (Sempre Visível) */}
         <Link href="/" className="brand flex items-center gap-2" title="D.Braguim - Cutelaria Artesanal">
           <span className="brand__logo">
-            <img src="/images/logo/logo.svg" alt="D.Braguim - Logo" width={70} height={48} />
+            {/* Ajuste o tamanho da logo se necessário */}
+            <img src="/images/logo/logo.svg" alt="D.Braguim" className="h-10 w-auto" />
           </span>
-          <span className="brand__name text-xl font-serif">D.Braguim</span>
+          <span className="brand__name text-xl font-serif text-white">D.Braguim</span>
         </Link>
 
         {/* 
-           MOBILE: Botão de Menu Hambúrguer 
-           (Adicionei 'ml-auto' para empurrar para direita se precisar)
+            2. CONTROLES MOBILE (Share + Lang + Menu)
+            Visível apenas em telas pequenas (md:hidden)
         */}
-        <div className="md:hidden flex items-center gap-2">
-          {/* Opcional: Share no topo mobile também? Se não, deixe só dentro do menu */}
-          <GlobalShareButton className="md:hidden mr-2" /> 
+        <div className="flex items-center gap-3 md:hidden">
+          
+          {/* A. Compartilhar Mobile */}
+          <GlobalShareButton />
 
+          {/* B. Idioma Mobile (Compacto) */}
+          <div className="flex items-center gap-1 text-sm font-medium border-l border-white/10 pl-3">
+            <button
+              type="button"
+              className={`${language === 'pt' ? 'text-[var(--gold)]' : 'text-white/50'}`}
+              onClick={() => setLanguage('pt')}
+            >
+              PT
+            </button>
+            <span className="text-white/20">|</span>
+            <button
+              type="button"
+              className={`${language === 'en' ? 'text-[var(--gold)]' : 'text-white/50'}`}
+              onClick={() => setLanguage('en')}
+            >
+              EN
+            </button>
+          </div>
+
+          {/* C. Botão Hambúrguer */}
           <button
-            className="mobile-menu-button p-2"
+            className="p-1 text-[var(--gold)] hover:text-white transition-colors ml-1"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label="Menu"
           >
-            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
           </button>
         </div>
 
-        {/* DESKTOP NAV */}
-        <nav className="nav hidden md:flex items-center gap-6" aria-label="Navegação Principal">
-          <Link href="/" className={location === '/' ? 'active' : ''} title={t('nav_home')}>
+        {/* 
+            3. NAVEGAÇÃO DESKTOP 
+            Escondida no mobile (hidden), visível no PC (md:flex)
+        */}
+        <nav className="hidden md:flex items-center gap-8" aria-label="Navegação Principal">
+          <Link href="/" className={`nav-link hover:text-[var(--gold)] transition-colors ${location === '/' ? 'text-[var(--gold)]' : 'text-white/80'}`}>
             {t('nav_home')}
           </Link>
-          <Link href="/portfolio" className={location === '/portfolio' ? 'active' : ''} title={t('nav_portfolio')}>
+          <Link href="/portfolio" className={`nav-link hover:text-[var(--gold)] transition-colors ${location === '/portfolio' ? 'text-[var(--gold)]' : 'text-white/80'}`}>
             {t('nav_portfolio')}
           </Link>
-          <Link href="/sobre" className={location === '/sobre' ? 'active' : ''} title={t('nav_sobre')}>
+          <Link href="/sobre" className={`nav-link hover:text-[var(--gold)] transition-colors ${location === '/sobre' ? 'text-[var(--gold)]' : 'text-white/80'}`}>
             {t('nav_sobre')}
           </Link>
-          <Link href="/contato" className={location === '/contato' ? 'active' : ''} title={t('nav_contato')}>
+          <Link href="/contato" className={`nav-link hover:text-[var(--gold)] transition-colors ${location === '/contato' ? 'text-[var(--gold)]' : 'text-white/80'}`}>
             {t('nav_contato')}
           </Link>
 
-          {/* ÁREA DE AÇÕES (LANG + SHARE) */}
-          <div className="flex items-center gap-3 border-l border-white/10 pl-4 ml-2">
-            
-            {/* 🆕 SHARE BUTTON DESKTOP */}
+          {/* Ações Desktop (Share + Lang) */}
+          <div className="flex items-center gap-4 border-l border-white/10 pl-6 ml-2">
             <GlobalShareButton />
             
-            <div className="lang flex items-center gap-2" aria-label="Seletor de Idioma">
+            <div className="flex items-center gap-2 text-sm font-medium">
               <button
                 type="button"
-                className={`text-sm ${language === 'pt' ? 'font-bold text-[var(--gold)]' : 'text-white/50'}`}
+                className={`transition-colors ${language === 'pt' ? 'text-[var(--gold)]' : 'text-white/50 hover:text-white'}`}
                 onClick={() => setLanguage('pt')}
-                title="Português Brasileiro"
               >
                 PT
               </button>
               <span className="text-white/20">|</span>
               <button
                 type="button"
-                className={`text-sm ${language === 'en' ? 'font-bold text-[var(--gold)]' : 'text-white/50'}`}
+                className={`transition-colors ${language === 'en' ? 'text-[var(--gold)]' : 'text-white/50 hover:text-white'}`}
                 onClick={() => setLanguage('en')}
-                title="English"
               >
                 EN
               </button>
@@ -82,28 +102,24 @@ export function Header() {
           </div>
         </nav>
 
-        {/* MOBILE MENU EXPANDIDO */}
+        {/* 
+            4. MENU EXPANDIDO (MOBILE APENAS)
+            Agora só tem os links, já que Lang/Share subiram para a barra
+        */}
         {mobileMenuOpen && (
-          <nav className="mobile-nav md:hidden absolute top-full left-0 w-full bg-black/95 backdrop-blur-md p-6 flex flex-col gap-4 border-t border-white/10" aria-label="Navegação Mobile">
-            <Link href="/" onClick={() => setMobileMenuOpen(false)}>{t('nav_home')}</Link>
-            <Link href="/portfolio" onClick={() => setMobileMenuOpen(false)}>{t('nav_portfolio')}</Link>
-            <Link href="/sobre" onClick={() => setMobileMenuOpen(false)}>{t('nav_sobre')}</Link>
-            <Link href="/contato" onClick={() => setMobileMenuOpen(false)}>{t('nav_contato')}</Link>
-            
-            <div className="mobile-nav__lang flex items-center justify-center gap-4 mt-4 pt-4 border-t border-white/10">
-              <button 
-                className={language === 'pt' ? 'text-[var(--gold)]' : 'text-white/50'}
-                onClick={() => { setLanguage('pt'); setMobileMenuOpen(false); }}
-              >
-                PT
-              </button>
-              <button 
-                className={language === 'en' ? 'text-[var(--gold)]' : 'text-white/50'}
-                onClick={() => { setLanguage('en'); setMobileMenuOpen(false); }}
-              >
-                EN
-              </button>
-            </div>
+          <nav className="mobile-nav md:hidden absolute top-20 left-0 w-full bg-black/95 backdrop-blur-xl border-b border-white/10 flex flex-col p-6 animate-in slide-in-from-top-5 duration-200 shadow-2xl">
+            <Link href="/" className={`text-lg py-3 border-b border-white/5 ${location === '/' ? 'text-[var(--gold)]' : 'text-white/80'}`} onClick={() => setMobileMenuOpen(false)}>
+              {t('nav_home')}
+            </Link>
+            <Link href="/portfolio" className={`text-lg py-3 border-b border-white/5 ${location === '/portfolio' ? 'text-[var(--gold)]' : 'text-white/80'}`} onClick={() => setMobileMenuOpen(false)}>
+              {t('nav_portfolio')}
+            </Link>
+            <Link href="/sobre" className={`text-lg py-3 border-b border-white/5 ${location === '/sobre' ? 'text-[var(--gold)]' : 'text-white/80'}`} onClick={() => setMobileMenuOpen(false)}>
+              {t('nav_sobre')}
+            </Link>
+            <Link href="/contato" className={`text-lg py-3 ${location === '/contato' ? 'text-[var(--gold)]' : 'text-white/80'}`} onClick={() => setMobileMenuOpen(false)}>
+              {t('nav_contato')}
+            </Link>
           </nav>
         )}
       </div>
