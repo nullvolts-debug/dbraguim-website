@@ -34,9 +34,9 @@ export function SEO({ title, description, image, url }: SEOProps) {
         // Só libera se o Prerender ainda estiver esperando (false)
         if ((window as any).prerenderReady === false) {
            (window as any).prerenderReady = true;
-           // console.log('📸 PRERENDER LIBERADO COM SUCESSO!');
+           console.log('📸 PRERENDER LIBERADO COM SUCESSO!');
         }
-      }, 10000); // 500ms de segurança para o Helmet aplicar as tags no <head>
+      }, 500); // 500ms de segurança para o Helmet aplicar as tags no <head>
       
       return () => clearTimeout(timer);
     }
