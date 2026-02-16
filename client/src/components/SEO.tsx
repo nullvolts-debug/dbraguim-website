@@ -36,7 +36,7 @@ export function SEO({ title, description, image, url }: SEOProps) {
            (window as any).prerenderReady = true;
            // console.log('📸 PRERENDER LIBERADO COM SUCESSO!');
         }
-      }, 500); // 500ms de segurança para o Helmet aplicar as tags no <head>
+      }, 10000); // 500ms de segurança para o Helmet aplicar as tags no <head>
       
       return () => clearTimeout(timer);
     }
