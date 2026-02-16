@@ -12,6 +12,7 @@ import { LanguageProvider } from "./contexts/LanguageContext";
 import { Layout } from "./components/Layout";
 import Home from "./pages/Home";
 
+// Router Component: Gerencia as rotas da aplicação
 function Router() {
   return (
     <Layout>
@@ -21,6 +22,7 @@ function Router() {
         <Route path={"/portfolio"} component={Portfolio} />
         <Route path={"/sobre"} component={Sobre} />
         <Route path={"/contato"} component={Contato} />
+        {/* Rota 404 explícita e catch-all para erros */}
         <Route path={"/404"} component={NotFound} />
         <Route component={NotFound} />
       </Switch>
@@ -28,10 +30,10 @@ function Router() {
   );
 }
 
-// NOTE: About Theme
-// - First choose a default theme according to your design style (dark or light bg), than change color palette in index.css
-//   to keep consistent foreground/background color across components
-// - If you want to make theme switchable, pass `switchable` ThemeProvider and use `useTheme` hook
+// App Component Principal
+// Estrutura de Providers (Contextos)
+// A ordem importa! Os componentes que injetam CSS/Estilos devem ficar
+// o mais "profundo" ou "tarde" possível para não poluir o <head> antes do SEO.
 
 function App() {
   return (
@@ -39,8 +41,19 @@ function App() {
       <ThemeProvider defaultTheme="dark">
         <LanguageProvider>
           <TooltipProvider>
-            <Toaster />
+            {/* 
+              🚨 MUDANÇA ESTRATÉGICA DE POSIÇÃO:
+              O <Router /> contém o <SEO /> (via páginas). Ele deve ser renderizado PRIMEIRO.
+              Isso aumenta a chance das meta tags entrarem no <head> antes de qualquer estilo global.
+            */}
             <Router />
+            
+            {/* 
+              O <Toaster /> injeta um bloco gigante de CSS no <head>.
+              Colocando-o DEPOIS do Router, tentamos garantir que o CSS fique 
+              DEPOIS das meta tags, permitindo que o WhatsApp leia o SEO corretamente.
+            */}
+            <Toaster />
           </TooltipProvider>
         </LanguageProvider>
       </ThemeProvider>
