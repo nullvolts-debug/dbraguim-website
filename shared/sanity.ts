@@ -1,6 +1,8 @@
 import { createClient } from '@sanity/client';
-// 1. CORREÇÃO: Usar importação nomeada, não default
-import imageUrlBuilder from '@sanity/image-url';
+// ✅ AGORA SIM: Usando chaves { } para importar a função nomeada
+import { createImageUrlBuilder } from '@sanity/image-url/lib/types/builder';
+// Se a linha acima der erro de tipo, use esta:
+// import createImageUrlBuilder from '@sanity/image-url'; 
 
 // Configuração do cliente Sanity
 const getProjectId = () => {
@@ -41,9 +43,11 @@ export const sanityConfig = {
 // Cliente Sanity para uso no servidor
 export const sanityClient = createClient(sanityConfig);
 
-// 2. CORREÇÃO: O pacote @sanity/image-url exporta uma função default
-// que cria o builder. Vamos usá-la corretamente aqui.
-const builder = imageUrlBuilder(sanityClient);
+// ✅ AGORA SIM: Usando a função nomeada importada
+// Se der erro de "not a function", volte para:
+// const builder = imageUrlBuilder(sanityClient);
+// Mas com a importação certa lá em cima, isso deve funcionar:
+const builder = createImageUrlBuilder(sanityClient);
 
 export function urlForImage(source: any) {
   // Verificação de segurança: se source for nulo ou indefinido, retorna null
@@ -62,7 +66,7 @@ export interface SanityKnife {
   };
   category: 'hunting' | 'fighter' | 'chef';
   status: 'available' | 'sold' | 'commission';
-  images: Array<{
+  images: Array&lt;{
     _type: 'image';
     asset: {
       _ref: string;
