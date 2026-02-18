@@ -14,10 +14,10 @@ export const translations = {
     home_about_link: "Conheça a história",
     footer_rights: "Todos os direitos reservados.",
     about_story_title: "A história",
-    about_story_p1: "Eu sou Dennis. Desde criança, lâminas sempre foram mais do que ferramentas — eram uma linguagem antiga, uma extensão do instinto humano de criar e atravessar o tempo.",
-    about_story_p2: "Em 2018 comecei a estudar e praticar com profundidade. Em 2020 me tornei cuteleiro profissional e decidi forjar uma marca onde cada peça carrega técnica, tradição e emoção.",
+    about_story_p1: "Eu sou Dennis. Desde a infância, facas foram tão naturais quanto trabalhar, cozinhar e cuidar do que é seu. Com o tempo, a lâmina deixou de ser só ferramenta e virou parte de quem eu sou.",
+    about_story_p2: "Eu sempre usei, estudei e admirei facas — não como fase, mas como vida. Antes de virar ofício, veio o hábito, a curiosidade, a disciplina: entender geometria, corte, afiação, equilíbrio e o que separa uma faca “bonita” de uma faca realmente confiável. Em 2018 comecei a estudar e praticar cutelaria com seriedade; em 2020 me tornei cuteleiro profissional e nasceu a D.Braguim.",
     // ✅ TEXTO LIMPO (Sem HTML, preparando para o botão abaixo)
-    about_story_p3: "Uma D.Braguim não é só uma faca: é uma presença. Um objeto que se encaixa na mão e no tempo, feito para durar e contar história. Convido você a conhecer meu trabalho — e, se alguma peça conversar com você, me chama.",
+    about_story_p3: "Uma D.Braguim não é só uma faca: é uma presença. Uma peça feita para uso real, com conforto na mão e corte limpo, do primeiro ao último detalhe — feita para atravessar o tempo e um dia virar herança. Convido você a conhecer meu trabalho e se alguma peça conversar com você, me chama.",
     about_value_craft_title: "Identidade no aço",
     about_value_craft_text: "Desenho único e irrepetível.",
     about_value_exclusive_title: "Feita para uso real",
