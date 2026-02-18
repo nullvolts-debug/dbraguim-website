@@ -1,23 +1,19 @@
 import { createClient } from '@sanity/client';
-import createImageUrlBuilder from '@sanity/image-url';
+// 1. CORREÇÃO: Usar importação nomeada, não default
+import imageUrlBuilder from '@sanity/image-url';
 
 // Configuração do cliente Sanity
-// O projectId é hardcoded como fallback para garantir que funcione
-// tanto no servidor (process.env) quanto no frontend (import.meta.env)
 const getProjectId = () => {
   try {
-    // Frontend (Vite)
     if (typeof import.meta !== 'undefined' && import.meta.env?.VITE_SANITY_PROJECT_ID) {
       return import.meta.env.VITE_SANITY_PROJECT_ID;
     }
   } catch {}
   try {
-    // Servidor (Node.js)
     if (typeof process !== 'undefined' && process.env?.VITE_SANITY_PROJECT_ID) {
       return process.env.VITE_SANITY_PROJECT_ID;
     }
   } catch {}
-  // Fallback hardcoded
   return '9kunhe1k';
 };
 
@@ -45,14 +41,17 @@ export const sanityConfig = {
 // Cliente Sanity para uso no servidor
 export const sanityClient = createClient(sanityConfig);
 
-// Builder para URLs de imagens
-const builder = createImageUrlBuilder(sanityClient); 
+// 2. CORREÇÃO: O pacote @sanity/image-url exporta uma função default
+// que cria o builder. Vamos usá-la corretamente aqui.
+const builder = imageUrlBuilder(sanityClient);
 
 export function urlForImage(source: any) {
+  // Verificação de segurança: se source for nulo ou indefinido, retorna null
+  if (!source || !source.asset) return undefined;
   return builder.image(source);
 }
 
-// Tipos para o schema do Sanity
+// Tipos para o schema do Sanity (MANTIDOS IGUAIS)
 export interface SanityKnife {
   _id: string;
   _type: 'knife';

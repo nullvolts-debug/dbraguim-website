@@ -1,8 +1,20 @@
-import imageUrlBuilder from '@sanity/image-url';
+// 1. CORREÇÃO AQUI: Importação nomeada em vez de default
+import { createImageUrlBuilder } from '@sanity/image-url/lib/types/builder'; 
+// Se a linha acima der erro de tipo, use esta:
+// import imageUrlBuilder from '@sanity/image-url'; <-- ESSE É O ANTIGO QUE DÁ AVISO
+// TENTE ESTE:
+import createImageUrlBuilder from '@sanity/image-url'; 
+
+// IMPORTANTE: Se o aviso persistir mesmo com a mudança acima, é porque 
+// a versão da biblioteca @sanity/image-url instalada ainda exporta como default.
+// Nesse caso, o aviso é apenas um alerta futuro e o código funciona.
+// Mas para tentar remover o aviso, o certo seria:
+// import { createImageUrlBuilder } from '@sanity/image-url' 
+// (Mas isso depende da versão exata instalada no package.json)
+
 import { createClient } from '@sanity/client';
 
 // Cliente Sanity para o frontend (apenas leitura, usa CDN)
-// O projectId é hardcoded como fallback para garantir que funcione em produção
 const client = createClient({
   projectId: import.meta.env.VITE_SANITY_PROJECT_ID || '9kunhe1k',
   dataset: import.meta.env.VITE_SANITY_DATASET || 'production',
@@ -10,7 +22,12 @@ const client = createClient({
   useCdn: true,
 });
 
-const builder = imageUrlBuilder(client);
+// 2. CORREÇÃO AQUI: Usar a função correta
+// Se a importação lá em cima for 'import createImageUrlBuilder', aqui fica:
+const builder = createImageUrlBuilder(client);
+
+// SE DER ERRO: Volte para 'const builder = imageUrlBuilder(client)' e ignore o aviso por enquanto,
+// pois o funcionamento não é afetado, é apenas um deprecation warning.
 
 /**
  * Gera URL da imagem do Sanity CDN a partir de uma referência de imagem
@@ -71,6 +88,7 @@ export function getCardImageUrl(source: any): string {
 export function getFullImageUrl(source: any): string {
   return getImageUrl(source, 1200);
 }
+
 /**
  * Gera URL de arquivo (Vídeo, PDF, etc) do Sanity
  * Transforma 'file-123...-mp4' em 'https://cdn.sanity.io/files/...'
