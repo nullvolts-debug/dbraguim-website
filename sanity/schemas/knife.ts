@@ -19,7 +19,7 @@ export default defineType({
         source: 'name',
         maxLength: 96,
       },
-      validation: (Rule) => Rule.required().unique(),
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'category',
@@ -56,19 +56,34 @@ export default defineType({
       of: [{ type: 'image', options: { hotspot: true } }],
       validation: (Rule) => Rule.required().min(1),
     }),
+    
+    // --- MUDANÇA AQUI: NOVO CAMPO DE URL ---
+    defineField({
+      name: 'videoUrl',
+      title: 'Link do Vídeo (Cloudinary/YouTube)',
+      type: 'url',
+      description: 'Cole aqui o link do vídeo (ex: https://res.cloudinary.com/... ou YouTube). Prefira usar este campo para economizar banda.',
+    }),
+    
+    // --- MUDANÇA AQUI: CAMPO ANTIGO DEPRECIADO ---
     defineField({
       name: 'video',
-      title: 'Vídeo (MP4)',
+      title: 'Vídeo (Arquivo - Depreciado)',
       type: 'file',
+      description: '⚠️ Evite usar upload direto. Use o campo "Link do Vídeo" acima para melhor performance.',
       options: {
         accept: 'video/mp4',
       },
     }),
+
     defineField({
       name: 'videoPoster',
-      title: 'Poster do Vídeo',
+      title: 'Poster do Vídeo (Capa)',
       type: 'image',
-      description: 'Imagem de capa do vídeo',
+      description: 'Imagem de capa do vídeo (Obrigatória para o player não ficar preto antes do play)',
+      options: {
+        hotspot: true,
+      },
     }),
     defineField({
       name: 'description_pt',
@@ -156,7 +171,7 @@ export default defineType({
       slug: 'slug',
     },
     prepare({ title, subtitle, media, status, slug }) {
-      const statusLabels: Record<string, string> = {
+      const statusLabels: Record&lt;string, string> = {
         available: '✅ Disponível',
         sold: '❌ Vendida',
         commission: '⏳ Encomenda',
