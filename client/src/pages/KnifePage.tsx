@@ -3,7 +3,8 @@ import { useMemo, useState, useEffect } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { trpc } from '@/lib/trpc';
 import { type SanityKnife } from '@shared/sanity';
-import { getCardImageUrl, getFullImageUrl, getFileUrl } from '@/lib/sanityImage';
+// MUDANÇA: Adicionada a importação da nova função getOptimizedVideoUrl
+import { getCardImageUrl, getFullImageUrl, getFileUrl, getOptimizedVideoUrl } from '@/lib/sanityImage';
 // Importação do builder de imagem do Sanity
 import { urlForImage } from '@shared/sanity'; 
 import { toast } from "sonner";
@@ -39,11 +40,16 @@ export default function KnifePage() {
     const sanityImages = foundSanityKnife.images?.map((img: any) => ({
       cardUrl: getCardImageUrl(img),
       fullUrl: getFullImageUrl(img),
-      // MUDANÇA: Garante que o objeto raw tenha a estrutura que o urlForImage espera
       raw: img 
     })) || [];
 
-    const videoUrl = getFileUrl(foundSanityKnife.video);
+    // LÓGICA DO VÍDEO ATUALIZADA:
+    // 1. Tenta pegar a URL direta do novo campo (videoUrl) OU a URL do arquivo antigo
+    const rawVideoUrl = foundSanityKnife.videoUrl || getFileUrl(foundSanityKnife.video);
+    
+    // 2. Passa pela função de otimização importada (adiciona f_auto, q_auto se for Cloudinary)
+    const videoUrl = getOptimizedVideoUrl(rawVideoUrl);
+    
     const videoPoster = getFileUrl(foundSanityKnife.videoPoster);
 
     return {
@@ -51,7 +57,7 @@ export default function KnifePage() {
       images: sanityImages.map((i: any) => i.cardUrl),
       fullImages: sanityImages.map((i: any) => i.fullUrl),
       rawImages: sanityImages.map((i: any) => i.raw),
-      video_mp4: videoUrl,
+      video_mp4: videoUrl, // URL final otimizada
       video_poster: videoPoster,
       category: foundSanityKnife.category,
       status: foundSanityKnife.status,
@@ -68,63 +74,27 @@ export default function KnifePage() {
     };
   }, [sanityKnives, slug, language]);
 
-  // 2. GERAÇÃO DA IMAGEM SEO (Otimizada para 1200x630)
+  // 2. GERAÇÃO DA IMAGEM SEO
   const seoImage = useMemo(() => {
-    // 🚨 MUDANÇA CRUCIAL: Se a faca ainda não carregou, retorna undefined.
-    // Isso diz para o componente SEO: "ESPERE! Ainda estou carregando..."
     if (!knife) return undefined;
 
-    // Se tiver imagem raw, tenta gerar a URL do Sanity
     if (knife.rawImages && knife.rawImages.length > 0) {
       try {
         const url = urlForImage(knife.rawImages[0])
           .width(1200)
           .height(630)
           .fit('crop')
-          .format('jpg') // FORÇA JPG (O WhatsApp ama JPG)
-          .quality(75)   // Reduz qualidade para garantir < 300KB
+          .format('jpg')
+          .quality(75)
           .url();
         return url;
       } catch (e) {
         console.error('❌ ERRO CRÍTICO AO GERAR IMAGEM SEO:', e);
-        // Em caso de erro REAL (faca carregou mas deu pau), aí sim retorna a padrão.
         return 'https://www.dbraguim.com/og-image.jpg';
       }
     }
-    
-    // Faca carregou mas não tem foto? Retorna a padrão.
     return 'https://www.dbraguim.com/og-image.jpg';
   }, [knife]);
-
-  // 3. DEBUGGER ESPIÃO (Veja no Console F12)
-  // Isso vai te mostrar se a imagem está sendo gerada corretamente
-  useEffect(() => {
-    if (knife) {
-      console.group("🔍 Auditoria da Imagem SEO");
-      console.log("🔪 Faca:", knife.name);
-      console.log("🖼️ URL Final Gerada:", seoImage);
-      if (seoImage.includes("cdn.sanity.io")) {
-        console.log("✅ SUCESSO: A imagem é do Sanity!");
-      } else {
-        console.log("⚠️ ALERTA: Está usando a imagem padrão fallback.");
-      }
-      console.groupEnd();
-    }
-  }, [knife, seoImage]);
-
-  // --- PREPARAÇÃO DOS TEXTOS DE SEO ---
-  const seoTitle = knife 
-    ? `${knife.name} | D.Braguim`
-    : 'D.Braguim - Cutelaria Artesanal';
-
-  const descText = knife 
-    ? (language === 'pt' ? knife.description_pt : knife.description_en) 
-    : '';
-
-  const seoDesc = descText 
-    ? descText.substring(0, 150) + '...'
-    : 'Detalhes exclusivos desta peça de cutelaria artesanal.';
-
 
   // Funções de navegação da galeria
   const nextImage = () => {
@@ -179,8 +149,8 @@ export default function KnifePage() {
   return (
     <>
       <SEO
-        title={seoTitle}
-        description={seoDesc}
+        title={knife ? `${knife.name} | D.Braguim` : 'D.Braguim'}
+        description={knife ? (language === 'pt' ? knife.description_pt : knife.description_en).substring(0, 150) : ''}
         image={seoImage}
         url={`https://www.dbraguim.com/faca/${slug}`}
       />
@@ -197,17 +167,23 @@ export default function KnifePage() {
 
           <div className="flex flex-col md:flex-row gap-8 lg:gap-16 items-start">
             
-            {/* COLUNA ESQUERDA (FOTO) */}
+            {/* COLUNA ESQUERDA (FOTO/VIDEO) */}
             <div className="w-full md:w-[60%] lg:w-[65%] relative group">
               <div className="w-full bg-[#050505] border border-[var(--line)] rounded-sm overflow-hidden relative aspect-[4/3] flex items-center justify-center">
+                
                 {showVideo && knife.video_mp4 ? (
+                  // Player de vídeo compatível com URL externa otimizada
                   <video 
                     src={knife.video_mp4} 
                     controls 
                     autoPlay 
+                    playsInline
+                    loop
                     className="w-full h-full object-contain"
                     poster={knife.video_poster || undefined}
-                  />
+                  >
+                    Seu navegador não suporta vídeos.
+                  </video>
                 ) : (
                   <img 
                     src={knife.fullImages[currentIndex]} 
@@ -216,7 +192,7 @@ export default function KnifePage() {
                   />
                 )}
 
-                {/* Botão Flutuante */}
+                {/* Botão para Alternar Foto/Vídeo */}
                 {knife.video_mp4 && (
                   <button 
                     onClick={() => setShowVideo(!showVideo)}
@@ -230,22 +206,22 @@ export default function KnifePage() {
                   </button>
                 )}
 
-                {/* Setas de Navegação */}
+                {/* Setas de Navegação (Só aparecem se não estiver vendo vídeo) */}
                 {!showVideo && knife.fullImages.length > 1 && (
                   <>
                     <button 
                       onClick={prevImage}
-                      className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/40 text-white p-3 rounded-full hover:bg-[var(--gold)] hover:text-black transition-all opacity-0 group-hover:opacity-100"
+                      className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/40 text-white p-3 rounded-full hover:bg-[var(--gold)] hover:text-black transition-all opacity-0 group-hover:opacity-100 z-10"
                     >
                       <ChevronLeft size={24} />
                     </button>
                     <button 
                       onClick={nextImage}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/40 text-white p-3 rounded-full hover:bg-[var(--gold)] hover:text-black transition-all opacity-0 group-hover:opacity-100"
+                      className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/40 text-white p-3 rounded-full hover:bg-[var(--gold)] hover:text-black transition-all opacity-0 group-hover:opacity-100 z-10"
                     >
                       <ChevronRight size={24} />
                     </button>
-                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white/50 text-xs tracking-[0.2em] bg-black/40 px-3 py-1 rounded-full">
+                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white/50 text-xs tracking-[0.2em] bg-black/40 px-3 py-1 rounded-full z-10">
                       {currentIndex + 1} / {knife.fullImages.length}
                     </div>
                   </>

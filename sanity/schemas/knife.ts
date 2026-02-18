@@ -57,7 +57,7 @@ export default defineType({
       validation: (Rule) => Rule.required().min(1),
     }),
     
-    // --- MUDANÇA AQUI: NOVO CAMPO DE URL ---
+    // --- NOVO CAMPO DE URL ---
     defineField({
       name: 'videoUrl',
       title: 'Link do Vídeo (Cloudinary/YouTube)',
@@ -65,7 +65,7 @@ export default defineType({
       description: 'Cole aqui o link do vídeo (ex: https://res.cloudinary.com/... ou YouTube). Prefira usar este campo para economizar banda.',
     }),
     
-    // --- MUDANÇA AQUI: CAMPO ANTIGO DEPRECIADO ---
+    // --- CAMPO ANTIGO DEPRECIADO ---
     defineField({
       name: 'video',
       title: 'Vídeo (Arquivo - Depreciado)',
@@ -170,17 +170,21 @@ export default defineType({
       status: 'status',
       slug: 'slug',
     },
+    // CORREÇÃO AQUI: Removida a tipagem explícita que causava erro no build
     prepare({ title, subtitle, media, status, slug }) {
-      const statusLabels: Record&lt;string, string> = {
+      const statusLabels = {
         available: '✅ Disponível',
         sold: '❌ Vendida',
         commission: '⏳ Encomenda',
       };
       const slugValue = slug?.current ? ` (/${slug.current})` : '';
       
+      // Usamos (statusLabels as any) para garantir que o TS aceite a chave dinâmica sem reclamar
+      const statusText = (statusLabels as any)[status] || status;
+
       return {
         title,
-        subtitle: `${subtitle} - ${statusLabels[status] || status}${slugValue}`,
+        subtitle: `${subtitle} - ${statusText}${slugValue}`,
         media,
       };
     },

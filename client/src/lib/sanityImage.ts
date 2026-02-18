@@ -81,7 +81,7 @@ export function getFullImageUrl(source: any): string {
 }
 
 /**
- * Gera URL de arquivo (Vídeo, PDF, etc) do Sanity
+ * Gera URL de arquivo (PDF, etc) do Sanity
  * Transforma 'file-123...-mp4' em 'https://cdn.sanity.io/files/...'
  */
 export function getFileUrl(source: any): string | null {
@@ -104,4 +104,24 @@ export function getFileUrl(source: any): string | null {
   const { projectId, dataset } = client.config();
 
   return `https://cdn.sanity.io/files/${projectId}/${dataset}/${id}.${format}`;
+}
+
+/**
+ * NOVA FUNÇÃO: Otimiza URL de vídeo (Cloudinary)
+ * Adiciona f_auto,q_auto para garantir performance máxima
+ */
+export function getOptimizedVideoUrl(url: string | undefined | null): string | undefined {
+  if (!url) return undefined;
+  
+  // Se for link do Cloudinary, injeta a otimização
+  if (url.includes('cloudinary.com')) {
+    // Evita duplicar se já tiver os parametros
+    if (url.includes('f_auto') || url.includes('q_auto')) return url;
+
+    // Procura por "/upload/" e insere os parâmetros logo depois
+    return url.replace('/upload/', '/upload/f_auto,q_auto/');
+  }
+
+  // Se for YouTube ou outro link, devolve igual
+  return url;
 }
