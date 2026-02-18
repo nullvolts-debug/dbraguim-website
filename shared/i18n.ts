@@ -85,7 +85,7 @@ export const translations = {
     footer_rights: "All rights reserved.",
     about_story_title: "The story",
     about_story_p1: "I am Dennis. Since childhood, knives have been as natural as working, cooking, and taking care of what is yours. Over time, the blade stopped being just a tool and became a part of who I am.",
-    about_story_p2: "I have always used, studied, and admired knives—not as a phase, but as a way of life. Before it became a trade, there was the habit, the curiosity, and the discipline: understanding geometry, edges, sharpening, balance, and what separates a "pretty" knife from a truly reliable one. In 2018, I began to study and practice knifemaking seriously; in 2020, I became a professional knifemaker and D.Braguim was born.",
+    about_story_p2: "I have always used, studied, and admired knives—not as a phase, but as a way of life. Before it became a trade, there was the habit, the curiosity, and the discipline: understanding geometry, edges, sharpening, balance, and what separates a 'pretty' knife from a truly reliable one. In 2018, I began to study and practice knifemaking seriously; in 2020, I became a professional knifemaker and D.Braguim was born.",
     // ✅ TEXTO LIMPO (Sem HTML)
     about_story_p3: "A D.Braguim is not just a knife: it is a presence. A piece made for real use, with comfort in the hand and a clean cut, from the first to the last detail—made to stand the test of time and one day become an heirloom. I invite you to explore my work, and if a piece speaks to you, reach out.",
     about_value_craft_title: "Identity in the steel",
