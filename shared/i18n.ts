@@ -84,10 +84,10 @@ export const translations = {
     home_about_link: "Read the story",
     footer_rights: "All rights reserved.",
     about_story_title: "The story",
-    about_story_p1: "I’m Dennis. Since I was a kid, blades have always been more than tools—they felt like an ancient language, an extension of the human instinct to create and to last through time.",
-    about_story_p2: "In 2018, I began studying and practicing bladesmithing with real dedication. In 2020, I became a professional knifemaker and chose to build a brand where every piece carries technique, tradition, and emotion.",
+    about_story_p1: "I am Dennis. Since childhood, knives have been as natural as working, cooking, and taking care of what is yours. Over time, the blade stopped being just a tool and became a part of who I am.",
+    about_story_p2: "I have always used, studied, and admired knives—not as a phase, but as a way of life. Before it became a trade, there was the habit, the curiosity, and the discipline: understanding geometry, edges, sharpening, balance, and what separates a "pretty" knife from a truly reliable one. In 2018, I began to study and practice knifemaking seriously; in 2020, I became a professional knifemaker and D.Braguim was born.",
     // ✅ TEXTO LIMPO (Sem HTML)
-    about_story_p3: "A D.Braguim knife isn’t just a knife—it’s a presence. An object that fits both the hand and the passage of time, made to endure and to carry a story. I invite you to see my work—and if a piece speaks to you, reach out.",
+    about_story_p3: "A D.Braguim is not just a knife: it is a presence. A piece made for real use, with comfort in the hand and a clean cut, from the first to the last detail—made to stand the test of time and one day become an heirloom. I invite you to explore my work, and if a piece speaks to you, reach out.",
     about_value_craft_title: "Identity in the steel",
     about_value_craft_text: "Each blade is born with a unique, one-of-a-kind pattern.",
     about_value_exclusive_title: "Made for real use",
