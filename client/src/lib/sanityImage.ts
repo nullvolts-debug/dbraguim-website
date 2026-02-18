@@ -1,8 +1,8 @@
-import imageUrlBuilder from '@sanity/image-url';
+// ✅ MUDANÇA AQUI: Usando chaves { } para pegar a exportação nomeada
+import { createImageUrlBuilder } from '@sanity/image-url';
 import { createClient } from '@sanity/client';
 
 // Cliente Sanity para o frontend (apenas leitura, usa CDN)
-// O projectId é hardcoded como fallback para garantir que funcione em produção
 const client = createClient({
   projectId: import.meta.env.VITE_SANITY_PROJECT_ID || '9kunhe1k',
   dataset: import.meta.env.VITE_SANITY_DATASET || 'production',
@@ -10,7 +10,8 @@ const client = createClient({
   useCdn: true,
 });
 
-const builder = imageUrlBuilder(client);
+// ✅ MUDANÇA AQUI: Usando a função nomeada
+const builder = createImageUrlBuilder(client);
 
 /**
  * Gera URL da imagem do Sanity CDN a partir de uma referência de imagem
@@ -20,6 +21,7 @@ const builder = imageUrlBuilder(client);
 export function urlForImage(source: any) {
   // Verifica se a fonte é válida antes de chamar o builder
   if (!source || (!source.asset && typeof source !== 'string')) {
+    // Retorna um objeto mock seguro para evitar quebras se a imagem for nula
     return {
       width: () => ({ auto: () => ({ quality: () => ({ url: () => '' }) }) }),
     } as any;
@@ -41,7 +43,7 @@ export function getImageUrl(source: any, width: number = 800): string {
     if (url && url.includes('cdn.sanity.io')) {
       return url;
     }
-    // Se a URL não contém cdn.sanity.io, construir manualmente
+    // Se a URL não contém cdn.sanity.io, construir manualmente (Fallback)
     if (source?.asset?._ref) {
       const ref = source.asset._ref;
       // Formato: image-{id}-{dimensions}-{format}
@@ -52,7 +54,7 @@ export function getImageUrl(source: any, width: number = 800): string {
     }
     return url || '';
   } catch {
-    // Fallback: construir URL manualmente a partir do _ref
+    // Fallback final: construir URL manualmente a partir do _ref
     if (source?.asset?._ref) {
       const ref = source.asset._ref;
       const match = ref.match(/^image-([a-f0-9]+)-(\d+x\d+)-(\w+)$/);
