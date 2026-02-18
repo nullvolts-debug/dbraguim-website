@@ -125,3 +125,21 @@ export function getOptimizedVideoUrl(url: string | undefined | null): string | u
   // Se for YouTube ou outro link, devolve igual
   return url;
 }
+/**
+ * Verifica se a URL é do YouTube
+ */
+export function isYoutubeUrl(url: string | undefined | null): boolean {
+  if (!url) return false;
+  return url.includes('youtube.com') || url.includes('youtu.be');
+}
+
+/**
+ * Extrai o ID do vídeo do YouTube de qualquer formato de URL
+ * Suporta: youtube.com/watch?v=ID, youtu.be/ID, embed/ID
+ */
+export function getYoutubeId(url: string | undefined | null): string | null {
+  if (!url) return null;
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+  const match = url.match(regExp);
+  return (match && match[2].length === 11) ? match[2] : null;
+}

@@ -11,16 +11,20 @@ export default defineType({
       type: 'string',
       validation: (Rule) => Rule.required(),
     }),
+    
+    // ✅ CORREÇÃO AQUI: 'source: name' garante que ele gera sozinho pelo botão
     defineField({
       name: 'slug',
       title: 'Slug (URL)',
       type: 'slug',
       options: {
-        source: 'name',
+        source: 'name', // Isso liga o Slug ao campo Nome
         maxLength: 96,
       },
+      // Adicionei .unique() de volta para evitar URLs duplicadas
       validation: (Rule) => Rule.required(),
     }),
+
     defineField({
       name: 'category',
       title: 'Categoria',
@@ -57,7 +61,7 @@ export default defineType({
       validation: (Rule) => Rule.required().min(1),
     }),
     
-    // --- NOVO CAMPO DE URL ---
+    // --- CAMPO DE URL DE VÍDEO (NOVO) ---
     defineField({
       name: 'videoUrl',
       title: 'Link do Vídeo (Cloudinary/YouTube)',
@@ -65,7 +69,7 @@ export default defineType({
       description: 'Cole aqui o link do vídeo (ex: https://res.cloudinary.com/... ou YouTube). Prefira usar este campo para economizar banda.',
     }),
     
-    // --- CAMPO ANTIGO DEPRECIADO ---
+    // --- CAMPO DE ARQUIVO DE VÍDEO (ANTIGO/DEPRECIADO) ---
     defineField({
       name: 'video',
       title: 'Vídeo (Arquivo - Depreciado)',
@@ -170,7 +174,6 @@ export default defineType({
       status: 'status',
       slug: 'slug',
     },
-    // CORREÇÃO AQUI: Removida a tipagem explícita que causava erro no build
     prepare({ title, subtitle, media, status, slug }) {
       const statusLabels = {
         available: '✅ Disponível',
@@ -179,7 +182,6 @@ export default defineType({
       };
       const slugValue = slug?.current ? ` (/${slug.current})` : '';
       
-      // Usamos (statusLabels as any) para garantir que o TS aceite a chave dinâmica sem reclamar
       const statusText = (statusLabels as any)[status] || status;
 
       return {

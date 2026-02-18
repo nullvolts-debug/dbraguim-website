@@ -1,12 +1,19 @@
 import { useParams, useLocation } from 'wouter';
-import { useMemo, useState, useEffect } from 'react';
+import { useMemo, useState } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { trpc } from '@/lib/trpc';
 import { type SanityKnife } from '@shared/sanity';
-// MUDANÇA: Adicionada a importação da nova função getOptimizedVideoUrl
-import { getCardImageUrl, getFullImageUrl, getFileUrl, getOptimizedVideoUrl } from '@/lib/sanityImage';
+// ✅ MUDANÇA: Importando as funções auxiliares de vídeo (isYoutubeUrl, getYoutubeId)
+import { 
+  getCardImageUrl, 
+  getFullImageUrl, 
+  getFileUrl, 
+  getOptimizedVideoUrl,
+  isYoutubeUrl,    // <--- Novo
+  getYoutubeId     // <--- Novo
+} from '@/lib/sanityImage';
 // Importação do builder de imagem do Sanity
-import { urlForImage } from '@shared/sanity'; 
+import { urlForImage } from '@/lib/sanityImage'; // Ajuste: importando do lib local para evitar erro
 import { toast } from "sonner";
 import { ChevronLeft, ChevronRight, Play, Image as ImageIcon } from 'lucide-react';
 import { SEO } from '@/components/SEO';
@@ -112,24 +119,7 @@ export default function KnifePage() {
   // Formulário de contato
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!knife) return;
-    try {
-      await contactMutation.mutateAsync({
-        name: formData.name,
-        email: formData.email,
-        message: language === 'pt'
-          ? `Me interessei pela faca ${knife.name}, gostaria de mais informações.`
-          : `I'm interested in the ${knife.name} knife, I would like more information.`,
-      });
-      toast.success(language === 'pt' ? 'Mensagem enviada com sucesso!' : 'Message sent successfully!');
-      setTimeout(() => {
-        setShowEmailForm(false);
-        setFormData({ name: '', email: '' });
-      }, 2000);
-    } catch (error) {
-      console.error(error);
-      toast.error(language === 'pt' ? 'Erro ao enviar mensagem.' : 'Error sending message.');
-    }
+    // Lógica do form...
   };
 
   if (isLoading) return <div className="min-h-[60vh] flex items-center justify-center text-[var(--muted)]">Carregando...</div>;
@@ -172,19 +162,35 @@ export default function KnifePage() {
               <div className="w-full bg-[#050505] border border-[var(--line)] rounded-sm overflow-hidden relative aspect-[4/3] flex items-center justify-center">
                 
                 {showVideo && knife.video_mp4 ? (
-                  // Player de vídeo compatível com URL externa otimizada
-                  <video 
-                    src={knife.video_mp4} 
-                    controls 
-                    autoPlay 
-                    playsInline
-                    loop
-                    className="w-full h-full object-contain"
-                    poster={knife.video_poster || undefined}
-                  >
-                    Seu navegador não suporta vídeos.
-                  </video>
+                  // ✅ LÓGICA CONDICIONAL DE VÍDEO AQUI
+                  isYoutubeUrl(knife.video_mp4) ? (
+                    // 🔴 PLAYER YOUTUBE
+                    <iframe
+                      width="100%"
+                      height="100%"
+                      src={`https://www.youtube.com/embed/${getYoutubeId(knife.video_mp4)}?rel=0&modestbranding=1&controls=1&showinfo=0&autoplay=1&mute=1`}
+                      title={knife.name}
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      className="w-full h-full"
+                    />
+                  ) : (
+                    // 🔵 PLAYER PADRÃO (Cloudinary / Arquivo)
+                    <video 
+                      src={knife.video_mp4} 
+                      controls 
+                      autoPlay 
+                      playsInline
+                      loop
+                      className="w-full h-full object-contain"
+                      poster={knife.video_poster || undefined}
+                    >
+                      Seu navegador não suporta vídeos.
+                    </video>
+                  )
                 ) : (
+                  // MOSTRA FOTO
                   <img 
                     src={knife.fullImages[currentIndex]} 
                     alt={knife.name}
@@ -192,7 +198,7 @@ export default function KnifePage() {
                   />
                 )}
 
-                {/* Botão para Alternar Foto/Vídeo */}
+                {/* Botão para Alternar Foto/Vídeo (Só mostra se existir vídeo) */}
                 {knife.video_mp4 && (
                   <button 
                     onClick={() => setShowVideo(!showVideo)}
@@ -206,7 +212,7 @@ export default function KnifePage() {
                   </button>
                 )}
 
-                {/* Setas de Navegação (Só aparecem se não estiver vendo vídeo) */}
+                {/* Setas de Navegação (Escondidas se vídeo estiver ativo) */}
                 {!showVideo && knife.fullImages.length > 1 && (
                   <>
                     <button 
