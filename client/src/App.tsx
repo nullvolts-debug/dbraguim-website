@@ -11,6 +11,7 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import { Layout } from "./components/Layout";
 import Home from "./pages/Home";
+import { Analytics } from "@vercel/analytics/next"
 
 // Router Component: Gerencia as rotas da aplicação
 function Router() {
