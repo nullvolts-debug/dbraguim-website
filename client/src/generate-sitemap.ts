@@ -28,7 +28,7 @@ async function generateSitemap() {
     console.log(`🔪 Encontradas ${knives.length} facas.`);
 
     // 3. Definir URLs Estáticas
-    const baseUrl = 'https://dbraguim.com';
+    const baseUrl = 'https://www.dbraguim.com';
     const staticPages = [
       '',
       '/portfolio',
