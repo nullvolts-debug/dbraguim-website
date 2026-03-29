@@ -11,7 +11,7 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import { Layout } from "./components/Layout";
 import Home from "./pages/Home";
-import { Analytics } from "@vercel/analytics/next"
+import { Analytics } from "@vercel/analytics/react";
 
 // Router Component: Gerencia as rotas da aplicação
 function Router() {
@@ -55,6 +55,7 @@ function App() {
               DEPOIS das meta tags, permitindo que o WhatsApp leia o SEO corretamente.
             */}
             <Toaster />
+            <Analytics />
           </TooltipProvider>
         </LanguageProvider>
       </ThemeProvider>
